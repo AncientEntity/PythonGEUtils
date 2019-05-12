@@ -37,6 +37,7 @@ class GameObject():
         global lastObjectID
         self.index = lastObjectID
         self.name = name
+        self.tag = "untagged"
         self.position = [0.0,0.0]
         self.rotation = 360
         self.scale = [1,1]
@@ -94,16 +95,18 @@ class Scene():
         self.name = name
         self.objects = objects
     def AddObject(self,gO):
+        global objects
         instance = GameObject()
         img = errorImage
-        if(gO.components[gO.GetComponent("RENDERER")] != None):
+        if(gO.GetComponent("RENDERER") != None):
             img = gO.components[gO.GetComponent("RENDERER")].sprite
             gO.components[gO.GetComponent("RENDERER")].sprite = ""
         instance = copy.deepcopy(gO)
-        if(instance.components[instance.GetComponent("RENDERER")] != None):
+        if(instance.GetComponent("RENDERER") != None):
             instance.components[instance.GetComponent("RENDERER")].sprite = img
             gO.components[gO.GetComponent("RENDERER")].sprite = img
         self.objects.append(instance)
+        objects.append(instance)
     def AddObjects(self,gOs):
         for o in gOs:
             self.AddObject(o)
@@ -145,6 +148,7 @@ class Collider(BaseComponent):
         self.offset = [0,0]
         self.whereCollision = [False,False,False,False] #TopLeft/TopRight/BottomLeft/BottomRight
         self.friction = 0.065
+        self.trigger = False
     def __str__(self):
         return self.name
     def IsCollidedWith(self,other):
@@ -158,6 +162,8 @@ class Collider(BaseComponent):
         #If colliding with nothing
         return False
     def ApplyFriction(self):
+        if(self.trigger):
+            return
         curVelocity = self.parent.components[self.parent.GetComponent("RIGIDBODY")].velocity
         if(self.whereCollision[0] == True or self.whereCollision[1] == True):
             if(curVelocity[0] < 0):
@@ -174,11 +180,18 @@ class Collider(BaseComponent):
             if(other.GetComponent("COLLIDER") != None and other.index != self.parent.index):
                 if(self.IsCollidedWith(other)):
                     if(other.GetComponent("RIGIDBODY") != None):
-                        other.components[other.GetComponent("RIGIDBODY")].velocity[1] = mathf.Clamp(other.components[other.GetComponent("RIGIDBODY")].velocity[1]-0.05,0,10000)
-                        self.ApplyFriction()
+                        blockCollision = True
+                        if(other.GetComponent("COLLIDER") != None and other.components[other.GetComponent("COLLIDER")].trigger == True):
+                            blockCollision = False
+                        if(self.parent.GetComponent("COLLIDER") != None and self.parent.components[self.parent.GetComponent("COLLIDER")].trigger == True):
+                            blockCollision = False
+
+                        if(blockCollision):
+                            other.components[other.GetComponent("RIGIDBODY")].velocity[1] = mathf.Clamp(other.components[other.GetComponent("RIGIDBODY")].velocity[1]-0.05,0,10000)
+                            self.ApplyFriction()
                     self.collidingWith.append(other)
                     continue
-        if(len(self.collidingWith) > 0):
+        if(len(self.collidingWith) > 0 and self.trigger == False):
             if(self.parent.GetComponent("RIGIDBODY") != None):
                 self.parent.components[self.parent.GetComponent("RIGIDBODY")].velocity[1] = mathf.Clamp(other.components[other.GetComponent("RIGIDBODY")].velocity[1]-0.05,0,10000)
                 self.ApplyFriction()
@@ -198,18 +211,39 @@ class Rigidbody(BaseComponent):
         self.name = "RIGIDBODY"
         self.requiresStart = True
         self.velocity = [0.0,0.0]
-        self.locked = False
+        self.lockedY = False
+        self.lockedX= False
     def CreateNew(self,s):
         return Rigidbody(s)
     def Update(self):
         global properties, deltaTime, objects
-        if(self.locked == False):
+        if(self.lockedY == False):
             self.velocity[1] += properties["GRAVITY"]
             #print("TEST")
-            if(self.parent.components[self.parent.GetComponent("COLLIDER")].whereCollision[2] or self.parent.components[self.parent.GetComponent("COLLIDER")].whereCollision[3]):
-                objects[self.parent.index].position[1] += 10
+            #if(self.parent.components[self.parent.GetComponent("COLLIDER")].whereCollision[2] or self.parent.components[self.parent.GetComponent("COLLIDER")].whereCollision[3]):
+            #    objects[self.parent.index].position[1] += 10
         else:
-            self.velocity = [0,0]
+            self.velocity[1] = 0
+        if(self.lockedX == True):
+            self.velocity[0] = 0
+
+class ConstantMovement(BaseComponent):
+    def __init__(self,s):
+        self.parent = s
+        self.name = "CONSTANTMOVEMENT"
+        self.requiresStart = False
+        self.constantVelocity = [1,0]
+    def CreateNew(self,s):
+        return ConstantMovement(s)
+    def Update(self):
+        self.parent.components[self.parent.GetComponent("RIGIDBODY")].velocity = self.constantVelocity
+
+
+
+def CreateComponentSeperate(componentName):
+    for c in componentMaster:
+        if(c.name == componentName):
+            return(c.CreateNew(None))
 
 def CloneGameObject(gO):
     instance = GameObject()
@@ -237,7 +271,7 @@ def RenderEngine(screen):
     for obj in objects:
         if(obj.GetComponent("RENDERER") != None):
             objsWithRenderers.append(obj)
-    for obj in sorted(objsWithRenderers, key=lambda x: x.components[obj.GetComponent("RENDERER")].sortingLayer, reverse=False):
+    for obj in sorted(objsWithRenderers, key=lambda x: x.components[x.GetComponent("RENDERER")].sortingLayer, reverse=False):
         #print(obj.GetComponent("RENDERER"))
         if(obj.GetComponent("RENDERER") != "" and obj.GetComponent("RENDERER") != None):
             #print(obj.components)
@@ -293,7 +327,7 @@ componentMaster.append(BaseComponent(None))
 componentMaster.append(Renderer(None))
 componentMaster.append(Collider(None))
 componentMaster.append(Rigidbody(None))
-
+componentMaster.append(ConstantMovement(None))
 
 
 class GameInfo():

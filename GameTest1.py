@@ -59,8 +59,9 @@ obj2.position = [150,85]
 obj2.scale = [1,1]
 obj2.components[obj2.GetComponent("RENDERER")].sprite = pygame.image.load("redbox.png")
 obj2.components[obj2.GetComponent("RENDERER")].sortingLayer = 10
-obj2.components[obj2.GetComponent("RIGIDBODY")].locked = False
+obj2.components[obj2.GetComponent("RIGIDBODY")].lockedY = False
 obj2.components[obj2.GetComponent("COLLIDER")].SetAsImage()
+obj2.components[obj2.GetComponent("COLLIDER")].trigger = True
 fallingObjectPrefab = Prefab("Falling Object",obj2)
 
 SceneOne.AddObject(fallingObjectPrefab.CreateInstance([100,100],0,[1,1]))
@@ -72,6 +73,7 @@ boxC.name = "lol"
 boxC.AddComponent("BOXCONTROLLER")
 boxC.components[boxC.GetComponent("RENDERER")].sprite = errorImage
 boxC.components[boxC.GetComponent("COLLIDER")].SetAsImage()
+boxC.components[boxC.GetComponent("COLLIDER")].trigger = False
 SceneOne.AddObject(boxC)
 
 obj4 = GameObject("Ground")
@@ -82,7 +84,7 @@ obj4.position = [0,500]
 obj4.scale = [30,7]
 obj4.components[obj4.GetComponent("RENDERER")].sprite = pygame.image.load("ground.png")
 obj4.components[obj4.GetComponent("RENDERER")].sortingLayer = 5
-obj4.components[obj4.GetComponent("RIGIDBODY")].locked = True
+obj4.components[obj4.GetComponent("RIGIDBODY")].lockedY = True
 obj4.components[obj4.GetComponent("COLLIDER")].SetAsImage()
 print(obj4.components[obj4.GetComponent("COLLIDER")].size)
 SceneOne.AddObject(obj4)
