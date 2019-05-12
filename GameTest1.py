@@ -21,6 +21,7 @@ class BoxController(BaseComponent):
 	def CreateNew(self,s):
 		return BoxController(s)
 	def Update(self):
+		global curScene
 		for event in self.events:
 			if(event.type == pygame.KEYDOWN):
 				if(event.key == pygame.K_UP):
@@ -30,13 +31,17 @@ class BoxController(BaseComponent):
 				elif(event.key == pygame.K_RIGHT):
 					self.parent.position[0] += 5
 
+
 componentMaster.append(BoxController(None))
 componentMaster.append(ToMouseTest(None))
 
 
 #COMPONENTS OVER
 
-objects = []
+scenes = []
+
+SceneOne = Scene("Scene One",[])
+scenes.append(SceneOne)
 
 background = GameObject("Back")
 background.AddComponent("RENDERER")
@@ -44,7 +49,7 @@ background.position = [-25,0]
 background.components[background.GetComponent("RENDERER")].sprite = pygame.image.load("background.png")
 background.components[background.GetComponent("RENDERER")].sortingLayer = -10
 background.scale = [4,4]
-objects.append(background)
+SceneOne.AddObject(background)
 
 obj2 = GameObject("Falling Object Prefab")
 obj2.AddComponent("RENDERER")
@@ -58,10 +63,14 @@ obj2.components[obj2.GetComponent("RIGIDBODY")].locked = False
 obj2.components[obj2.GetComponent("COLLIDER")].SetAsImage()
 fallingObjectPrefab = Prefab("Falling Object",obj2)
 
-objects.append(fallingObjectPrefab.CreateInstance([100,100],0,[1,1]))
-objects.append(fallingObjectPrefab.CreateInstance([200,450],0,[1,1]))
-objects.append(fallingObjectPrefab.CreateInstance([400,100],0,[1,1]))
+SceneOne.AddObject(fallingObjectPrefab.CreateInstance([100,100],0,[1,1]))
+SceneOne.AddObject(fallingObjectPrefab.CreateInstance([200,450],0,[1,1]))
+SceneOne.AddObject(fallingObjectPrefab.CreateInstance([400,100],0,[1,1]))
 
+boxC = fallingObjectPrefab.CreateInstance([550,100],0,[1,1])
+boxC.AddComponent("BOXCONTROLLER")
+boxC.components[boxC.GetComponent("RENDERER")].sprite = pygame.image.load("error.png")
+SceneOne.AddObject(boxC)
 
 obj4 = GameObject("Ground")
 obj4.AddComponent("RENDERER")
@@ -74,9 +83,13 @@ obj4.components[obj4.GetComponent("RENDERER")].sortingLayer = 5
 obj4.components[obj4.GetComponent("RIGIDBODY")].locked = True
 obj4.components[obj4.GetComponent("COLLIDER")].SetAsImage()
 print(obj4.components[obj4.GetComponent("COLLIDER")].size)
-objects.append(obj4)
+SceneOne.AddObject(obj4)
+
+SceneTwo = Scene("Scene Two", [])
+SceneTwo.AddObject(boxC)
+scenes.append(SceneTwo)
 
 
-game = gameengine.engine.GameInfo("Game Test 1", {"RESOLUTION":(800,600),"GRAVITY":-0.03,"KEYREPEAT":(50,50)},componentMaster,objects)
+game = gameengine.engine.GameInfo("Game Test 1", {"RESOLUTION":(800,600),"GRAVITY":-0.03,"KEYREPEAT":(50,50)},componentMaster,scenes,0)
 
 LaunchGame(game)

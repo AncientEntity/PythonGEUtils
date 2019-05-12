@@ -11,6 +11,8 @@ objects = []
 prefabs = []
 properties = {}
 events = []
+scenes = []
+curScene = -1
 camera = ""
 
 deltaTime = 0.0
@@ -79,8 +81,27 @@ class Prefab():
         instance.scale = scale
         instance.index = lastObjectID
         lastObjectID += 1
-        objects.append(instance)
+        #objects.append(instance)
         return instance
+
+class Scene():
+    def __init__(self,name="New Scene",objects=[]):
+        self.name = name
+        self.objects = objects
+    def AddObject(self,gO):
+        instance = GameObject()
+        img = pygame.image.load("error.png")
+        if(gO.components[gO.GetComponent("RENDERER")] != None):
+            img = gO.components[gO.GetComponent("RENDERER")].sprite
+            gO.components[gO.GetComponent("RENDERER")].sprite = ""
+        instance = copy.deepcopy(gO)
+        if(instance.components[instance.GetComponent("RENDERER")] != None):
+            instance.components[instance.GetComponent("RENDERER")].sprite = img
+            gO.components[gO.GetComponent("RENDERER")].sprite = img
+        self.objects.append(instance)
+    def AddObjects(self,gOs):
+        for o in gOs:
+            self.AddObject(o)
 
 class BaseComponent():
     def __init__(self,s):
@@ -203,6 +224,17 @@ class Rigidbody(BaseComponent):
         else:
             self.velocity = [0,0]
 
+def CloneGameObject(gO):
+    instance = GameObject()
+    img = pygame.image.load("error.png")
+    if(gO.components[gO.GetComponent("RENDERER")] != None):
+        img = gO.components[gO.GetComponent("RENDERER")].sprite
+        gO.components[gO.GetComponent("RENDERER")].sprite = ""
+    instance = copy.deepcopy(gO)
+    if(instance.components[instance.GetComponent("RENDERER")] != None):
+        instance.components[instance.GetComponent("RENDERER")].sprite = img
+        gO.components[gO.GetComponent("RENDERER")].sprite = img
+    return instance
 
 def FindAllComponents(typeof):
     comp = []
@@ -246,6 +278,17 @@ def InputSystem():
             exit(0)
     return e
 
+def LoadScene(sceneIndex):
+    global objects, scenes, curScene
+    objects = []
+    #objects = scenes[sceneIndex].objects
+    for obj in scenes[sceneIndex].objects:
+        objects.append(CloneGameObject(obj))
+    curScene = sceneIndex
+    print("Scene Loaded: " + scenes[sceneIndex].name)
+
+
+
 def DoComponentSpecialFunctions():
     global objects
     for obj in objects:
@@ -267,11 +310,12 @@ componentMaster.append(Rigidbody(None))
 
 
 class GameInfo():
-    def __init__(self,name,properties,components,objects):
+    def __init__(self,name,properties,components,scenes,defaultSceneIndex):
         self.name = name
         self.properties = properties
-        self.objects = objects
+        self.scenes = scenes
         self.components = components
+        self.defaultSceneIndex = defaultSceneIndex
         #Do default settings
         if("RESOLUTION" not in self.properties):
             self.properties["RESOLUTION"] = (800,600)
@@ -283,16 +327,20 @@ class GameInfo():
             
     
 def LaunchGame(GameInfo):
-    global objects
+    global scenes
     global properties
     global gameRunning
     global events
+    global curScene
     if(gameRunning):
         return "Game Already Running"
     gameRunning = True
-    objects = GameInfo.objects
+    #objects = GameInfo.objects
+    scenes = GameInfo.scenes
     properties = GameInfo.properties
-    
+    LoadScene(GameInfo.defaultSceneIndex)
+    #curScene = GameInfo.defaultSceneIndex
+
     screen = pygame.display.set_mode((GameInfo.properties["RESOLUTION"]))
     pygame.display.set_caption(GameInfo.name)
     renderStart = 0
