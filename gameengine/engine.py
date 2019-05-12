@@ -3,7 +3,9 @@ import gameengine
 import random
 import time
 import copy
+import os
 from gameengine import mathf
+
 
 gameRunning = False
 componentMaster = []
@@ -14,6 +16,9 @@ events = []
 scenes = []
 curScene = -1
 camera = ""
+GEPath = gameengine.__path__.__dict__["_path"][0]
+
+errorImage = pygame.image.load(GEPath+"\\images\\error.png")
 
 deltaTime = 0.0
 
@@ -68,7 +73,7 @@ class Prefab():
     def CreateInstance(self,position,rotation,scale):
         global objects, lastObjectID
         instance = GameObject()
-        img = pygame.image.load("error.png")
+        img = errorImage
         if(self.gameObject.components[self.gameObject.GetComponent("RENDERER")] != None):
             img = self.gameObject.components[self.gameObject.GetComponent("RENDERER")].sprite
             self.gameObject.components[self.gameObject.GetComponent("RENDERER")].sprite = ""
@@ -90,7 +95,7 @@ class Scene():
         self.objects = objects
     def AddObject(self,gO):
         instance = GameObject()
-        img = pygame.image.load("error.png")
+        img = errorImage
         if(gO.components[gO.GetComponent("RENDERER")] != None):
             img = gO.components[gO.GetComponent("RENDERER")].sprite
             gO.components[gO.GetComponent("RENDERER")].sprite = ""
@@ -124,7 +129,7 @@ class Renderer(BaseComponent):
         self.parent = s
         self.name = "RENDERER"
         self.requiresStart = False
-        self.sprite = pygame.image.load("error.png")
+        self.sprite = errorImage
         self.sortingLayer = 0
         self.color = [255,255,255,255]
     def CreateNew(self,s):
@@ -144,30 +149,10 @@ class Collider(BaseComponent):
         return self.name
     def IsCollidedWith(self,other):
         self.whereCollision = [False,False,False,False]
-        otherData = other.GetColliderData()
-        selfData = self.parent.GetColliderData()
-        #print(other.name,otherData)
-        #print(GetObject(self.parent).name,selfData)
-        #Left
-        leftX = (otherData[0] >= selfData[0] and otherData[0] <= selfData[0]+selfData[2])
-        leftYtop = (otherData[1] >= selfData[1] and otherData[1] <= selfData[1]+selfData[3])
+        otherData = pygame.Rect(other.GetColliderData())
+        selfData = pygame.Rect(self.parent.GetColliderData())
 
-        rightX = (otherData[0]+otherData[2] >= selfData[0] and otherData[0]+otherData[2] <= selfData[0]+selfData[2])
-        rightYbottom = (otherData[1]+otherData[3] >= selfData[1] and otherData[1]+otherData[3] <= selfData[1]+selfData[3])
-
-        #Save where it is colliding
-        if(leftX and leftYtop): #Top Left
-            self.whereCollision[0] = True
-        if(rightX and leftYtop): #Top Right
-            self.whereCollision[1] = True
-        if(leftX and rightYbottom): #Bottom Left
-            self.whereCollision[2] = True
-        if(rightX and rightYbottom): #Bottom Right
-            self.whereCollision[3] = True
-
-        #Do Final Return
-        if((leftX or rightX) and (leftYtop or rightYbottom)):
-            #print(self.parent.name,self.parent.components[self.parent.GetComponent("COLLIDER")].whereCollision)
+        if(selfData.colliderect(otherData)):
             return True
 
         #If colliding with nothing
@@ -217,16 +202,18 @@ class Rigidbody(BaseComponent):
     def CreateNew(self,s):
         return Rigidbody(s)
     def Update(self):
-        global properties, deltaTime
+        global properties, deltaTime, objects
         if(self.locked == False):
             self.velocity[1] += properties["GRAVITY"]
             #print("TEST")
+            if(self.parent.components[self.parent.GetComponent("COLLIDER")].whereCollision[2] or self.parent.components[self.parent.GetComponent("COLLIDER")].whereCollision[3]):
+                objects[self.parent.index].position[1] += 10
         else:
             self.velocity = [0,0]
 
 def CloneGameObject(gO):
     instance = GameObject()
-    img = pygame.image.load("error.png")
+    img = errorImage
     if(gO.components[gO.GetComponent("RENDERER")] != None):
         img = gO.components[gO.GetComponent("RENDERER")].sprite
         gO.components[gO.GetComponent("RENDERER")].sprite = ""
@@ -325,7 +312,7 @@ class GameInfo():
             self.properties["KEYREPEAT"] = (50,50)
             
             
-    
+
 def LaunchGame(GameInfo):
     global scenes
     global properties

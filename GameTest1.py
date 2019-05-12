@@ -64,12 +64,14 @@ obj2.components[obj2.GetComponent("COLLIDER")].SetAsImage()
 fallingObjectPrefab = Prefab("Falling Object",obj2)
 
 SceneOne.AddObject(fallingObjectPrefab.CreateInstance([100,100],0,[1,1]))
-SceneOne.AddObject(fallingObjectPrefab.CreateInstance([200,450],0,[1,1]))
+SceneOne.AddObject(fallingObjectPrefab.CreateInstance([200,375],0,[1,1]))
 SceneOne.AddObject(fallingObjectPrefab.CreateInstance([400,100],0,[1,1]))
 
 boxC = fallingObjectPrefab.CreateInstance([550,100],0,[1,1])
+boxC.name = "lol"
 boxC.AddComponent("BOXCONTROLLER")
-boxC.components[boxC.GetComponent("RENDERER")].sprite = pygame.image.load("error.png")
+boxC.components[boxC.GetComponent("RENDERER")].sprite = errorImage
+boxC.components[boxC.GetComponent("COLLIDER")].SetAsImage()
 SceneOne.AddObject(boxC)
 
 obj4 = GameObject("Ground")
