@@ -2,11 +2,13 @@ import pygame
 import gameengine
 import random
 import time
+import copy
 from gameengine import mathf
 
 gameRunning = False
 componentMaster = []
 objects = []
+prefabs = []
 properties = {}
 events = []
 camera = ""
@@ -54,6 +56,31 @@ class GameObject():
             scale = self.scale
             offset = self.components[self.GetComponent("COLLIDER")].offset
             return (self.position[0]+offset[0],self.position[1]+offset[1],self.components[self.GetComponent("COLLIDER")].size[0],self.components[self.GetComponent("COLLIDER")].size[1])
+
+class Prefab():
+    def __init__(self,name, gO):
+        global prefabs
+        self.name = name
+        self.gameObject = gO
+        prefabs.append(self)
+    def CreateInstance(self,position,rotation,scale):
+        global objects, lastObjectID
+        instance = GameObject()
+        img = pygame.image.load("error.png")
+        if(self.gameObject.components[self.gameObject.GetComponent("RENDERER")] != None):
+            img = self.gameObject.components[self.gameObject.GetComponent("RENDERER")].sprite
+            self.gameObject.components[self.gameObject.GetComponent("RENDERER")].sprite = ""
+        instance = copy.deepcopy(self.gameObject)
+        if(instance.components[instance.GetComponent("RENDERER")] != None):
+            instance.components[instance.GetComponent("RENDERER")].sprite = img
+            self.gameObject.components[self.gameObject.GetComponent("RENDERER")].sprite = img
+        instance.position = position
+        instance.rotation = rotation
+        instance.scale = scale
+        instance.index = lastObjectID
+        lastObjectID += 1
+        objects.append(instance)
+        return instance
 
 class BaseComponent():
     def __init__(self,s):

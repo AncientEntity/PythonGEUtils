@@ -46,7 +46,7 @@ background.components[background.GetComponent("RENDERER")].sortingLayer = -10
 background.scale = [4,4]
 objects.append(background)
 
-obj2 = GameObject("Falling Box Object3")
+obj2 = GameObject("Falling Object Prefab")
 obj2.AddComponent("RENDERER")
 obj2.AddComponent("RIGIDBODY")
 obj2.AddComponent("COLLIDER")
@@ -56,48 +56,11 @@ obj2.components[obj2.GetComponent("RENDERER")].sprite = pygame.image.load("redbo
 obj2.components[obj2.GetComponent("RENDERER")].sortingLayer = 10
 obj2.components[obj2.GetComponent("RIGIDBODY")].locked = False
 obj2.components[obj2.GetComponent("COLLIDER")].SetAsImage()
-objects.append(obj2)
+fallingObjectPrefab = Prefab("Falling Object",obj2)
 
-obj2 = GameObject("Falling Box Object2")
-obj2.AddComponent("RENDERER")
-obj2.AddComponent("RIGIDBODY")
-obj2.AddComponent("COLLIDER")
-obj2.position = [405,85]
-obj2.scale = [1,1]
-obj2.components[obj2.GetComponent("RENDERER")].sprite = pygame.image.load("redbox.png")
-obj2.components[obj2.GetComponent("RENDERER")].sortingLayer = 10
-obj2.components[obj2.GetComponent("RIGIDBODY")].locked = False
-obj2.components[obj2.GetComponent("COLLIDER")].SetAsImage()
-objects.append(obj2)
-
-obj2 = GameObject("Falling Box Object1")
-obj2.AddComponent("RENDERER")
-obj2.AddComponent("RIGIDBODY")
-obj2.AddComponent("COLLIDER")
-obj2.AddComponent("BOXCONTROLLER")
-obj2.position = [0,85]
-obj2.scale = [1,1]
-obj2.components[obj2.GetComponent("RENDERER")].sprite = pygame.image.load("redbox.png")
-obj2.components[obj2.GetComponent("RENDERER")].sortingLayer = 10
-obj2.components[obj2.GetComponent("RIGIDBODY")].locked = False
-obj2.components[obj2.GetComponent("COLLIDER")].SetAsImage()
-objects.append(obj2)
-
-obj3 = GameObject("Moving Object")
-obj3.AddComponent("RENDERER")
-obj3.AddComponent("RIGIDBODY")
-obj3.AddComponent("COLLIDER")
-obj3.position = [0,50]
-obj3.scale = [5,5]
-obj3.components[obj3.GetComponent("RENDERER")].sprite = pygame.image.load("error.png")
-obj3.components[obj3.GetComponent("RENDERER")].sortingLayer = 10
-obj3.position = [400,150]
-obj3.components[obj3.GetComponent("RIGIDBODY")].locked = True
-obj3.AddComponent("TOMOUSETEST")
-obj3.components[obj3.GetComponent("TOMOUSETEST")].offset = [-obj3.components[obj3.GetComponent("RENDERER")].sprite.get_width()/2,-obj3.components[obj3.GetComponent("RENDERER")].sprite.get_height()/2]
-obj3.components[obj3.GetComponent("COLLIDER")].SetAsImage()
-objects.append(obj3)
-
+objects.append(fallingObjectPrefab.CreateInstance([100,100],0,[1,1]))
+objects.append(fallingObjectPrefab.CreateInstance([200,450],0,[1,1]))
+objects.append(fallingObjectPrefab.CreateInstance([400,100],0,[1,1]))
 
 
 obj4 = GameObject("Ground")
