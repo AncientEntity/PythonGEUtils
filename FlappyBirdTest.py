@@ -29,9 +29,10 @@ class PlayerController(BaseComponent):
     			obj.Destroy()
     	#Spawn Pipes
     	self.pipeIn -= 0.01
-    	print(self.pipeIn)
+    	#print(self.pipeIn)
     	if(self.pipeIn < 0):
     		self.pipeIn = 3
+    		GetObjectByTag("scoring").components[GetObjectByTag("scoring").GetComponent("UITEXT")].text = str(self.points)
     		CreatePipe()
 componentMaster.append(PlayerController(None))
 #END OF COMPONENTS
@@ -39,6 +40,13 @@ componentMaster.append(PlayerController(None))
 
 
 #PREFAB
+scoreText = GameObject("ScoreText")
+scoreText.AddComponent("UITEXT")
+scoreText.components[scoreText.GetComponent("UITEXT")].text = "0"
+scoreText.components[scoreText.GetComponent("UITEXT")].centered = True
+scoreText.tag = "scoring"
+scoreText.position = [400,100]
+
 flappy = GameObject("Flappy")
 flappy.position = [200,250]
 flappy.tag = "player"
@@ -50,6 +58,7 @@ flappy.scale = [2,2]
 flappy.components[flappy.GetComponent("RENDERER")].sprite = pygame.image.load("flappy.png")
 flappy.components[flappy.GetComponent("COLLIDER")].SetAsImage()
 flappy.components[flappy.GetComponent("RIGIDBODY")].lockedX = True
+#flappy.components[flappy.GetComponent("PLAYERCONTROLLER")].scoreText = scoreText
 bird = Prefab("Flappy Bird",flappy)
 
 pipe = GameObject("Pipe")
@@ -106,6 +115,7 @@ flappyScene.AddObject(bird.CreateInstance([200,300],0,[2,2]))
 g = groundPrefab.CreateInstance([0,500],0,[30,7])
 g.components[ground.GetComponent("COLLIDER")].SetAsImage()
 flappyScene.AddObject(g)
+flappyScene.AddObject(scoreText)
 #CreatePipe()
 
 

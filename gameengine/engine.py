@@ -238,7 +238,36 @@ class ConstantMovement(BaseComponent):
     def Update(self):
         self.parent.components[self.parent.GetComponent("RIGIDBODY")].velocity = self.constantVelocity
 
+class UIText(BaseComponent):
+    def __init__(self,s):
+        self.parent = s
+        self.name = "UITEXT"
+        self.text = "New Text"
+        self.font = "Comic Sans MS"
+        self.size = 30
+        self.requiresStart = True
+        self.generatedFont = ""
+        self.generatedRender = ""
+        self.centered = False
+        self.lastTextGenerated = ""
+    def CreateNew(self,s):
+        return UIText(s)
+    def GenerateText(self):
+        self.generatedFont = pygame.font.SysFont(self.font,self.size)
+        self.generatedRender = self.generatedFont.render(self.text,True,(0,0,0))
+        self.lastTextGenerated = self.text
+    def Start(self):
+        self.GenerateText()
+    def Update(self):
+        if(self.lastTextGenerated != self.text):
+            self.GenerateText()
 
+def GetObjectByTag(tag):
+    global objects
+    for obj in objects:
+        if(obj.tag == tag):
+            return obj
+    return None
 
 def CreateComponentSeperate(componentName):
     for c in componentMaster:
@@ -248,11 +277,11 @@ def CreateComponentSeperate(componentName):
 def CloneGameObject(gO):
     instance = GameObject()
     img = errorImage
-    if(gO.components[gO.GetComponent("RENDERER")] != None):
+    if(gO.GetComponent("RENDERER") != None):
         img = gO.components[gO.GetComponent("RENDERER")].sprite
         gO.components[gO.GetComponent("RENDERER")].sprite = ""
     instance = copy.deepcopy(gO)
-    if(instance.components[instance.GetComponent("RENDERER")] != None):
+    if(instance.GetComponent("RENDERER") != None):
         instance.components[instance.GetComponent("RENDERER")].sprite = img
         gO.components[gO.GetComponent("RENDERER")].sprite = img
     return instance
@@ -268,9 +297,13 @@ def RenderEngine(screen):
     global objects
     screen.fill((255,255,255))
     objsWithRenderers = []
+    uiObjs = []
     for obj in objects:
         if(obj.GetComponent("RENDERER") != None):
             objsWithRenderers.append(obj)
+        elif(obj.GetComponent("UITEXT") != None):
+            uiObjs.append(obj)
+    #Main Objects
     for obj in sorted(objsWithRenderers, key=lambda x: x.components[x.GetComponent("RENDERER")].sortingLayer, reverse=False):
         #print(obj.GetComponent("RENDERER"))
         if(obj.GetComponent("RENDERER") != "" and obj.GetComponent("RENDERER") != None):
@@ -281,6 +314,17 @@ def RenderEngine(screen):
             scaled = pygame.transform.scale(scaled,(scaled.get_width() * obj.scale[0],scaled.get_height() * obj.scale[1]))
             #screen.blit(scaled,(obj.position[0]-(scaled.get_width()/2),obj.position[1]-(scaled.get_height()/2))) #Center it
             screen.blit(scaled,obj.position)
+    #UI Objects
+    for obj in uiObjs:
+        if(obj.GetComponent("UITEXT") != None):
+            scaled = obj.components[obj.GetComponent("UITEXT")].generatedRender
+            scaled = pygame.transform.rotate(scaled,obj.rotation)
+            scaled = pygame.transform.scale(scaled,(scaled.get_width() * obj.scale[0],scaled.get_height() * obj.scale[1]))
+            if(obj.components[obj.GetComponent("UITEXT")].centered):
+                screen.blit(scaled,[obj.position[0]-scaled.get_width()/2,obj.position[1]-scaled.get_height()/2])
+            else:
+                screen.blit(scaled,obj.position)
+
     pygame.display.update()
 
 def DoPhysics():
@@ -328,6 +372,7 @@ componentMaster.append(Renderer(None))
 componentMaster.append(Collider(None))
 componentMaster.append(Rigidbody(None))
 componentMaster.append(ConstantMovement(None))
+componentMaster.append(UIText(None))
 
 
 class GameInfo():
@@ -362,6 +407,7 @@ def LaunchGame(GameInfo):
     LoadScene(GameInfo.defaultSceneIndex)
     #curScene = GameInfo.defaultSceneIndex
 
+    pygame.font.init()
     screen = pygame.display.set_mode((GameInfo.properties["RESOLUTION"]))
     pygame.display.set_caption(GameInfo.name)
     renderStart = 0
