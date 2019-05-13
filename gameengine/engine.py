@@ -57,7 +57,8 @@ class GameObject():
         return self.name
     def Destroy(self):
         global objects
-        objects.remove(self)
+        if(self in objects):
+            objects.remove(self)
     def GetColliderData(self):
         if(self.GetComponent("COLLIDER") == None):
             return None
@@ -107,7 +108,7 @@ class Scene():
             instance.components[instance.GetComponent("RENDERER")].sprite = img
             gO.components[gO.GetComponent("RENDERER")].sprite = img
         self.objects.append(instance)
-        objects.append(instance)
+        #objects.append(instance)
     def AddObjects(self,gOs):
         for o in gOs:
             self.AddObject(o)
@@ -269,6 +270,9 @@ class UIText(BaseComponent):
         if(self.lastTextGenerated != self.text):
             self.GenerateText()
 
+def Instantiate(obj):
+    global objects
+    objects.append(CloneGameObject(obj))
 
 def GetObjectByName(name):
     global objects
@@ -352,6 +356,8 @@ def RenderEngine(screen):
         if(obj.active == False):
             continue
         if(obj.GetComponent("UITEXT") != None):
+            if(obj.components[obj.GetComponent("UITEXT")].generatedRender == ""):
+                continue
             scaled = obj.components[obj.GetComponent("UITEXT")].generatedRender
             scaled = pygame.transform.rotate(scaled,obj.rotation)
             scaled = pygame.transform.scale(scaled,(scaled.get_width() * obj.scale[0],scaled.get_height() * obj.scale[1]))

@@ -31,6 +31,8 @@ class PlayerController(BaseComponent):
 
     			GetObjectByName("SadFace").active = True
 
+
+    			#LoadScene(0)
     			self.parent.Destroy()
 
 
@@ -114,8 +116,8 @@ groundPrefab = Prefab("Ground",ground)
 
 def CreatePipe():
 	offset = random.randint(-130,130)
-	flappyScene.AddObject(pipePrefab.CreateInstance([900,0+offset],0,[1,1]))
-	flappyScene.AddObject(pipePrefab.CreateInstance([900,380+offset],180 ,[1,1]))
+	Instantiate(pipePrefab.CreateInstance([900,0+offset],0,[1,1]))
+	Instantiate(pipePrefab.CreateInstance([900,380+offset],180 ,[1,1]))
 	flag = GameObject("PIPE FLAG")
 	flag.tag = "flag"
 	flag.position = [900,216+offset]
@@ -127,7 +129,7 @@ def CreatePipe():
 	flag.AddComponent("CONSTANTMOVEMENT")
 	flag.components[flag.GetComponent("CONSTANTMOVEMENT")].constantVelocity = [1.5,0]
 
-	flappyScene.AddObject(flag)
+	Instantiate(flag)
 
 
 #SCENE SETUP
