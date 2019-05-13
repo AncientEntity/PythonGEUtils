@@ -11,7 +11,7 @@ class PlayerController(BaseComponent):
         self.name = "PLAYERCONTROLLER"
         self.requiresStart = False
         self.points = 0
-        self.pipeIn = 3
+        self.pipeIn = 0
     def CreateNew(self,s):
         return PlayerController(s)
     def Update(self):
@@ -22,8 +22,18 @@ class PlayerController(BaseComponent):
     	#Check for lose
     	for obj in self.parent.components[self.parent.GetComponent("COLLIDER")].collidingWith:
     		if(obj.tag == "death"):
-    			print("You Lose with " + str(self.points) + " points.")
+    			GetObjectByTag("scoring").components[GetObjectByTag("scoring").GetComponent("UITEXT")].text = ("You Lose With " +str(self.points) + " points.")
+    			
+    			for obj in GetObjectsByTag("death"):
+    				if(obj.name == "Ground"):
+    					continue
+    				obj.Destroy()
+
+    			GetObjectByName("SadFace").active = True
+
     			self.parent.Destroy()
+
+
     		elif(obj.tag == "flag"):
     			self.points += 1
     			obj.Destroy()
@@ -31,7 +41,7 @@ class PlayerController(BaseComponent):
     	self.pipeIn -= 0.01
     	#print(self.pipeIn)
     	if(self.pipeIn < 0):
-    		self.pipeIn = 3
+    		self.pipeIn = 1.5
     		GetObjectByTag("scoring").components[GetObjectByTag("scoring").GetComponent("UITEXT")].text = str(self.points)
     		CreatePipe()
 componentMaster.append(PlayerController(None))
@@ -47,6 +57,15 @@ scoreText.components[scoreText.GetComponent("UITEXT")].centered = True
 scoreText.tag = "scoring"
 scoreText.position = [400,100]
 
+sadFace = GameObject("SadFace")
+sadFace.AddComponent("UITEXT")
+sadFace.components[sadFace.GetComponent("UITEXT")].text = ":("
+sadFace.components[sadFace.GetComponent("UITEXT")].centered = True
+sadFace.components[sadFace.GetComponent("UITEXT")].size = 80
+sadFace.tag = "sadFace"
+sadFace.position = [400,175]
+sadFace.active = False
+
 flappy = GameObject("Flappy")
 flappy.position = [200,250]
 flappy.tag = "player"
@@ -58,6 +77,7 @@ flappy.scale = [2,2]
 flappy.components[flappy.GetComponent("RENDERER")].sprite = pygame.image.load("flappy.png")
 flappy.components[flappy.GetComponent("COLLIDER")].SetAsImage()
 flappy.components[flappy.GetComponent("RIGIDBODY")].lockedX = True
+flappy.components[flappy.GetComponent("COLLIDER")].trigger = True
 #flappy.components[flappy.GetComponent("PLAYERCONTROLLER")].scoreText = scoreText
 bird = Prefab("Flappy Bird",flappy)
 
@@ -71,7 +91,7 @@ pipe.components[pipe.GetComponent("RENDERER")].sprite = pygame.image.load("pipe.
 pipe.components[pipe.GetComponent("COLLIDER")].size = [40,212]
 pipe.components[pipe.GetComponent("RIGIDBODY")].lockedY = True
 pipe.components[pipe.GetComponent("COLLIDER")].trigger = True
-pipe.components[pipe.GetComponent("CONSTANTMOVEMENT")].constantVelocity = [1,0]
+pipe.components[pipe.GetComponent("CONSTANTMOVEMENT")].constantVelocity = [1.5,0]
 pipe.tag = "death"
 pipePrefab = Prefab("Pipe Prefab",pipe)
 
@@ -93,9 +113,9 @@ groundPrefab = Prefab("Ground",ground)
 #END OF PREFABS
 
 def CreatePipe():
-	offset = random.randint(-100,100)
+	offset = random.randint(-130,130)
 	flappyScene.AddObject(pipePrefab.CreateInstance([900,0+offset],0,[1,1]))
-	flappyScene.AddObject(pipePrefab.CreateInstance([900,380+offset],0,[1,1]))
+	flappyScene.AddObject(pipePrefab.CreateInstance([900,380+offset],180 ,[1,1]))
 	flag = GameObject("PIPE FLAG")
 	flag.tag = "flag"
 	flag.position = [900,216+offset]
@@ -105,7 +125,7 @@ def CreatePipe():
 	flag.components[flag.GetComponent("RIGIDBODY")].lockedY = True
 	flag.components[flag.GetComponent("COLLIDER")].trigger = True
 	flag.AddComponent("CONSTANTMOVEMENT")
-	flag.components[flag.GetComponent("CONSTANTMOVEMENT")].constantVelocity = [1,0]
+	flag.components[flag.GetComponent("CONSTANTMOVEMENT")].constantVelocity = [1.5,0]
 
 	flappyScene.AddObject(flag)
 
@@ -116,6 +136,7 @@ g = groundPrefab.CreateInstance([0,500],0,[30,7])
 g.components[ground.GetComponent("COLLIDER")].SetAsImage()
 flappyScene.AddObject(g)
 flappyScene.AddObject(scoreText)
+flappyScene.AddObject(sadFace)
 #CreatePipe()
 
 
@@ -123,6 +144,6 @@ flappyScene.AddObject(scoreText)
 
 
 scenes.append(flappyScene)
-game = gameengine.engine.GameInfo("Game Test 1", {"RESOLUTION":(800,600),"GRAVITY":-0.006,"KEYREPEAT":(0,0)},componentMaster,scenes,0)
+game = gameengine.engine.GameInfo("Game Test 1", {"RESOLUTION":(800,600),"GRAVITY":-0.012,"KEYREPEAT":(0,0)},componentMaster,scenes,0)
 
 LaunchGame(game)

@@ -35,6 +35,7 @@ def GetObject(indexOf):
 class GameObject():
     def __init__(self,name="New GameObject"):
         global lastObjectID
+        self.active = True
         self.index = lastObjectID
         self.name = name
         self.tag = "untagged"
@@ -161,6 +162,12 @@ class Collider(BaseComponent):
 
         #If colliding with nothing
         return False
+    def CollidingWithCollider(self):
+            for col in self.collidingWith:
+                if(col.components[col.GetComponent("COLLIDER")].trigger):
+                    return True
+
+            return False
     def ApplyFriction(self):
         if(self.trigger):
             return
@@ -192,7 +199,7 @@ class Collider(BaseComponent):
                     self.collidingWith.append(other)
                     continue
         if(len(self.collidingWith) > 0 and self.trigger == False):
-            if(self.parent.GetComponent("RIGIDBODY") != None):
+            if(self.parent.GetComponent("RIGIDBODY") != None and self.CollidingWithCollider()):
                 self.parent.components[self.parent.GetComponent("RIGIDBODY")].velocity[1] = mathf.Clamp(other.components[other.GetComponent("RIGIDBODY")].velocity[1]-0.05,0,10000)
                 self.ApplyFriction()
         #print(self.collidingWith,self.parent.name)
@@ -262,12 +269,36 @@ class UIText(BaseComponent):
         if(self.lastTextGenerated != self.text):
             self.GenerateText()
 
+
+def GetObjectByName(name):
+    global objects
+    for obj in objects:
+        if(obj.name == name):
+            return obj
+    return None
+
+def GetObjectsByName(name):
+    found = []
+    global objects
+    for obj in objects:
+        if(obj.name == name):
+            found.append(obj)
+    return found
+
 def GetObjectByTag(tag):
     global objects
     for obj in objects:
         if(obj.tag == tag):
             return obj
     return None
+
+def GetObjectsByTag(tag):
+    found = []
+    global objects
+    for obj in objects:
+        if(obj.tag == tag):
+            found.append(obj)
+    return found
 
 def CreateComponentSeperate(componentName):
     for c in componentMaster:
@@ -305,6 +336,8 @@ def RenderEngine(screen):
             uiObjs.append(obj)
     #Main Objects
     for obj in sorted(objsWithRenderers, key=lambda x: x.components[x.GetComponent("RENDERER")].sortingLayer, reverse=False):
+        if(obj.active == False):
+            continue
         #print(obj.GetComponent("RENDERER"))
         if(obj.GetComponent("RENDERER") != "" and obj.GetComponent("RENDERER") != None):
             #print(obj.components)
@@ -316,6 +349,8 @@ def RenderEngine(screen):
             screen.blit(scaled,obj.position)
     #UI Objects
     for obj in uiObjs:
+        if(obj.active == False):
+            continue
         if(obj.GetComponent("UITEXT") != None):
             scaled = obj.components[obj.GetComponent("UITEXT")].generatedRender
             scaled = pygame.transform.rotate(scaled,obj.rotation)
@@ -330,6 +365,8 @@ def RenderEngine(screen):
 def DoPhysics():
     global objects
     for obj in objects:
+        if(obj.active == False):
+            continue
         if(obj.GetComponent("RIGIDBODY") != None):
             obj.position[1] -= obj.components[obj.GetComponent("RIGIDBODY")].velocity[1]
             obj.position[0] -= obj.components[obj.GetComponent("RIGIDBODY")].velocity[0]
@@ -357,6 +394,8 @@ def LoadScene(sceneIndex):
 def DoComponentSpecialFunctions():
     global objects
     for obj in objects:
+        if(obj.active == False):
+            continue
         for component in obj.components:
             component.parent = obj
             component.events = events
