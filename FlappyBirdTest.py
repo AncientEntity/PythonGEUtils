@@ -76,7 +76,7 @@ flappy.AddComponent("COLLIDER")
 flappy.AddComponent("RIGIDBODY")
 flappy.AddComponent("PLAYERCONTROLLER")
 flappy.scale = [2,2]
-flappy.components[flappy.GetComponent("RENDERER")].sprite = pygame.image.load("flappy.png")
+flappy.components[flappy.GetComponent("RENDERER")].sprite = "flappy.png"
 flappy.components[flappy.GetComponent("COLLIDER")].SetAsImage()
 flappy.components[flappy.GetComponent("RIGIDBODY")].lockedX = True
 flappy.components[flappy.GetComponent("COLLIDER")].trigger = True
@@ -89,7 +89,7 @@ pipe.AddComponent("RENDERER")
 pipe.AddComponent("COLLIDER")
 pipe.AddComponent("RIGIDBODY")
 pipe.AddComponent("CONSTANTMOVEMENT")
-pipe.components[pipe.GetComponent("RENDERER")].sprite = pygame.image.load("pipe.png")
+pipe.components[pipe.GetComponent("RENDERER")].sprite = "pipe.png"
 pipe.components[pipe.GetComponent("COLLIDER")].size = [40,212]
 pipe.components[pipe.GetComponent("RIGIDBODY")].lockedY = True
 pipe.components[pipe.GetComponent("COLLIDER")].trigger = True
@@ -102,15 +102,25 @@ ground.AddComponent("RENDERER")
 ground.AddComponent("RIGIDBODY")
 ground.AddComponent("COLLIDER")
 ground.tag = "death" 
-ground.position = [0,500]
+ground.position = [0,500] 
 ground.scale = [1,1]
-ground.components[ground.GetComponent("RENDERER")].sprite = pygame.image.load("ground.png")
+ground.components[ground.GetComponent("RENDERER")].sprite = "ground.png"
 ground.components[ground.GetComponent("RENDERER")].sortingLayer = 5
 ground.components[ground.GetComponent("RIGIDBODY")].lockedY = True
 ground.components[ground.GetComponent("COLLIDER")].trigger = True
 ground.components[ground.GetComponent("COLLIDER")].SetAsImage()
 groundPrefab = Prefab("Ground",ground)
 
+button = GameObject("Button")
+button.AddComponent("UIBUTTON")
+button.AddComponent("UITEXT")
+button.components[button.GetComponent("UIBUTTON")].sprite = "panel.png"
+button.position = [150,35]
+button.components[button.GetComponent("UIBUTTON")].functions.append("LoadScene(0)")
+button.components[button.GetComponent("UITEXT")].text = "Restart"
+button.components[button.GetComponent("UITEXT")].centered = True
+button.components[button.GetComponent("UITEXT")].size = 35
+button.scale = [25,5]
 
 #END OF PREFABS
 
@@ -135,10 +145,14 @@ def CreatePipe():
 #SCENE SETUP
 flappyScene.AddObject(bird.CreateInstance([200,300],0,[2,2]))
 g = groundPrefab.CreateInstance([0,500],0,[30,7])
+roof = groundPrefab.CreateInstance([0,-30],180,[30,7])
+roof.components[ground.GetComponent("COLLIDER")].SetAsImage()
 g.components[ground.GetComponent("COLLIDER")].SetAsImage()
 flappyScene.AddObject(g)
 flappyScene.AddObject(scoreText)
 flappyScene.AddObject(sadFace)
+flappyScene.AddObject(roof)
+flappyScene.AddObject(button)
 #CreatePipe()
 
 

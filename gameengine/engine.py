@@ -18,7 +18,7 @@ curScene = -1
 camera = ""
 GEPath = gameengine.__path__.__dict__["_path"][0]
 
-errorImage = pygame.image.load(GEPath+"\\images\\error.png")
+errorImage = (GEPath+"\\images\\error.png")
 
 deltaTime = 0.0
 
@@ -44,6 +44,7 @@ class GameObject():
         self.scale = [1,1]
         self.components = []
         lastObjectID += 1
+        self.oldPosition = [0.0,0.0]
     def AddComponent(self,componentName):
         for c in componentMaster:
             if(c.name == componentName):
@@ -93,9 +94,15 @@ class Prefab():
         return instance
 
 class Scene():
-    def __init__(self,name="New Scene",objects=[]):
+    def __init__(self,name="New Scene",objects=[], defaultCamera=True):
         self.name = name
         self.objects = objects
+        if(defaultCamera):
+            cam = GameObject("Default Camera")
+            cam.AddComponent("CAMERA")
+            #cam.AddComponent("RIGIDBODY") #Was For Testing
+            cam.tag = "Main Camera"
+            self.objects.append(CloneGameObject(cam))
     def AddObject(self,gO):
         global objects
         instance = GameObject()
@@ -128,6 +135,14 @@ class BaseComponent():
         return False
     def __str__(self):
         return self.name
+
+class Camera(BaseComponent):
+    def __init__(self,s):
+        self.parent = s
+        self.name = "CAMERA"
+        self.requiresStart = False
+    def CreateNew(self,s):
+        return Camera(s)
 
 class Renderer(BaseComponent):
     def __init__(self,s):
@@ -207,7 +222,7 @@ class Collider(BaseComponent):
     def SetAsImage(self):
         global objects
         #print(self.parent)
-        img = self.parent.components[self.parent.GetComponent("RENDERER")].sprite
+        img = pygame.image.load(self.parent.components[self.parent.GetComponent("RENDERER")].sprite)
         self.size[0] = img.get_width() * self.parent.scale[0]
         self.size[1] = img.get_height() * self.parent.scale[1]
 
@@ -270,6 +285,41 @@ class UIText(BaseComponent):
         if(self.lastTextGenerated != self.text):
             self.GenerateText()
 
+class UIButton(BaseComponent):
+    def __init__(self,s):
+        self.parent = s
+        self.name = "UIBUTTON"
+        self.sprite = errorImage
+        self.requiresStart = False
+        self.functions = []
+        self.centered = True
+        self.pressed = False
+    def CreateNew(self,s):
+        return UIButton(s)
+    def Update(self):
+        x = False
+        for event in self.events:
+            if(event.type == pygame.MOUSEBUTTONDOWN):
+                x = True
+        if(x == False):
+            return
+        mPos = pygame.mouse.get_pos()
+        loadedSprite = pygame.image.load(self.sprite)
+        if(self.centered == False):
+            if(mPos[0] >= self.parent.position[0] and mPos[0] <= self.parent.position[0]+(loadedSprite.get_width() * self.parent.scale[0])):
+                if((mPos[1] >= self.parent.position[1] and mPos[1] <= self.parent.position[1]+(loadedSprite.get_height() * self.parent.scale[1]))):
+                    for function in self.functions:
+                        exec(function)
+                    #print("Test")
+        else:
+            if(mPos[0] >= self.parent.position[0]-(loadedSprite.get_width()/2 * self.parent.scale[0]) and mPos[0] <= self.parent.position[0]+(loadedSprite.get_width()/2 * self.parent.scale[0])):
+                if((mPos[1] >= self.parent.position[1]-(loadedSprite.get_width()/2 * self.parent.scale[0]) and mPos[1] <= self.parent.position[1]+(loadedSprite.get_height()/2 * self.parent.scale[1]))):
+                    for function in self.functions:
+                        exec(function)
+                    #print("Test")
+        self.pressed = True
+
+
 def Instantiate(obj):
     global objects
     objects.append(CloneGameObject(obj))
@@ -311,14 +361,23 @@ def CreateComponentSeperate(componentName):
 
 def CloneGameObject(gO):
     instance = GameObject()
-    img = errorImage
-    if(gO.GetComponent("RENDERER") != None):
-        img = gO.components[gO.GetComponent("RENDERER")].sprite
-        gO.components[gO.GetComponent("RENDERER")].sprite = ""
+    #img = errorImage
+    #img2 = errorImage
+    #if(gO.GetComponent("RENDERER") != None):
+    #    img = gO.components[gO.GetComponent("RENDERER")].sprite
+    #    gO.components[gO.GetComponent("RENDERER")].sprite = ""
+
+    #if(gO.GetComponent("UIBUTTON") != None):
+    #    img2 = gO.components[gO.GetComponent("UIBUTTON")].sprite
+    #    gO.components[gO.GetComponent("UIBUTTON")].sprite = ""
+
     instance = copy.deepcopy(gO)
-    if(instance.GetComponent("RENDERER") != None):
-        instance.components[instance.GetComponent("RENDERER")].sprite = img
-        gO.components[gO.GetComponent("RENDERER")].sprite = img
+    #if(instance.GetComponent("RENDERER") != None):
+    #    instance.components[instance.GetComponent("RENDERER")].sprite = img
+    #    gO.components[gO.GetComponent("RENDERER")].sprite = img
+    #if(instance.GetComponent("UIBUTTON") != None):
+    #    instance.components[instance.GetComponent("UIBUTTON")].sprite = img2
+    #    gO.components[gO.GetComponent("UIBUTTON")].sprite = img2
     return instance
 
 def FindAllComponents(typeof):
@@ -336,7 +395,9 @@ def RenderEngine(screen):
     for obj in objects:
         if(obj.GetComponent("RENDERER") != None):
             objsWithRenderers.append(obj)
-        elif(obj.GetComponent("UITEXT") != None):
+        if(obj.GetComponent("UITEXT") != None):
+            uiObjs.append(obj)
+        elif(obj.GetComponent("UIBUTTON") != None):
             uiObjs.append(obj)
     #Main Objects
     for obj in sorted(objsWithRenderers, key=lambda x: x.components[x.GetComponent("RENDERER")].sortingLayer, reverse=False):
@@ -345,22 +406,36 @@ def RenderEngine(screen):
         #print(obj.GetComponent("RENDERER"))
         if(obj.GetComponent("RENDERER") != "" and obj.GetComponent("RENDERER") != None):
             #print(obj.components)
-            scaled = obj.components[obj.GetComponent("RENDERER")].sprite
+            scaled = pygame.image.load(obj.components[obj.GetComponent("RENDERER")].sprite)
             scaled = pygame.transform.rotate(scaled,obj.rotation)
             #scaled = scaled.fill(obj.components[obj.GetComponent("RENDERER")].color,special_flags=pygame.BLEND_ADD)
+            camPos = [-GetObjectByTag("Main Camera").position[0],-GetObjectByTag("Main Camera").position[1]]
+
             scaled = pygame.transform.scale(scaled,(scaled.get_width() * obj.scale[0],scaled.get_height() * obj.scale[1]))
             #screen.blit(scaled,(obj.position[0]-(scaled.get_width()/2),obj.position[1]-(scaled.get_height()/2))) #Center it
-            screen.blit(scaled,obj.position)
+            screen.blit(scaled,[obj.position[0]+camPos[0],obj.position[1]+camPos[1]])
     #UI Objects
     for obj in uiObjs:
         if(obj.active == False):
             continue
+        #UI BUTTON
+        if(obj.GetComponent("UIBUTTON") != None):
+            scaled = pygame.image.load(obj.components[obj.GetComponent("UIBUTTON")].sprite)
+            scaled = pygame.transform.rotate(scaled,obj.rotation)
+
+            scaled = pygame.transform.scale(scaled,(scaled.get_width() * obj.scale[0],scaled.get_height() * obj.scale[1]))
+
+            if(obj.components[obj.GetComponent("UIBUTTON")].centered):
+                screen.blit(scaled,[obj.position[0]-scaled.get_width()/2,obj.position[1]-scaled.get_height()/2])
+            else:
+                screen.blit(scaled,obj.position)
+        #UI TEXT
         if(obj.GetComponent("UITEXT") != None):
             if(obj.components[obj.GetComponent("UITEXT")].generatedRender == ""):
                 continue
             scaled = obj.components[obj.GetComponent("UITEXT")].generatedRender
             scaled = pygame.transform.rotate(scaled,obj.rotation)
-            scaled = pygame.transform.scale(scaled,(scaled.get_width() * obj.scale[0],scaled.get_height() * obj.scale[1]))
+            #scaled = pygame.transform.scale(scaled,(scaled.get_width() * obj.scale[0],scaled.get_height() * obj.scale[1]))
             if(obj.components[obj.GetComponent("UITEXT")].centered):
                 screen.blit(scaled,[obj.position[0]-scaled.get_width()/2,obj.position[1]-scaled.get_height()/2])
             else:
@@ -387,11 +462,14 @@ def InputSystem():
     return e
 
 def LoadScene(sceneIndex):
+    global currentCamera
     global objects, scenes, curScene
     objects = []
     #objects = scenes[sceneIndex].objects
     for obj in scenes[sceneIndex].objects:
         objects.append(CloneGameObject(obj))
+        #if(obj.tag == "Main Camera"):
+        #    currentCamera = obj
     curScene = sceneIndex
     print("Scene Loaded: " + scenes[sceneIndex].name)
 
@@ -418,6 +496,8 @@ componentMaster.append(Collider(None))
 componentMaster.append(Rigidbody(None))
 componentMaster.append(ConstantMovement(None))
 componentMaster.append(UIText(None))
+componentMaster.append(UIButton(None))
+componentMaster.append(Camera(None))
 
 
 class GameInfo():
