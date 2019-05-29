@@ -1,6 +1,11 @@
 from gameengine.engine import *
 import time
 
+sprites = [pygame.image.load("flappy.png"),pygame.image.load("background.png")]
+sprites.append(pygame.image.load("ground.png"))
+sprites.append(pygame.image.load("pipe.png"))
+sprites.append(pygame.image.load("panel.png"))
+
 scenes = []
 flappyScene = Scene("Flappy Scene",[])
 
@@ -76,8 +81,8 @@ flappy.AddComponent("COLLIDER")
 flappy.AddComponent("RIGIDBODY")
 flappy.AddComponent("PLAYERCONTROLLER")
 flappy.scale = [2,2]
-flappy.components[flappy.GetComponent("RENDERER")].sprite = "flappy.png"
-flappy.components[flappy.GetComponent("COLLIDER")].SetAsImage()
+flappy.components[flappy.GetComponent("RENDERER")].sprite = 0
+flappy 
 flappy.components[flappy.GetComponent("RIGIDBODY")].lockedX = True
 flappy.components[flappy.GetComponent("COLLIDER")].trigger = True
 #flappy.components[flappy.GetComponent("PLAYERCONTROLLER")].scoreText = scoreText
@@ -89,7 +94,7 @@ pipe.AddComponent("RENDERER")
 pipe.AddComponent("COLLIDER")
 pipe.AddComponent("RIGIDBODY")
 pipe.AddComponent("CONSTANTMOVEMENT")
-pipe.components[pipe.GetComponent("RENDERER")].sprite = "pipe.png"
+pipe.components[pipe.GetComponent("RENDERER")].sprite = 3
 pipe.components[pipe.GetComponent("COLLIDER")].size = [40,212]
 pipe.components[pipe.GetComponent("RIGIDBODY")].lockedY = True
 pipe.components[pipe.GetComponent("COLLIDER")].trigger = True
@@ -104,7 +109,7 @@ ground.AddComponent("COLLIDER")
 ground.tag = "death" 
 ground.position = [0,500] 
 ground.scale = [1,1]
-ground.components[ground.GetComponent("RENDERER")].sprite = "ground.png"
+ground.components[ground.GetComponent("RENDERER")].sprite = 2
 ground.components[ground.GetComponent("RENDERER")].sortingLayer = 5
 ground.components[ground.GetComponent("RIGIDBODY")].lockedY = True
 ground.components[ground.GetComponent("COLLIDER")].trigger = True
@@ -114,7 +119,7 @@ groundPrefab = Prefab("Ground",ground)
 button = GameObject("Button")
 button.AddComponent("UIBUTTON")
 button.AddComponent("UITEXT")
-button.components[button.GetComponent("UIBUTTON")].sprite = "panel.png"
+button.components[button.GetComponent("UIBUTTON")].sprite = 4
 button.position = [150,35]
 button.components[button.GetComponent("UIBUTTON")].functions.append("LoadScene(0)")
 button.components[button.GetComponent("UITEXT")].text = "Restart"
@@ -160,6 +165,6 @@ flappyScene.AddObject(button)
 
 
 scenes.append(flappyScene)
-game = gameengine.engine.GameInfo("Game Test 1", {"RESOLUTION":(800,600),"GRAVITY":-0.012,"KEYREPEAT":(0,0)},componentMaster,scenes,0)
+game = gameengine.engine.GameInfo("Game Test 1", {"RESOLUTION":(800,600),"GRAVITY":-0.012,"KEYREPEAT":(0,0)},componentMaster,scenes,0,sprites)
 
 LaunchGame(game)

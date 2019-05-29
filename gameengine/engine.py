@@ -13,7 +13,9 @@ objects = []
 prefabs = []
 properties = {}
 events = []
+sprites = []
 scenes = []
+queuedEvents = []
 curScene = -1
 camera = ""
 GEPath = gameengine.__path__.__dict__["_path"][0]
@@ -220,9 +222,14 @@ class Collider(BaseComponent):
                 self.ApplyFriction()
         #print(self.collidingWith,self.parent.name)
     def SetAsImage(self):
-        global objects
+        global objects, sprites, gameRunning, queuedEvents
+
+        if(gameRunning == False):
+            queuedEvents.append(self.SetAsImage)
+            return
+
         #print(self.parent)
-        img = pygame.image.load(self.parent.components[self.parent.GetComponent("RENDERER")].sprite)
+        img = sprites[self.parent.components[self.parent.GetComponent("RENDERER")].sprite]
         self.size[0] = img.get_width() * self.parent.scale[0]
         self.size[1] = img.get_height() * self.parent.scale[1]
 
@@ -297,6 +304,7 @@ class UIButton(BaseComponent):
     def CreateNew(self,s):
         return UIButton(s)
     def Update(self):
+        global sprites
         x = False
         for event in self.events:
             if(event.type == pygame.MOUSEBUTTONDOWN):
@@ -304,7 +312,7 @@ class UIButton(BaseComponent):
         if(x == False):
             return
         mPos = pygame.mouse.get_pos()
-        loadedSprite = pygame.image.load(self.sprite)
+        loadedSprite = sprites[self.sprite]
         if(self.centered == False):
             if(mPos[0] >= self.parent.position[0] and mPos[0] <= self.parent.position[0]+(loadedSprite.get_width() * self.parent.scale[0])):
                 if((mPos[1] >= self.parent.position[1] and mPos[1] <= self.parent.position[1]+(loadedSprite.get_height() * self.parent.scale[1]))):
@@ -388,7 +396,7 @@ def FindAllComponents(typeof):
     return comp
 
 def RenderEngine(screen):
-    global objects
+    global objects,sprites
     screen.fill((255,255,255))
     objsWithRenderers = []
     uiObjs = []
@@ -406,7 +414,7 @@ def RenderEngine(screen):
         #print(obj.GetComponent("RENDERER"))
         if(obj.GetComponent("RENDERER") != "" and obj.GetComponent("RENDERER") != None):
             #print(obj.components)
-            scaled = pygame.image.load(obj.components[obj.GetComponent("RENDERER")].sprite)
+            scaled = sprites[obj.components[obj.GetComponent("RENDERER")].sprite]
             scaled = pygame.transform.rotate(scaled,obj.rotation)
             #scaled = scaled.fill(obj.components[obj.GetComponent("RENDERER")].color,special_flags=pygame.BLEND_ADD)
             camPos = [-GetObjectByTag("Main Camera").position[0],-GetObjectByTag("Main Camera").position[1]]
@@ -420,7 +428,7 @@ def RenderEngine(screen):
             continue
         #UI BUTTON
         if(obj.GetComponent("UIBUTTON") != None):
-            scaled = pygame.image.load(obj.components[obj.GetComponent("UIBUTTON")].sprite)
+            scaled = sprites[obj.components[obj.GetComponent("UIBUTTON")].sprite]
             scaled = pygame.transform.rotate(scaled,obj.rotation)
 
             scaled = pygame.transform.scale(scaled,(scaled.get_width() * obj.scale[0],scaled.get_height() * obj.scale[1]))
@@ -501,12 +509,13 @@ componentMaster.append(Camera(None))
 
 
 class GameInfo():
-    def __init__(self,name,properties,components,scenes,defaultSceneIndex):
+    def __init__(self,name,properties,components,scenes,defaultSceneIndex,sprites):
         self.name = name
         self.properties = properties
         self.scenes = scenes
         self.components = components
         self.defaultSceneIndex = defaultSceneIndex
+        self.sprites = sprites
         #Do default settings
         if("RESOLUTION" not in self.properties):
             self.properties["RESOLUTION"] = (800,600)
@@ -523,9 +532,11 @@ def LaunchGame(GameInfo):
     global gameRunning
     global events
     global curScene
+    global sprites
     if(gameRunning):
         return "Game Already Running"
     gameRunning = True
+    sprites = GameInfo.sprites
     #objects = GameInfo.objects
     scenes = GameInfo.scenes
     properties = GameInfo.properties
@@ -537,6 +548,10 @@ def LaunchGame(GameInfo):
     pygame.display.set_caption(GameInfo.name)
     renderStart = 0
     pygame.key.set_repeat(properties["KEYREPEAT"][0],properties["KEYREPEAT"][1])
+
+    for event in queuedEvents:
+        event
+
     while gameRunning:
         renderStart = time.time()
         events = InputSystem()
