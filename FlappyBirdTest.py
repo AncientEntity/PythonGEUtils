@@ -14,11 +14,16 @@ class PlayerController(BaseComponent):
     def __init__(self,s):
         self.parent = s
         self.name = "PLAYERCONTROLLER"
-        self.requiresStart = False
+        self.requiresStart = True
         self.points = 0
         self.pipeIn = 0
     def CreateNew(self,s):
         return PlayerController(s)
+    def Start(self):
+        global objects
+        for obj in objects:
+            if(obj.GetComponent("COLLIDER") != None):
+                ground.components[ground.GetComponent("COLLIDER")].SetAsImage()
     def Update(self):
     	for event in self.events:
     		if(event.type == pygame.KEYDOWN):
@@ -82,7 +87,7 @@ flappy.AddComponent("RIGIDBODY")
 flappy.AddComponent("PLAYERCONTROLLER")
 flappy.scale = [2,2]
 flappy.components[flappy.GetComponent("RENDERER")].sprite = 0
-flappy 
+flappy.components[flappy.GetComponent("COLLIDER")].SetAsImage(sprites[0])
 flappy.components[flappy.GetComponent("RIGIDBODY")].lockedX = True
 flappy.components[flappy.GetComponent("COLLIDER")].trigger = True
 #flappy.components[flappy.GetComponent("PLAYERCONTROLLER")].scoreText = scoreText
@@ -113,7 +118,7 @@ ground.components[ground.GetComponent("RENDERER")].sprite = 2
 ground.components[ground.GetComponent("RENDERER")].sortingLayer = 5
 ground.components[ground.GetComponent("RIGIDBODY")].lockedY = True
 ground.components[ground.GetComponent("COLLIDER")].trigger = True
-ground.components[ground.GetComponent("COLLIDER")].SetAsImage()
+ground.components[ground.GetComponent("COLLIDER")].SetAsImage(sprites[2])
 groundPrefab = Prefab("Ground",ground)
 
 button = GameObject("Button")
@@ -151,8 +156,8 @@ def CreatePipe():
 flappyScene.AddObject(bird.CreateInstance([200,300],0,[2,2]))
 g = groundPrefab.CreateInstance([0,500],0,[30,7])
 roof = groundPrefab.CreateInstance([0,-30],180,[30,7])
-roof.components[ground.GetComponent("COLLIDER")].SetAsImage()
-g.components[ground.GetComponent("COLLIDER")].SetAsImage()
+roof.components[ground.GetComponent("COLLIDER")].SetAsImage(sprites[2])
+g.components[ground.GetComponent("COLLIDER")].SetAsImage(sprites[2])
 flappyScene.AddObject(g)
 flappyScene.AddObject(scoreText)
 flappyScene.AddObject(sadFace)

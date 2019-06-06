@@ -221,15 +221,21 @@ class Collider(BaseComponent):
                 self.parent.components[self.parent.GetComponent("RIGIDBODY")].velocity[1] = mathf.Clamp(other.components[other.GetComponent("RIGIDBODY")].velocity[1]-0.05,0,10000)
                 self.ApplyFriction()
         #print(self.collidingWith,self.parent.name)
-    def SetAsImage(self):
+    def SetAsImage(self,i=None):
         global objects, sprites, gameRunning, queuedEvents
 
-        if(gameRunning == False):
-            queuedEvents.append(self.SetAsImage)
-            return
+        #if(gameRunning == False):
+        #    queuedEvents.append(self.SetAsImage)
+        #    return
 
         #print(self.parent)
-        img = sprites[self.parent.components[self.parent.GetComponent("RENDERER")].sprite]
+        img = None
+        if(i == None):
+            if(sprites == []):
+                raise("Uninitialized Games Require an input of the sprite")
+            img = sprites[self.parent.components[self.parent.GetComponent("RENDERER")].sprite]
+        else:
+            img = i
         self.size[0] = img.get_width() * self.parent.scale[0]
         self.size[1] = img.get_height() * self.parent.scale[1]
 

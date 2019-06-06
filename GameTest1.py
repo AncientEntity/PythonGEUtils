@@ -38,6 +38,7 @@ componentMaster.append(ToMouseTest(None))
 
 #COMPONENTS OVER
 
+sprites = [pygame.image.load("background.png"),pygame.image.load("redbox.png"),pygame.image.load(errorImage),pygame.image.load("ground.png")]
 scenes = []
 
 SceneOne = Scene("Scene One",[])
@@ -46,7 +47,7 @@ scenes.append(SceneOne)
 background = GameObject("Back")
 background.AddComponent("RENDERER")
 background.position = [-25,0]
-background.components[background.GetComponent("RENDERER")].sprite = pygame.image.load("background.png")
+background.components[background.GetComponent("RENDERER")].sprite = 0
 background.components[background.GetComponent("RENDERER")].sortingLayer = -10
 background.scale = [4,4]
 SceneOne.AddObject(background)
@@ -57,10 +58,10 @@ obj2.AddComponent("RIGIDBODY")
 obj2.AddComponent("COLLIDER")
 obj2.position = [150,85]
 obj2.scale = [1,1]
-obj2.components[obj2.GetComponent("RENDERER")].sprite = pygame.image.load("redbox.png")
+obj2.components[obj2.GetComponent("RENDERER")].sprite = 1
 obj2.components[obj2.GetComponent("RENDERER")].sortingLayer = 10
 obj2.components[obj2.GetComponent("RIGIDBODY")].lockedY = False
-obj2.components[obj2.GetComponent("COLLIDER")].SetAsImage()
+obj2.components[obj2.GetComponent("COLLIDER")].SetAsImage(sprites[1])
 obj2.components[obj2.GetComponent("COLLIDER")].trigger = True
 fallingObjectPrefab = Prefab("Falling Object",obj2)
 
@@ -71,8 +72,8 @@ SceneOne.AddObject(fallingObjectPrefab.CreateInstance([400,100],0,[1,1]))
 boxC = fallingObjectPrefab.CreateInstance([550,100],0,[1,1])
 boxC.name = "lol"
 boxC.AddComponent("BOXCONTROLLER")
-boxC.components[boxC.GetComponent("RENDERER")].sprite = errorImage
-boxC.components[boxC.GetComponent("COLLIDER")].SetAsImage()
+boxC.components[boxC.GetComponent("RENDERER")].sprite = 2
+boxC.components[boxC.GetComponent("COLLIDER")].SetAsImage(sprites[2])
 boxC.components[boxC.GetComponent("COLLIDER")].trigger = False
 SceneOne.AddObject(boxC)
 
@@ -82,10 +83,10 @@ obj4.AddComponent("RIGIDBODY")
 obj4.AddComponent("COLLIDER")
 obj4.position = [0,500]
 obj4.scale = [30,7]
-obj4.components[obj4.GetComponent("RENDERER")].sprite = pygame.image.load("ground.png")
+obj4.components[obj4.GetComponent("RENDERER")].sprite = 3
 obj4.components[obj4.GetComponent("RENDERER")].sortingLayer = 5
 obj4.components[obj4.GetComponent("RIGIDBODY")].lockedY = True
-obj4.components[obj4.GetComponent("COLLIDER")].SetAsImage()
+obj4.components[obj4.GetComponent("COLLIDER")].SetAsImage(sprites[3])
 print(obj4.components[obj4.GetComponent("COLLIDER")].size)
 SceneOne.AddObject(obj4)
 
@@ -94,6 +95,6 @@ SceneTwo.AddObject(boxC)
 scenes.append(SceneTwo)
 
 
-game = gameengine.engine.GameInfo("Game Test 1", {"RESOLUTION":(800,600),"GRAVITY":-0.03,"KEYREPEAT":(50,50)},componentMaster,scenes,0)
+game = gameengine.engine.GameInfo("Game Test 1", {"RESOLUTION":(800,600),"GRAVITY":-0.03,"KEYREPEAT":(50,50)},componentMaster,scenes,0,sprites)
 
 LaunchGame(game)
