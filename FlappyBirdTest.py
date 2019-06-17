@@ -28,7 +28,7 @@ class PlayerController(BaseComponent):
     	for event in self.events:
     		if(event.type == pygame.KEYDOWN):
     			if(event.key == pygame.K_SPACE):
-    				self.parent.components[self.parent.GetComponent("RIGIDBODY")].velocity[1] = 1
+    				self.parent.components[self.parent.GetComponent("RIGIDBODY")].velocity[1] = 2
     	#Check for lose
     	for obj in self.parent.components[self.parent.GetComponent("COLLIDER")].collidingWith:
     		if(obj.tag == "death"):
@@ -170,6 +170,6 @@ flappyScene.AddObject(button)
 
 
 scenes.append(flappyScene)
-game = gameengine.engine.GameInfo("Game Test 1", {"RESOLUTION":(800,600),"GRAVITY":-0.012,"KEYREPEAT":(0,0)},componentMaster,scenes,0,sprites)
+game = gameengine.engine.GameInfo("Game Test 1", {"RESOLUTION":(800,600),"GRAVITY":-0.028,"KEYREPEAT":(0,0)},componentMaster,scenes,0,sprites)
 
 LaunchGame(game)

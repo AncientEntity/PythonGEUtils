@@ -47,6 +47,12 @@ class GameObject():
         self.components = []
         lastObjectID += 1
         self.oldPosition = [0.0,0.0]
+    def RemoveComponent(self,componentName):
+        for c in self.components:
+            if(c.name == componentName):
+                self.components.remove(c)
+                return True
+        return False
     def AddComponent(self,componentName):
         for c in componentMaster:
             if(c.name == componentName):
