@@ -135,6 +135,7 @@ mainText.AddComponent("UITEXT")
 mainText.position = [300,150]
 mainText.DirectComponent("UITEXT").text = ""
 mainText.tag = "text"
+mainText.DirectComponent("UITEXT").size = 74
 
 
 SceneOne.AddObject(mainText)

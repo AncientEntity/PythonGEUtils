@@ -155,6 +155,9 @@ class Camera(BaseComponent):
         self.requiresStart = False
     def CreateNew(self,s):
         return Camera(s)
+    def SetMain(self):
+        GetObjectByTag("Main Camera").tag = "untagged"
+        self.parent.tag = "Main Camera"
 
 class Renderer(BaseComponent):
     def __init__(self,s):
@@ -296,16 +299,18 @@ class UIText(BaseComponent):
         self.generatedRender = ""
         self.centered = False
         self.lastTextGenerated = ""
+        self.lastTextSize = 30
     def CreateNew(self,s):
         return UIText(s)
     def GenerateText(self):
         self.generatedFont = pygame.font.SysFont(self.font,self.size)
         self.generatedRender = self.generatedFont.render(self.text,True,(0,0,0))
         self.lastTextGenerated = self.text
+        self.lastTextSize = self.size
     def Start(self):
         self.GenerateText()
     def Update(self):
-        if(self.lastTextGenerated != self.text):
+        if(self.lastTextGenerated != self.text or self.lastTextSize != self.size):
             self.GenerateText()
 
 class UIButton(BaseComponent):
@@ -346,7 +351,9 @@ class UIButton(BaseComponent):
 
 def Instantiate(obj):
     global objects
-    objects.append(CloneGameObject(obj))
+    o = CloneGameObject(obj)
+    objects.append(o)
+    return o
 
 def GetObjectByName(name):
     global objects
@@ -377,6 +384,12 @@ def GetObjectsByTag(tag):
         if(obj.tag == tag):
             found.append(obj)
     return found
+
+def ScreenToWorldPoint(screenPoint):
+    cam = GetObjectByTag("Main Camera")
+    camPos = [cam.position[0],cam.position[1]]
+    return ([screenPoint[0]+camPos[0],screenPoint[1]+camPos[1]])
+
 
 def CreateComponentSeperate(componentName):
     for c in componentMaster:
