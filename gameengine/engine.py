@@ -62,6 +62,10 @@ class GameObject():
             if(self.components[comp].name == componentName):
                 return comp
         return None
+    def DirectComponent(self,componentName):
+        for comp in range(len(self.components)):
+            if(self.components[comp].name == componentName):
+                return self.components[comp]
     def __str__(self):
         return self.name
     def Destroy(self):
@@ -187,11 +191,10 @@ class Collider(BaseComponent):
         #If colliding with nothing
         return False
     def CollidingWithCollider(self):
-            for col in self.collidingWith:
-                if(col.components[col.GetComponent("COLLIDER")].trigger):
-                    return True
-
-            return False
+        for col in self.collidingWith:
+            if(col.components[col.GetComponent("COLLIDER")].trigger):
+                return True
+        return False
     def ApplyFriction(self):
         if(self.trigger):
             return
@@ -223,7 +226,8 @@ class Collider(BaseComponent):
                     self.collidingWith.append(other)
                     continue
         if(len(self.collidingWith) > 0 and self.trigger == False):
-            if(self.parent.GetComponent("RIGIDBODY") != None and self.CollidingWithCollider()):
+            #print(self.parent.GetComponent("RIGIDBODY"))
+            if(self.parent.GetComponent("RIGIDBODY") != None and self.CollidingWithCollider() and other.GetComponent("COLLIDER") != None):
                 self.parent.components[self.parent.GetComponent("RIGIDBODY")].velocity[1] = mathf.Clamp(other.components[other.GetComponent("RIGIDBODY")].velocity[1]-0.05,0,10000)
                 self.ApplyFriction()
         #print(self.collidingWith,self.parent.name)
