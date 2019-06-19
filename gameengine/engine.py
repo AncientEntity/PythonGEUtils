@@ -66,6 +66,7 @@ class GameObject():
         for comp in range(len(self.components)):
             if(self.components[comp].name == componentName):
                 return self.components[comp]
+        return None
     def __str__(self):
         return self.name
     def Destroy(self):
@@ -90,11 +91,11 @@ class Prefab():
         global objects, lastObjectID
         instance = GameObject()
         img = errorImage
-        if(self.gameObject.components[self.gameObject.GetComponent("RENDERER")] != None):
+        if(self.gameObject.GetComponent("RENDERER") != None):
             img = self.gameObject.components[self.gameObject.GetComponent("RENDERER")].sprite
             self.gameObject.components[self.gameObject.GetComponent("RENDERER")].sprite = ""
         instance = copy.deepcopy(self.gameObject)
-        if(instance.components[instance.GetComponent("RENDERER")] != None):
+        if(instance.GetComponent("RENDERER") != None):
             instance.components[instance.GetComponent("RENDERER")].sprite = img
             self.gameObject.components[self.gameObject.GetComponent("RENDERER")].sprite = img
         instance.position = position
@@ -385,6 +386,12 @@ def GetObjectsByTag(tag):
             found.append(obj)
     return found
 
+def GetObjects():
+    global objects
+    return objects
+
+
+
 def ScreenToWorldPoint(screenPoint):
     cam = GetObjectByTag("Main Camera")
     camPos = [cam.position[0],cam.position[1]]
@@ -588,4 +595,5 @@ def LaunchGame(GameInfo):
         DoPhysics()
         RenderEngine(screen)
         deltaTime = time.time() - renderStart
+        #print(prefabs)
     
