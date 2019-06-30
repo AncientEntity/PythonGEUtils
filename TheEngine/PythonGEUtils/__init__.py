@@ -3,7 +3,7 @@ Python Game Engine Utils (PythonGEUtils) is a python library that helps develope
 
 **To download PythonGEUtils go to the github page:**
 
-https://anciententity.github.io/PythonGEUtils
+https://github.com/AncientEntity/PythonGEUtils
 
 
 **An Example Of Flappy Bird Made In The Engine:**
