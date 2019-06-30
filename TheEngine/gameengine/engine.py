@@ -211,28 +211,50 @@ class BaseComponent():
         self.requiresStart = True
         self.events = []
     def CreateNew(self,s):
+        """
+        When creating a custom component you must add it's own CreateNew(self,s) function that returns itself with s being passed.
+        """
         raise BaseException("Component Error: Component doesn't have it's own CreateNew() and is relying on BaseComponent")
         #return BaseComponent()
     def Update(self):
+        """
+        Update() runs every frame on every object that has this component.
+        """
         return False
     def Start(self):
+        """
+        Start() runs the first frame the component is loaded.
+        """
         return False
     def __str__(self):
         return self.name
 
 class Camera(BaseComponent):
     def __init__(self,s):
+        """
+        This is the default Camera component for the engine. Generally you do not want to edit this.
+        """
         self.parent = s
         self.name = "CAMERA"
         self.requiresStart = False
     def CreateNew(self,s):
+        """
+        CreateNew(self,s) creates a new Camera Object
+        """
         return Camera(s)
     def SetMain(self):
+        """
+        SetMain() will make the Camera calling the function the main camera and all rendering will be based from
+        the Camera's position.
+        """
         GetObjectByTag("Main Camera").tag = "untagged"
         self.parent.tag = "Main Camera"
 
 class Renderer(BaseComponent):
     def __init__(self,s):
+        """
+        The renderer allows objects to be shown on the game screen. If you attach a sprite onto it through Renderer.sprite it will be displayed.
+        """
         self.parent = s
         self.name = "RENDERER"
         self.requiresStart = False
@@ -240,10 +262,17 @@ class Renderer(BaseComponent):
         self.sortingLayer = 0
         self.color = [255,255,255,255]
     def CreateNew(self,s):
+        """
+        CreateNew(self,s) creates a new Renderer Object
+        """
         return Renderer(s)
 
 class Collider(BaseComponent):
     def __init__(self,s):
+        """
+        A Collider allows collision between 2 or more objects to be detected as well as these can be used as triggers where the objects can pass through each other
+        but they still tell you what is colliding.
+        """
         self.parent = s
         self.name = "COLLIDER"
         self.requiresStart = False
@@ -256,6 +285,9 @@ class Collider(BaseComponent):
     def __str__(self):
         return self.name
     def IsCollidedWith(self,other):
+        """
+        IsCollidedWith(other) will return true if you are colliding with 'other' and return false if you are not.
+        """
         self.whereCollision = [False,False,False,False]
         otherData = pygame.Rect(other.GetColliderData())
         selfData = pygame.Rect(self.parent.GetColliderData())
@@ -266,6 +298,9 @@ class Collider(BaseComponent):
         #If colliding with nothing
         return False
     def CollisionBox(self,size,offset="DEFAULT"):
+        """
+        This creates a temporary collision detection zone around the GameObject in the shape of a rectangle/box. It returns all objects colliding with it.
+        """
         if(offset == "DEFAULT"):
             offset = [-size[0]/2,-size[1]/2]
         colliders = []
@@ -283,6 +318,9 @@ class Collider(BaseComponent):
                 return True
         return False
     def ApplyFriction(self):
+        """
+        ApplyFriction() applies friction to the object. ApplyFriction() gets automatically run.
+        """
         if(self.trigger):
             return
         curVelocity = self.parent.components[self.parent.GetComponent("RIGIDBODY")].velocity
@@ -293,6 +331,9 @@ class Collider(BaseComponent):
                 curVelocity[0] -= curVelocity[0] * self.friction
         self.parent.components[self.parent.GetComponent("RIGIDBODY")].velocity = curVelocity
     def CreateNew(self,s):
+        """
+        CreateNew(self,s) creates a new instance of Collider()
+        """
         return Collider(s)
     def Update(self):
         global objects
@@ -319,6 +360,9 @@ class Collider(BaseComponent):
                 self.ApplyFriction()
         #print(self.collidingWith,self.parent.name)
     def SetAsImage(self,i=None):
+        """
+        SetAsImage() will set the collider dimensions as the image's dimensions. If an image is given as a parameter it will become the size of that image.
+        """
         global objects, sprites, gameRunning, queuedEvents
 
         #if(gameRunning == False):
@@ -340,6 +384,9 @@ class Collider(BaseComponent):
                 
 class Rigidbody(BaseComponent):
     def __init__(self,s):
+        """
+        Rigidbody's are used to have an object undergo physics.
+        """
         self.parent = s
         self.name = "RIGIDBODY"
         self.requiresStart = True
@@ -347,6 +394,9 @@ class Rigidbody(BaseComponent):
         self.lockedY = False
         self.lockedX= False
     def CreateNew(self,s):
+        """
+        CreateNew(self,s) creates a new instance of Rigidbody()
+        """
         return Rigidbody(s)
     def Update(self):
         global properties, deltaTime, objects
@@ -362,17 +412,26 @@ class Rigidbody(BaseComponent):
 
 class ConstantMovement(BaseComponent):
     def __init__(self,s):
+        """
+        ConstantMovement will apply a constant velocity to an object.
+        """
         self.parent = s
         self.name = "CONSTANTMOVEMENT"
         self.requiresStart = False
         self.constantVelocity = [1,0]
     def CreateNew(self,s):
+        """
+        CreateNew(self,s) creates a new instance of ConstantMovement()
+        """
         return ConstantMovement(s)
     def Update(self):
         self.parent.components[self.parent.GetComponent("RIGIDBODY")].velocity = self.constantVelocity
 
 class UIText(BaseComponent):
     def __init__(self,s):
+        """
+        UIText is used for when you want to create text and display it to the screen.
+        """
         self.parent = s
         self.name = "UITEXT"
         self.text = "New Text"
@@ -386,8 +445,18 @@ class UIText(BaseComponent):
         self.lastTextGenerated = ""
         self.lastTextSize = 30
     def CreateNew(self,s):
+        """
+        CreateNew(self,s) creates a new instance of UIText()
+        """
         return UIText(s)
     def GenerateText(self):
+        """
+        It is not recommended you use GenerateText() as it is mainly for the engine to use to generate
+        the image of the text.
+
+        GenerateText() will use the variables contained in UIText() and generates an image, then the image
+        gets stored in self.generatedRender
+        """
         self.generatedFont = pygame.font.SysFont(self.font,self.size)
         self.generatedRender = self.generatedFont.render(self.text,True,(0,0,0))
         self.lastTextGenerated = self.text
@@ -400,6 +469,10 @@ class UIText(BaseComponent):
 
 class UIButton(BaseComponent):
     def __init__(self,s):
+        """
+        UIButton() is used for when you want to create a button and allow for a user to click it and invoke
+        an action(s).
+        """
         self.parent = s
         self.name = "UIBUTTON"
         self.sprite = errorImage
@@ -408,6 +481,9 @@ class UIButton(BaseComponent):
         self.centered = True
         self.pressed = False
     def CreateNew(self,s):
+        """
+        CreateNew(self,s) creates a new instance of UIButton()
+        """
         return UIButton(s)
     def Update(self):
         global sprites
@@ -636,6 +712,15 @@ def DoPhysics():
             #print(obj)
 
 def InputSystem():
+    """
+    A Mandatory High Level game engine function. Do not edit/run/delete this unless you know what
+    you are doing.
+
+    ---
+
+    It manages input from the keyboard, and defaultly sets the window's X button to closing the game.
+    
+    """
     global events
     e = pygame.event.get()
     for event in e:
@@ -644,6 +729,9 @@ def InputSystem():
     return e
 
 def LoadScene(sceneIndex):
+    """
+    LoadScene(sceneIndex) will load the scene at the given index. It will remove all objects from the scene and reload it with the new scene.
+    """
     global currentCamera
     global objects, scenes, curScene
     objects = []
@@ -714,6 +802,9 @@ class GameInfo():
             
 
 def LaunchGame(GameInfo):
+    """
+    LaunchGame(GameInfo) launches the game by using the GameInfo object that has been passed as a parameter.
+    """
     global scenes
     global properties
     global gameRunning
