@@ -1,3 +1,9 @@
+"""
+gameengine.mathf contains a few basic mathematical functions for ease
+of use.
+
+"""
+
 import time
 import os
 import random

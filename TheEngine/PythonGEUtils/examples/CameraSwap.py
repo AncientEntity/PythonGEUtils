@@ -1,5 +1,10 @@
-from gameengine.engine import *
+import sys, os
+sys.path.append(os.path.dirname(os.path.realpath(__file__)))
+sys.path.append('../')
+from PythonGEUtils import *
+from PythonGEUtils.engine import *
 import time
+
 
 #COMPONENTS MADE
 
@@ -79,6 +84,6 @@ SceneTwo = Scene("Scene Two", [])
 scenes.append(SceneTwo)
 
 
-game = gameengine.engine.GameInfo("Game Test 1", {"RESOLUTION":(800,600),"GRAVITY":-0.03,"KEYREPEAT":(50,50)},componentMaster,scenes,0,sprites)
+game = GameInfo("Game Test 1", {"RESOLUTION":(800,600),"GRAVITY":-0.03,"KEYREPEAT":(50,50)},componentMaster,scenes,0,sprites)
 
 LaunchGame(game)

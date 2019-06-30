@@ -1,5 +1,8 @@
-from gameengine.engine import *
-import time
+import sys
+sys.path.append('../')
+from PythonGEUtils import *
+from PythonGEUtils.engine import *
+#import pygame
 
 sprites = [pygame.image.load("flappy.png"),pygame.image.load("background.png")]
 sprites.append(pygame.image.load("ground.png"))
@@ -170,6 +173,6 @@ flappyScene.AddObject(button)
 
 
 scenes.append(flappyScene)
-game = gameengine.engine.GameInfo("Game Test 1", {"RESOLUTION":(800,600),"GRAVITY":-0.028,"KEYREPEAT":(0,0)},componentMaster,scenes,0,sprites)
+game = GameInfo("Game Test 1", {"RESOLUTION":(800,600),"GRAVITY":-0.028,"KEYREPEAT":(0,0)},componentMaster,scenes,0,sprites)
 
 LaunchGame(game)

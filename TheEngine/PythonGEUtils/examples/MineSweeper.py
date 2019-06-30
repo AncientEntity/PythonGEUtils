@@ -1,4 +1,6 @@
-from gameengine.engine import *
+import sys
+from PythonGEUtils import *
+from PythonGEUtils.engine import *
 import time
 import random
 
@@ -84,6 +86,6 @@ for x in range(12):
 
 
 scenes.append(mainScene)
-game = gameengine.engine.GameInfo("Game Test 1", {"RESOLUTION":(600,600),"GRAVITY":-0.028,"KEYREPEAT":(0,0)},componentMaster,scenes,0,sprites)
+game = GameInfo("Game Test 1", {"RESOLUTION":(600,600),"GRAVITY":-0.028,"KEYREPEAT":(0,0)},componentMaster,scenes,0,sprites)
 
 LaunchGame(game)

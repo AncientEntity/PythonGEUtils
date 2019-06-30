@@ -1,4 +1,7 @@
-from gameengine.engine import *
+import sys
+sys.path.append('../')
+from PythonGEUtils import *
+from PythonGEUtils.engine import *
 import time
 
 #COMPONENTS MADE

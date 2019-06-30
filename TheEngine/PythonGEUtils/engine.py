@@ -1,11 +1,20 @@
+"""
+gameengine.engine is the base library for PythonGEUtils. It is required to do
+just about anything with it.
+
+
+"""
 import pygame
-import gameengine
+#import engine
+import sys
 import random
 import time
 import copy
 import os
-from gameengine import mathf
+#import mathf
     
+#print("PythonGEUtils Loaded")
+
 
 gameRunning = False
 componentMaster = []
@@ -18,7 +27,8 @@ scenes = []
 queuedEvents = []
 curScene = -1
 camera = ""
-GEPath = gameengine.__path__.__dict__["_path"][0]
+GEPath = os.path.dirname(os.path.realpath(__file__))
+sys.path.append(GEPath)
 
 errorImage = (GEPath+"\\images\\error.png")
 
