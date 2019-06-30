@@ -171,6 +171,12 @@ class Prefab():
 
 class Scene():
     def __init__(self,name=&#34;New Scene&#34;,objects=[], defaultCamera=True):
+        &#34;&#34;&#34;
+        Scene&#39;s are a collection of GameObjects that can be loaded/unloaded easily fast and quick. (see LoadScene())
+
+        Scene(name,objects) can be passed through or Scene(name,objects,defaultCamera=True) can be passed. If you pass
+        defaultCamera as true (which is true by default) it will automatically add the camera to your scene.
+        &#34;&#34;&#34;
         self.name = name
         self.objects = objects
         if(defaultCamera):
@@ -180,6 +186,9 @@ class Scene():
             cam.tag = &#34;Main Camera&#34;
             self.objects.append(CloneGameObject(cam))
     def AddObject(self,gO):
+        &#34;&#34;&#34;
+        AddObject(gameObject) will take the game object passed and add it to the scene, it will not be loaded into the game until the scene is loaded.
+        &#34;&#34;&#34;
         global objects
         instance = GameObject()
         img = errorImage
@@ -193,6 +202,9 @@ class Scene():
         self.objects.append(instance)
         #objects.append(instance)
     def AddObjects(self,gOs):
+        &#34;&#34;&#34;
+        AddObjects(gameObjects) will add every passed GameObject in the list given to the scene, it will not be loaded into the game until the scene is loaded.
+        &#34;&#34;&#34;
         for o in gOs:
             self.AddObject(o)
 
@@ -2304,11 +2316,19 @@ given as well as return the GameObject. This wont add it to the scene/game. You 
 <span>(</span><span>name='New Scene', objects=[], defaultCamera=True)</span>
 </code></dt>
 <dd>
-<section class="desc"></section>
+<section class="desc"><p>Scene's are a collection of GameObjects that can be loaded/unloaded easily fast and quick. (see LoadScene())</p>
+<p>Scene(name,objects) can be passed through or Scene(name,objects,defaultCamera=True) can be passed. If you pass
+defaultCamera as true (which is true by default) it will automatically add the camera to your scene.</p></section>
 <details class="source">
 <summary>Source code</summary>
 <pre><code class="python">class Scene():
     def __init__(self,name=&#34;New Scene&#34;,objects=[], defaultCamera=True):
+        &#34;&#34;&#34;
+        Scene&#39;s are a collection of GameObjects that can be loaded/unloaded easily fast and quick. (see LoadScene())
+
+        Scene(name,objects) can be passed through or Scene(name,objects,defaultCamera=True) can be passed. If you pass
+        defaultCamera as true (which is true by default) it will automatically add the camera to your scene.
+        &#34;&#34;&#34;
         self.name = name
         self.objects = objects
         if(defaultCamera):
@@ -2318,6 +2338,9 @@ given as well as return the GameObject. This wont add it to the scene/game. You 
             cam.tag = &#34;Main Camera&#34;
             self.objects.append(CloneGameObject(cam))
     def AddObject(self,gO):
+        &#34;&#34;&#34;
+        AddObject(gameObject) will take the game object passed and add it to the scene, it will not be loaded into the game until the scene is loaded.
+        &#34;&#34;&#34;
         global objects
         instance = GameObject()
         img = errorImage
@@ -2331,6 +2354,9 @@ given as well as return the GameObject. This wont add it to the scene/game. You 
         self.objects.append(instance)
         #objects.append(instance)
     def AddObjects(self,gOs):
+        &#34;&#34;&#34;
+        AddObjects(gameObjects) will add every passed GameObject in the list given to the scene, it will not be loaded into the game until the scene is loaded.
+        &#34;&#34;&#34;
         for o in gOs:
             self.AddObject(o)</code></pre>
 </details>
@@ -2340,10 +2366,13 @@ given as well as return the GameObject. This wont add it to the scene/game. You 
 <span>def <span class="ident">AddObject</span></span>(<span>self, gO)</span>
 </code></dt>
 <dd>
-<section class="desc"></section>
+<section class="desc"><p>AddObject(gameObject) will take the game object passed and add it to the scene, it will not be loaded into the game until the scene is loaded.</p></section>
 <details class="source">
 <summary>Source code</summary>
 <pre><code class="python">def AddObject(self,gO):
+    &#34;&#34;&#34;
+    AddObject(gameObject) will take the game object passed and add it to the scene, it will not be loaded into the game until the scene is loaded.
+    &#34;&#34;&#34;
     global objects
     instance = GameObject()
     img = errorImage
@@ -2361,10 +2390,13 @@ given as well as return the GameObject. This wont add it to the scene/game. You 
 <span>def <span class="ident">AddObjects</span></span>(<span>self, gOs)</span>
 </code></dt>
 <dd>
-<section class="desc"></section>
+<section class="desc"><p>AddObjects(gameObjects) will add every passed GameObject in the list given to the scene, it will not be loaded into the game until the scene is loaded.</p></section>
 <details class="source">
 <summary>Source code</summary>
 <pre><code class="python">def AddObjects(self,gOs):
+    &#34;&#34;&#34;
+    AddObjects(gameObjects) will add every passed GameObject in the list given to the scene, it will not be loaded into the game until the scene is loaded.
+    &#34;&#34;&#34;
     for o in gOs:
         self.AddObject(o)</code></pre>
 </details>

@@ -147,6 +147,12 @@ class Prefab():
 
 class Scene():
     def __init__(self,name="New Scene",objects=[], defaultCamera=True):
+        """
+        Scene's are a collection of GameObjects that can be loaded/unloaded easily fast and quick. (see LoadScene())
+
+        Scene(name,objects) can be passed through or Scene(name,objects,defaultCamera=True) can be passed. If you pass
+        defaultCamera as true (which is true by default) it will automatically add the camera to your scene.
+        """
         self.name = name
         self.objects = objects
         if(defaultCamera):
@@ -156,6 +162,9 @@ class Scene():
             cam.tag = "Main Camera"
             self.objects.append(CloneGameObject(cam))
     def AddObject(self,gO):
+        """
+        AddObject(gameObject) will take the game object passed and add it to the scene, it will not be loaded into the game until the scene is loaded.
+        """
         global objects
         instance = GameObject()
         img = errorImage
@@ -169,6 +178,9 @@ class Scene():
         self.objects.append(instance)
         #objects.append(instance)
     def AddObjects(self,gOs):
+        """
+        AddObjects(gameObjects) will add every passed GameObject in the list given to the scene, it will not be loaded into the game until the scene is loaded.
+        """
         for o in gOs:
             self.AddObject(o)
 
