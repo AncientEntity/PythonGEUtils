@@ -444,6 +444,10 @@ def Instantiate(obj):
     return o
 
 def GetObjectByName(name):
+    """
+    Returns the first object found with the name given. If no object of the name is found
+    it returns None.
+    """
     global objects
     for obj in objects:
         if(obj.name == name):
@@ -451,6 +455,9 @@ def GetObjectByName(name):
     return None
 
 def GetObjectsByName(name):
+    """
+    GetObjectsByName(name) finds all objects of a name and returns them in a list.
+    """
     found = []
     global objects
     for obj in objects:
@@ -459,6 +466,10 @@ def GetObjectsByName(name):
     return found
 
 def GetObjectByTag(tag):
+    """
+    Returns the first object found with the tag given. If no object of the tag is found
+    it returns None.
+    """
     global objects
     for obj in objects:
         if(obj.tag == tag):
@@ -466,6 +477,9 @@ def GetObjectByTag(tag):
     return None
 
 def GetObjectsByTag(tag):
+    """
+    GetObjectsByTag(name) finds all objects of a tag and returns them in a list.
+    """
     found = []
     global objects
     for obj in objects:
@@ -474,23 +488,38 @@ def GetObjectsByTag(tag):
     return found
 
 def GetObjects():
+    """
+    GetObjects() reeturns the list of all objects.
+    """
     global objects
     return objects
 
 
 
 def ScreenToWorldPoint(screenPoint):
+    """
+    ScreenToWorldPoint(screenPoint) takes a point on the screen and returns the world
+    point.
+    """
     cam = GetObjectByTag("Main Camera")
     camPos = [cam.position[0],cam.position[1]]
     return ([screenPoint[0]+camPos[0],screenPoint[1]+camPos[1]])
 
 
 def CreateComponentSeperate(componentName):
+    """
+    CreateComponentSeperate(componentName) creates a component by it's name without it
+    being attached to a GameObject then returns it.
+    """
     for c in componentMaster:
         if(c.name == componentName):
             return(c.CreateNew(None))
 
 def CloneGameObject(gO):
+    """
+    CloneGameObject(gameObject) will clone and return the given
+    game object.
+    """
     instance = GameObject()
     #img = errorImage
     #img2 = errorImage
@@ -512,6 +541,10 @@ def CloneGameObject(gO):
     return instance
 
 def FindAllComponents(typeof):
+    """
+        FindAllComponents(typeof) finds all components of a certain type from
+        all objects, then returns them in a list.
+    """
     comp = []
     for obj in objects:
         if(typeof in obj.components):
@@ -519,6 +552,15 @@ def FindAllComponents(typeof):
     return comp
 
 def RenderEngine(screen):
+    """
+    A Mandatory High Level game engine function. Do not edit/run/delete this unless you know what
+    you are doing.
+
+    ---
+
+    RenderEngine() manages the rendering system.
+    
+    """
     global objects,sprites
     screen.fill((255,255,255))
     objsWithRenderers = []
@@ -575,6 +617,15 @@ def RenderEngine(screen):
     pygame.display.update()
 
 def DoPhysics():
+    """
+    A Mandatory High Level game engine function. Do not edit/run/delete this unless you know what
+    you are doing.
+
+    ---
+
+    It manages the base RigidBody actions.
+    
+    """
     global objects
     for obj in objects:
         if(obj.active == False):
@@ -607,6 +658,15 @@ def LoadScene(sceneIndex):
 
 
 def DoComponentSpecialFunctions():
+    """
+    A Mandatory High Level game engine function. Do not edit/run/delete this unless you know what
+    you are doing.
+
+    ---
+
+    DoComponentSpecialFunctions() manages Update() and Start()
+    
+    """
     global objects
     for obj in objects:
         if(obj.active == False):
