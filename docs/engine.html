@@ -1,0 +1,2737 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
+<meta name="generator" content="pdoc 0.6.2" />
+<title>PythonGEUtils.engine API documentation</title>
+<meta name="description" content="gameengine.engine is the base library for PythonGEUtils. It is required to do
+just about anything with it." />
+<link href='https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.0/normalize.min.css' rel='stylesheet'>
+<link href='https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/8.0.0/sanitize.min.css' rel='stylesheet'>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css" rel="stylesheet">
+<style>.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:30px;overflow:hidden}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:1em 0 .50em 0}h3{font-size:1.4em;margin:25px 0 10px 0}h4{margin:0;font-size:105%}a{color:#058;text-decoration:none;transition:color .3s ease-in-out}a:hover{color:#e82}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900}pre code{background:#f8f8f8;font-size:.8em;line-height:1.4em}code{background:#f2f2f1;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{background:#f8f8f8;border:0;border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0;padding:1ex}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{font-weight:bold}#index h4 + ul{margin-bottom:.6em}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-weight:bold;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase;cursor:pointer}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}.admonition{padding:.1em .5em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.item .name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul{padding-left:1.5em}.toc > ul > li{margin-top:.5em}}</style>
+<style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+</head>
+<body>
+<main>
+<article id="content">
+<header>
+<h1 class="title">Module <code>PythonGEUtils.engine</code></h1>
+</header>
+<section id="section-intro">
+<p>gameengine.engine is the base library for PythonGEUtils. It is required to do
+just about anything with it.</p>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">&#34;&#34;&#34;
+gameengine.engine is the base library for PythonGEUtils. It is required to do
+just about anything with it.
+
+
+&#34;&#34;&#34;
+import pygame
+#import engine
+import sys
+import random
+import time
+import copy
+import os
+#import mathf
+    
+#print(&#34;PythonGEUtils Loaded&#34;)
+
+
+gameRunning = False
+componentMaster = []
+objects = []
+prefabs = []
+properties = {}
+events = []
+sprites = []
+scenes = []
+queuedEvents = []
+curScene = -1
+camera = &#34;&#34;
+GEPath = os.path.dirname(os.path.realpath(__file__))
+sys.path.append(GEPath)
+
+errorImage = (GEPath+&#34;\\images\\error.png&#34;)
+
+deltaTime = 0.0
+
+lastObjectID = 0
+
+def GetObject(indexOf):
+    &#34;&#34;&#34;
+    GetObject(indexOf) allows you to get the object at a certain index.
+    &#34;&#34;&#34;
+    global objects
+    for obj in objects:
+        if(obj.index == indexOf):
+            return obj
+    return None
+
+
+class GameObject():
+    def __init__(self,name=&#34;New GameObject&#34;):
+        &#34;&#34;&#34;
+                   Base class for all entities in a Scene. A blank GameObject cannot do much, to allow it to function as you wish you must add custom or premade components.     
+        &#34;&#34;&#34;
+        global lastObjectID
+        self.active = True
+        self.index = lastObjectID
+        self.name = name
+        self.tag = &#34;untagged&#34;
+        self.position = [0.0,0.0]
+        self.rotation = 360
+        self.scale = [1,1]
+        self.components = []
+        lastObjectID += 1
+        self.oldPosition = [0.0,0.0]
+    def RemoveComponent(self,componentName):
+        &#34;&#34;&#34;
+        RemoveComponent(componentName) allows you to remove a component from
+        the GameObject by its name.
+        &#34;&#34;&#34;
+        for c in self.components:
+            if(c.name == componentName):
+                self.components.remove(c)
+                return True
+        return False
+    def AddComponent(self,componentName):
+        &#34;&#34;&#34;
+        AddComponent(componentName) allows you to add a component to the
+        GameObject by its name&#34;
+        &#34;&#34;&#34;
+        for c in componentMaster:
+            if(c.name == componentName):
+                self.components.append(c.CreateNew(self))
+    def GetComponent(self,componentName):
+        &#34;&#34;&#34;
+        GetComponent(componentName) will return the index of a component by
+        its name
+        &#34;&#34;&#34;
+        for comp in range(len(self.components)):
+            if(self.components[comp].name == componentName):
+                return comp
+        return None
+    def DirectComponent(self,componentName):
+        &#34;&#34;&#34;
+        GetComponent(componentName) will return a pointer to the object so
+        you can edit it directly.
+        &#34;&#34;&#34;
+        for comp in range(len(self.components)):
+            if(self.components[comp].name == componentName):
+                return self.components[comp]
+        return None
+    def __str__(self):
+        return self.name
+    def Destroy(self):
+        &#34;&#34;&#34;
+        Destroy() allows you to destroy the GameObject.
+        &#34;&#34;&#34;
+        global objects
+        if(self in objects):
+            objects.remove(self)
+    def GetColliderData(self):
+        &#34;&#34;&#34;
+        GetColliderData() will only work if you have a collider attached to
+        the GameObject. It is suggested you do not use this function as it
+        is mainly for the engine.
+        &#34;&#34;&#34;
+        if(self.GetComponent(&#34;COLLIDER&#34;) == None):
+            return None
+        else:
+            scale = self.scale
+            offset = self.components[self.GetComponent(&#34;COLLIDER&#34;)].offset
+            return [self.position[0]+offset[0],self.position[1]+offset[1],self.components[self.GetComponent(&#34;COLLIDER&#34;)].size[0],self.components[self.GetComponent(&#34;COLLIDER&#34;)].size[1]]
+
+class Prefab():
+    def __init__(self,name, gO):
+        &#34;&#34;&#34;
+        When you want to reuse a GameObject multiple times (example: a tree) you should
+        use a prefab as it allows you to create copies of a GameObject that you can
+        edit certain variables afterwards.
+        &#34;&#34;&#34;
+        global prefabs
+        self.name = name
+        self.gameObject = gO
+        prefabs.append(self)
+    def CreateInstance(self,position,rotation,scale):
+        &#34;&#34;&#34;
+        CreateInstance(position,rotation,scale) will create a copy of the parent prefab with the parameters
+        given as well as return the GameObject. This wont add it to the scene/game. You must instantiate the instance with Instantiate()!!!!
+        &#34;&#34;&#34;
+        global objects, lastObjectID
+        instance = GameObject()
+        img = errorImage
+        if(self.gameObject.GetComponent(&#34;RENDERER&#34;) != None):
+            img = self.gameObject.components[self.gameObject.GetComponent(&#34;RENDERER&#34;)].sprite
+            self.gameObject.components[self.gameObject.GetComponent(&#34;RENDERER&#34;)].sprite = &#34;&#34;
+        instance = copy.deepcopy(self.gameObject)
+        if(instance.GetComponent(&#34;RENDERER&#34;) != None):
+            instance.components[instance.GetComponent(&#34;RENDERER&#34;)].sprite = img
+            self.gameObject.components[self.gameObject.GetComponent(&#34;RENDERER&#34;)].sprite = img
+        instance.position = position
+        instance.rotation = rotation
+        instance.scale = scale
+        instance.index = lastObjectID
+        lastObjectID += 1
+        #objects.append(instance)
+        return instance
+
+class Scene():
+    def __init__(self,name=&#34;New Scene&#34;,objects=[], defaultCamera=True):
+        &#34;&#34;&#34;
+        Scene&#39;s are a collection of GameObjects that can be loaded/unloaded easily fast and quick. (see LoadScene())
+
+        Scene(name,objects) can be passed through or Scene(name,objects,defaultCamera=True) can be passed. If you pass
+        defaultCamera as true (which is true by default) it will automatically add the camera to your scene.
+        &#34;&#34;&#34;
+        self.name = name
+        self.objects = objects
+        if(defaultCamera):
+            cam = GameObject(&#34;Default Camera&#34;)
+            cam.AddComponent(&#34;CAMERA&#34;)
+            #cam.AddComponent(&#34;RIGIDBODY&#34;) #Was For Testing
+            cam.tag = &#34;Main Camera&#34;
+            self.objects.append(CloneGameObject(cam))
+    def AddObject(self,gO):
+        &#34;&#34;&#34;
+        AddObject(gameObject) will take the game object passed and add it to the scene, it will not be loaded into the game until the scene is loaded.
+        &#34;&#34;&#34;
+        global objects
+        instance = GameObject()
+        img = errorImage
+        if(gO.GetComponent(&#34;RENDERER&#34;) != None):
+            img = gO.components[gO.GetComponent(&#34;RENDERER&#34;)].sprite
+            gO.components[gO.GetComponent(&#34;RENDERER&#34;)].sprite = &#34;&#34;
+        instance = copy.deepcopy(gO)
+        if(instance.GetComponent(&#34;RENDERER&#34;) != None):
+            instance.components[instance.GetComponent(&#34;RENDERER&#34;)].sprite = img
+            gO.components[gO.GetComponent(&#34;RENDERER&#34;)].sprite = img
+        self.objects.append(instance)
+        #objects.append(instance)
+    def AddObjects(self,gOs):
+        &#34;&#34;&#34;
+        AddObjects(gameObjects) will add every passed GameObject in the list given to the scene, it will not be loaded into the game until the scene is loaded.
+        &#34;&#34;&#34;
+        for o in gOs:
+            self.AddObject(o)
+
+class BaseComponent():
+    def __init__(self,s=None):
+        &#34;&#34;&#34;
+        This is the base component of all components that come with PythonGEUtils.
+        It is also suggested you use BaseComponent as the base for all of your custom
+        components to prevent any issues.
+
+        When creating a custom component you must have a custom CreateNew(self,s) function on it or the
+        engine wont be able to create instances and errors will occur. Below is an example
+        of what the camera uses, all you have to do is change &#34;Camera&#34; to the components name:
+
+
+        \&#34;\&#34;\&#34;
+
+        
+            def CreateNew(self,s):
+                return Camera(s)
+
+            
+        \&#34;\&#34;\&#34;
+
+        
+        When creating a custom component you must add it to the list componentMaster or issues will occur.
+        Here are a few examples of how you must add it:
+
+            componentMaster.append(BaseComponent(None))
+            componentMaster.append(Renderer(None))
+            componentMaster.append(Collider(None))
+    
+
+        Component names don&#39;t have to be in caps but were just started like that so it is suggested you continue
+        as it will make reading your code easier for people.
+        &#34;&#34;&#34;
+        global componentMaster
+        self.parent = s
+        self.name = &#34;BASECOMPONENT&#34;
+        self.requiresStart = True
+        self.events = []
+    def CreateNew(self,s):
+        &#34;&#34;&#34;
+        When creating a custom component you must add it&#39;s own CreateNew(self,s) function that returns itself with s being passed.
+        &#34;&#34;&#34;
+        raise BaseException(&#34;Component Error: Component doesn&#39;t have it&#39;s own CreateNew() and is relying on BaseComponent&#34;)
+        #return BaseComponent()
+    def Update(self):
+        &#34;&#34;&#34;
+        Update() runs every frame on every object that has this component.
+        &#34;&#34;&#34;
+        return False
+    def Start(self):
+        &#34;&#34;&#34;
+        Start() runs the first frame the component is loaded.
+        &#34;&#34;&#34;
+        return False
+    def __str__(self):
+        return self.name
+
+class Camera(BaseComponent):
+    def __init__(self,s):
+        &#34;&#34;&#34;
+        This is the default Camera component for the engine. Generally you do not want to edit this.
+        &#34;&#34;&#34;
+        self.parent = s
+        self.name = &#34;CAMERA&#34;
+        self.requiresStart = False
+    def CreateNew(self,s):
+        &#34;&#34;&#34;
+        CreateNew(self,s) creates a new Camera Object
+        &#34;&#34;&#34;
+        return Camera(s)
+    def SetMain(self):
+        &#34;&#34;&#34;
+        SetMain() will make the Camera calling the function the main camera and all rendering will be based from
+        the Camera&#39;s position.
+        &#34;&#34;&#34;
+        GetObjectByTag(&#34;Main Camera&#34;).tag = &#34;untagged&#34;
+        self.parent.tag = &#34;Main Camera&#34;
+
+class Renderer(BaseComponent):
+    def __init__(self,s):
+        &#34;&#34;&#34;
+        The renderer allows objects to be shown on the game screen. If you attach a sprite onto it through Renderer.sprite it will be displayed.
+        &#34;&#34;&#34;
+        self.parent = s
+        self.name = &#34;RENDERER&#34;
+        self.requiresStart = False
+        self.sprite = errorImage
+        self.sortingLayer = 0
+        self.color = [255,255,255,255]
+    def CreateNew(self,s):
+        &#34;&#34;&#34;
+        CreateNew(self,s) creates a new Renderer Object
+        &#34;&#34;&#34;
+        return Renderer(s)
+
+class Collider(BaseComponent):
+    def __init__(self,s):
+        &#34;&#34;&#34;
+        A Collider allows collision between 2 or more objects to be detected as well as these can be used as triggers where the objects can pass through each other
+        but they still tell you what is colliding.
+        &#34;&#34;&#34;
+        self.parent = s
+        self.name = &#34;COLLIDER&#34;
+        self.requiresStart = False
+        self.collidingWith = []
+        self.size = [1,1]
+        self.offset = [0,0]
+        self.whereCollision = [False,False,False,False] #TopLeft/TopRight/BottomLeft/BottomRight
+        self.friction = 0.065
+        self.trigger = False
+    def __str__(self):
+        return self.name
+    def IsCollidedWith(self,other):
+        &#34;&#34;&#34;
+        IsCollidedWith(other) will return true if you are colliding with &#39;other&#39; and return false if you are not.
+        &#34;&#34;&#34;
+        self.whereCollision = [False,False,False,False]
+        otherData = pygame.Rect(other.GetColliderData())
+        selfData = pygame.Rect(self.parent.GetColliderData())
+
+        if(selfData.colliderect(otherData)):
+            return True
+
+        #If colliding with nothing
+        return False
+    def CollisionBox(self,size,offset=&#34;DEFAULT&#34;):
+        &#34;&#34;&#34;
+        This creates a temporary collision detection zone around the GameObject in the shape of a rectangle/box. It returns all objects colliding with it.
+        &#34;&#34;&#34;
+        if(offset == &#34;DEFAULT&#34;):
+            offset = [-size[0]/2,-size[1]/2]
+        colliders = []
+        for obj in GetObjects():
+            if(obj.DirectComponent(&#34;COLLIDER&#34;) == None or obj == self.parent):
+                continue
+            otherData = pygame.Rect(obj.GetColliderData())
+            selfData = pygame.Rect(self.parent.position[0]+offset[0],self.parent.position[1]+offset[1],size[0],size[1])
+            if(selfData.colliderect(otherData)):
+                colliders.append(obj)
+        return colliders
+    def CollidingWithCollider(self):
+        for col in self.collidingWith:
+            if(col.components[col.GetComponent(&#34;COLLIDER&#34;)].trigger):
+                return True
+        return False
+    def ApplyFriction(self):
+        &#34;&#34;&#34;
+        ApplyFriction() applies friction to the object. ApplyFriction() gets automatically run.
+        &#34;&#34;&#34;
+        if(self.trigger):
+            return
+        curVelocity = self.parent.components[self.parent.GetComponent(&#34;RIGIDBODY&#34;)].velocity
+        if(self.whereCollision[0] == True or self.whereCollision[1] == True):
+            if(curVelocity[0] &lt; 0):
+                curVelocity[0] += curVelocity[0] * self.friction
+            elif(curVelocity[0] &gt; 0):
+                curVelocity[0] -= curVelocity[0] * self.friction
+        self.parent.components[self.parent.GetComponent(&#34;RIGIDBODY&#34;)].velocity = curVelocity
+    def CreateNew(self,s):
+        &#34;&#34;&#34;
+        CreateNew(self,s) creates a new instance of Collider()
+        &#34;&#34;&#34;
+        return Collider(s)
+    def Update(self):
+        global objects
+        self.collidingWith = []
+        for other in objects:
+            if(other.GetComponent(&#34;COLLIDER&#34;) != None and other.index != self.parent.index):
+                if(self.IsCollidedWith(other)):
+                    if(other.GetComponent(&#34;RIGIDBODY&#34;) != None):
+                        blockCollision = True
+                        if(other.GetComponent(&#34;COLLIDER&#34;) != None and other.components[other.GetComponent(&#34;COLLIDER&#34;)].trigger == True):
+                            blockCollision = False
+                        if(self.parent.GetComponent(&#34;COLLIDER&#34;) != None and self.parent.components[self.parent.GetComponent(&#34;COLLIDER&#34;)].trigger == True):
+                            blockCollision = False
+
+                        if(blockCollision):
+                            other.components[other.GetComponent(&#34;RIGIDBODY&#34;)].velocity[1] = mathf.Clamp(other.components[other.GetComponent(&#34;RIGIDBODY&#34;)].velocity[1]-0.05,0,10000)
+                            self.ApplyFriction()
+                    self.collidingWith.append(other)
+                    continue
+        if(len(self.collidingWith) &gt; 0 and self.trigger == False):
+            #print(self.parent.GetComponent(&#34;RIGIDBODY&#34;))
+            if(self.parent.GetComponent(&#34;RIGIDBODY&#34;) != None and self.CollidingWithCollider() and other.GetComponent(&#34;COLLIDER&#34;) != None):
+                self.parent.components[self.parent.GetComponent(&#34;RIGIDBODY&#34;)].velocity[1] = mathf.Clamp(other.components[other.GetComponent(&#34;RIGIDBODY&#34;)].velocity[1]-0.05,0,10000)
+                self.ApplyFriction()
+        #print(self.collidingWith,self.parent.name)
+    def SetAsImage(self,i=None):
+        &#34;&#34;&#34;
+        SetAsImage() will set the collider dimensions as the image&#39;s dimensions. If an image is given as a parameter it will become the size of that image.
+        &#34;&#34;&#34;
+        global objects, sprites, gameRunning, queuedEvents
+
+        #if(gameRunning == False):
+        #    queuedEvents.append(self.SetAsImage)
+        #    return
+
+        #print(self.parent)
+        img = None
+        if(i == None):
+            if(sprites == []):
+                raise(&#34;Uninitialized Games Require an input of the sprite&#34;)
+            img = sprites[self.parent.components[self.parent.GetComponent(&#34;RENDERER&#34;)].sprite]
+        else:
+            img = i
+        self.size[0] = img.get_width() * self.parent.scale[0]
+        self.size[1] = img.get_height() * self.parent.scale[1]
+
+
+                
+class Rigidbody(BaseComponent):
+    def __init__(self,s):
+        &#34;&#34;&#34;
+        Rigidbody&#39;s are used to have an object undergo physics.
+        &#34;&#34;&#34;
+        self.parent = s
+        self.name = &#34;RIGIDBODY&#34;
+        self.requiresStart = True
+        self.velocity = [0.0,0.0]
+        self.lockedY = False
+        self.lockedX= False
+    def CreateNew(self,s):
+        &#34;&#34;&#34;
+        CreateNew(self,s) creates a new instance of Rigidbody()
+        &#34;&#34;&#34;
+        return Rigidbody(s)
+    def Update(self):
+        global properties, deltaTime, objects
+        if(self.lockedY == False):
+            self.velocity[1] += properties[&#34;GRAVITY&#34;]
+            #print(&#34;TEST&#34;)
+            #if(self.parent.components[self.parent.GetComponent(&#34;COLLIDER&#34;)].whereCollision[2] or self.parent.components[self.parent.GetComponent(&#34;COLLIDER&#34;)].whereCollision[3]):
+            #    objects[self.parent.index].position[1] += 10
+        else:
+            self.velocity[1] = 0
+        if(self.lockedX == True):
+            self.velocity[0] = 0
+
+class ConstantMovement(BaseComponent):
+    def __init__(self,s):
+        &#34;&#34;&#34;
+        ConstantMovement will apply a constant velocity to an object.
+        &#34;&#34;&#34;
+        self.parent = s
+        self.name = &#34;CONSTANTMOVEMENT&#34;
+        self.requiresStart = False
+        self.constantVelocity = [1,0]
+    def CreateNew(self,s):
+        &#34;&#34;&#34;
+        CreateNew(self,s) creates a new instance of ConstantMovement()
+        &#34;&#34;&#34;
+        return ConstantMovement(s)
+    def Update(self):
+        self.parent.components[self.parent.GetComponent(&#34;RIGIDBODY&#34;)].velocity = self.constantVelocity
+
+class UIText(BaseComponent):
+    def __init__(self,s):
+        &#34;&#34;&#34;
+        UIText is used for when you want to create text and display it to the screen.
+        &#34;&#34;&#34;
+        self.parent = s
+        self.name = &#34;UITEXT&#34;
+        self.text = &#34;New Text&#34;
+        self.font = &#34;Comic Sans MS&#34;
+        self.size = 30
+        self.offset = [0,0]
+        self.requiresStart = True
+        self.generatedFont = &#34;&#34;
+        self.generatedRender = &#34;&#34;
+        self.centered = False
+        self.lastTextGenerated = &#34;&#34;
+        self.lastTextSize = 30
+    def CreateNew(self,s):
+        &#34;&#34;&#34;
+        CreateNew(self,s) creates a new instance of UIText()
+        &#34;&#34;&#34;
+        return UIText(s)
+    def GenerateText(self):
+        &#34;&#34;&#34;
+        It is not recommended you use GenerateText() as it is mainly for the engine to use to generate
+        the image of the text.
+
+        GenerateText() will use the variables contained in UIText() and generates an image, then the image
+        gets stored in self.generatedRender
+        &#34;&#34;&#34;
+        self.generatedFont = pygame.font.SysFont(self.font,self.size)
+        self.generatedRender = self.generatedFont.render(self.text,True,(0,0,0))
+        self.lastTextGenerated = self.text
+        self.lastTextSize = self.size
+    def Start(self):
+        self.GenerateText()
+    def Update(self):
+        if(self.lastTextGenerated != self.text or self.lastTextSize != self.size):
+            self.GenerateText()
+
+class UIButton(BaseComponent):
+    def __init__(self,s):
+        &#34;&#34;&#34;
+        UIButton() is used for when you want to create a button and allow for a user to click it and invoke
+        an action(s).
+        &#34;&#34;&#34;
+        self.parent = s
+        self.name = &#34;UIBUTTON&#34;
+        self.sprite = errorImage
+        self.requiresStart = False
+        self.functions = []
+        self.centered = True
+        self.pressed = False
+    def CreateNew(self,s):
+        &#34;&#34;&#34;
+        CreateNew(self,s) creates a new instance of UIButton()
+        &#34;&#34;&#34;
+        return UIButton(s)
+    def Update(self):
+        global sprites
+        x = False
+        for event in self.events:
+            if(event.type == pygame.MOUSEBUTTONDOWN):
+                x = True
+        if(x == False):
+            return
+        mPos = pygame.mouse.get_pos()
+        loadedSprite = sprites[self.sprite]
+        if(self.centered == False):
+            if(mPos[0] &gt;= self.parent.position[0] and mPos[0] &lt;= self.parent.position[0]+(loadedSprite.get_width() * self.parent.scale[0])):
+                if((mPos[1] &gt;= self.parent.position[1] and mPos[1] &lt;= self.parent.position[1]+(loadedSprite.get_height() * self.parent.scale[1]))):
+                    for function in self.functions:
+                        exec(function)
+                    #print(&#34;Test&#34;)
+        else:
+            if(mPos[0] &gt;= self.parent.position[0]-(loadedSprite.get_width()/2 * self.parent.scale[0]) and mPos[0] &lt;= self.parent.position[0]+(loadedSprite.get_width()/2 * self.parent.scale[0])):
+                if((mPos[1] &gt;= self.parent.position[1]-(loadedSprite.get_width()/2 * self.parent.scale[0]) and mPos[1] &lt;= self.parent.position[1]+(loadedSprite.get_height()/2 * self.parent.scale[1]))):
+                    for function in self.functions:
+                        exec(function)
+                    #print(&#34;Test&#34;)
+        self.pressed = True
+
+
+def Instantiate(obj):
+    &#34;&#34;&#34;
+    Instantiate(object) will add the object to the scene. To add a prefab you must use Prefab().CreateInstance(position,scale,rotation).
+    &#34;&#34;&#34;
+    global objects
+    o = CloneGameObject(obj)
+    objects.append(o)
+    return o
+
+def GetObjectByName(name):
+    &#34;&#34;&#34;
+    Returns the first object found with the name given. If no object of the name is found
+    it returns None.
+    &#34;&#34;&#34;
+    global objects
+    for obj in objects:
+        if(obj.name == name):
+            return obj
+    return None
+
+def GetObjectsByName(name):
+    &#34;&#34;&#34;
+    GetObjectsByName(name) finds all objects of a name and returns them in a list.
+    &#34;&#34;&#34;
+    found = []
+    global objects
+    for obj in objects:
+        if(obj.name == name):
+            found.append(obj)
+    return found
+
+def GetObjectByTag(tag):
+    &#34;&#34;&#34;
+    Returns the first object found with the tag given. If no object of the tag is found
+    it returns None.
+    &#34;&#34;&#34;
+    global objects
+    for obj in objects:
+        if(obj.tag == tag):
+            return obj
+    return None
+
+def GetObjectsByTag(tag):
+    &#34;&#34;&#34;
+    GetObjectsByTag(name) finds all objects of a tag and returns them in a list.
+    &#34;&#34;&#34;
+    found = []
+    global objects
+    for obj in objects:
+        if(obj.tag == tag):
+            found.append(obj)
+    return found
+
+def GetObjects():
+    &#34;&#34;&#34;
+    GetObjects() reeturns the list of all objects.
+    &#34;&#34;&#34;
+    global objects
+    return objects
+
+
+
+def ScreenToWorldPoint(screenPoint):
+    &#34;&#34;&#34;
+    ScreenToWorldPoint(screenPoint) takes a point on the screen and returns the world
+    point.
+    &#34;&#34;&#34;
+    cam = GetObjectByTag(&#34;Main Camera&#34;)
+    camPos = [cam.position[0],cam.position[1]]
+    return ([screenPoint[0]+camPos[0],screenPoint[1]+camPos[1]])
+
+
+def CreateComponentSeperate(componentName):
+    &#34;&#34;&#34;
+    CreateComponentSeperate(componentName) creates a component by it&#39;s name without it
+    being attached to a GameObject then returns it.
+    &#34;&#34;&#34;
+    for c in componentMaster:
+        if(c.name == componentName):
+            return(c.CreateNew(None))
+
+def CloneGameObject(gO):
+    &#34;&#34;&#34;
+    CloneGameObject(gameObject) will clone and return the given
+    game object.
+    &#34;&#34;&#34;
+    instance = GameObject()
+    #img = errorImage
+    #img2 = errorImage
+    #if(gO.GetComponent(&#34;RENDERER&#34;) != None):
+    #    img = gO.components[gO.GetComponent(&#34;RENDERER&#34;)].sprite
+    #    gO.components[gO.GetComponent(&#34;RENDERER&#34;)].sprite = &#34;&#34;
+
+    #if(gO.GetComponent(&#34;UIBUTTON&#34;) != None):
+    #    img2 = gO.components[gO.GetComponent(&#34;UIBUTTON&#34;)].sprite
+    #    gO.components[gO.GetComponent(&#34;UIBUTTON&#34;)].sprite = &#34;&#34;
+
+    instance = copy.deepcopy(gO)
+    #if(instance.GetComponent(&#34;RENDERER&#34;) != None):
+    #    instance.components[instance.GetComponent(&#34;RENDERER&#34;)].sprite = img
+    #    gO.components[gO.GetComponent(&#34;RENDERER&#34;)].sprite = img
+    #if(instance.GetComponent(&#34;UIBUTTON&#34;) != None):
+    #    instance.components[instance.GetComponent(&#34;UIBUTTON&#34;)].sprite = img2
+    #    gO.components[gO.GetComponent(&#34;UIBUTTON&#34;)].sprite = img2
+    return instance
+
+def FindAllComponents(typeof):
+    &#34;&#34;&#34;
+        FindAllComponents(typeof) finds all components of a certain type from
+        all objects, then returns them in a list.
+    &#34;&#34;&#34;
+    comp = []
+    for obj in objects:
+        if(typeof in obj.components):
+            comp.append(obj.components[typeof])
+    return comp
+
+def RenderEngine(screen):
+    &#34;&#34;&#34;
+    A Mandatory High Level game engine function. Do not edit/run/delete this unless you know what
+    you are doing.
+
+    ---
+
+    RenderEngine() manages the rendering system.
+    
+    &#34;&#34;&#34;
+    global objects,sprites
+    screen.fill((255,255,255))
+    objsWithRenderers = []
+    uiObjs = []
+    for obj in objects:
+        if(obj.GetComponent(&#34;RENDERER&#34;) != None):
+            objsWithRenderers.append(obj)
+        if(obj.GetComponent(&#34;UITEXT&#34;) != None):
+            uiObjs.append(obj)
+        elif(obj.GetComponent(&#34;UIBUTTON&#34;) != None):
+            uiObjs.append(obj)
+    #Main Objects
+    for obj in sorted(objsWithRenderers, key=lambda x: x.components[x.GetComponent(&#34;RENDERER&#34;)].sortingLayer, reverse=False):
+        if(obj.active == False):
+            continue
+        #print(obj.GetComponent(&#34;RENDERER&#34;))
+        if(obj.GetComponent(&#34;RENDERER&#34;) != &#34;&#34; and obj.GetComponent(&#34;RENDERER&#34;) != None):
+            #print(obj.components)
+            scaled = sprites[obj.components[obj.GetComponent(&#34;RENDERER&#34;)].sprite]
+            scaled = pygame.transform.rotate(scaled,obj.rotation)
+            #scaled = scaled.fill(obj.components[obj.GetComponent(&#34;RENDERER&#34;)].color,special_flags=pygame.BLEND_ADD)
+            camPos = [-GetObjectByTag(&#34;Main Camera&#34;).position[0],-GetObjectByTag(&#34;Main Camera&#34;).position[1]]
+
+            scaled = pygame.transform.scale(scaled,(scaled.get_width() * obj.scale[0],scaled.get_height() * obj.scale[1]))
+            #screen.blit(scaled,(obj.position[0]-(scaled.get_width()/2),obj.position[1]-(scaled.get_height()/2))) #Center it
+            screen.blit(scaled,[obj.position[0]+camPos[0],obj.position[1]+camPos[1]])
+    #UI Objects
+    for obj in uiObjs:
+        if(obj.active == False):
+            continue
+        #UI BUTTON
+        if(obj.GetComponent(&#34;UIBUTTON&#34;) != None):
+            scaled = sprites[obj.components[obj.GetComponent(&#34;UIBUTTON&#34;)].sprite]
+            scaled = pygame.transform.rotate(scaled,obj.rotation)
+
+            scaled = pygame.transform.scale(scaled,(scaled.get_width() * obj.scale[0],scaled.get_height() * obj.scale[1]))
+
+            if(obj.components[obj.GetComponent(&#34;UIBUTTON&#34;)].centered):
+                screen.blit(scaled,[obj.position[0]-scaled.get_width()/2,obj.position[1]-scaled.get_height()/2])
+            else:
+                screen.blit(scaled,obj.position)
+        #UI TEXT
+        if(obj.GetComponent(&#34;UITEXT&#34;) != None):
+            if(obj.components[obj.GetComponent(&#34;UITEXT&#34;)].generatedRender == &#34;&#34;):
+                continue
+            scaled = obj.components[obj.GetComponent(&#34;UITEXT&#34;)].generatedRender
+            scaled = pygame.transform.rotate(scaled,obj.rotation)
+            #scaled = pygame.transform.scale(scaled,(scaled.get_width() * obj.scale[0],scaled.get_height() * obj.scale[1]))
+            if(obj.components[obj.GetComponent(&#34;UITEXT&#34;)].centered):
+                screen.blit(scaled,[obj.position[0]-scaled.get_width()/2+obj.DirectComponent(&#34;UITEXT&#34;).offset[0],obj.position[1]-scaled.get_height()/2+obj.DirectComponent(&#34;UITEXT&#34;).offset[1]])
+            else:
+                screen.blit(scaled,obj.position)
+
+    pygame.display.update()
+
+def DoPhysics():
+    &#34;&#34;&#34;
+    A Mandatory High Level game engine function. Do not edit/run/delete this unless you know what
+    you are doing.
+
+    ---
+
+    It manages the base RigidBody actions.
+    
+    &#34;&#34;&#34;
+    global objects
+    for obj in objects:
+        if(obj.active == False):
+            continue
+        if(obj.GetComponent(&#34;RIGIDBODY&#34;) != None):
+            obj.position[1] -= obj.components[obj.GetComponent(&#34;RIGIDBODY&#34;)].velocity[1]
+            obj.position[0] -= obj.components[obj.GetComponent(&#34;RIGIDBODY&#34;)].velocity[0]
+            #print(obj)
+
+def InputSystem():
+    &#34;&#34;&#34;
+    A Mandatory High Level game engine function. Do not edit/run/delete this unless you know what
+    you are doing.
+
+    ---
+
+    It manages input from the keyboard, and defaultly sets the window&#39;s X button to closing the game.
+    
+    &#34;&#34;&#34;
+    global events
+    e = pygame.event.get()
+    for event in e:
+        if(event.type == pygame.QUIT):
+            exit(0)
+    return e
+
+def LoadScene(sceneIndex):
+    &#34;&#34;&#34;
+    LoadScene(sceneIndex) will load the scene at the given index. It will remove all objects from the scene and reload it with the new scene.
+    &#34;&#34;&#34;
+    global currentCamera
+    global objects, scenes, curScene
+    objects = []
+    #objects = scenes[sceneIndex].objects
+    for obj in scenes[sceneIndex].objects:
+        objects.append(CloneGameObject(obj))
+        #if(obj.tag == &#34;Main Camera&#34;):
+        #    currentCamera = obj
+    curScene = sceneIndex
+    print(&#34;Scene Loaded: &#34; + scenes[sceneIndex].name)
+
+
+
+def DoComponentSpecialFunctions():
+    &#34;&#34;&#34;
+    A Mandatory High Level game engine function. Do not edit/run/delete this unless you know what
+    you are doing.
+
+    ---
+
+    DoComponentSpecialFunctions() manages Update() and Start()
+    
+    &#34;&#34;&#34;
+    global objects
+    for obj in objects:
+        if(obj.active == False):
+            continue
+        for component in obj.components:
+            component.parent = obj
+            component.events = events
+            component.Update()
+            if(component.requiresStart == True):
+                component.Start()
+                component.requiresStart = False
+
+
+#FINALIZATION
+componentMaster.append(BaseComponent(None))
+componentMaster.append(Renderer(None))
+componentMaster.append(Collider(None))
+componentMaster.append(Rigidbody(None))
+componentMaster.append(ConstantMovement(None))
+componentMaster.append(UIText(None))
+componentMaster.append(UIButton(None))
+componentMaster.append(Camera(None))
+
+
+class GameInfo():
+    &#34;&#34;&#34;
+    GameInfo() is a class that contains your entire game that you submit using
+    LaunchGame(GameInfo) to start your game.
+    &#34;&#34;&#34;
+    def __init__(self,name,properties,components,scenes,defaultSceneIndex,sprites):
+        self.name = name
+        self.properties = properties
+        self.scenes = scenes
+        self.components = components
+        self.defaultSceneIndex = defaultSceneIndex
+        self.sprites = sprites
+        #Do default settings
+        if(&#34;RESOLUTION&#34; not in self.properties):
+            self.properties[&#34;RESOLUTION&#34;] = (800,600)
+        if(&#34;GRAVITY&#34; not in self.properties):
+            self.properties[&#34;GRAVITY&#34;] = -0.035
+        if(&#34;KEYREPEAT&#34; not in self.properties):
+            self.properties[&#34;KEYREPEAT&#34;] = (50,50)
+            
+            
+
+def LaunchGame(GameInfo):
+    &#34;&#34;&#34;
+    LaunchGame(GameInfo) launches the game by using the GameInfo object that has been passed as a parameter.
+    &#34;&#34;&#34;
+    global scenes
+    global properties
+    global gameRunning
+    global events
+    global curScene
+    global sprites
+    if(gameRunning):
+        return &#34;Game Already Running&#34;
+    gameRunning = True
+    sprites = GameInfo.sprites
+    #objects = GameInfo.objects
+    scenes = GameInfo.scenes
+    properties = GameInfo.properties
+    LoadScene(GameInfo.defaultSceneIndex)
+    #curScene = GameInfo.defaultSceneIndex
+
+    pygame.font.init()
+    screen = pygame.display.set_mode((GameInfo.properties[&#34;RESOLUTION&#34;]))
+    pygame.display.set_caption(GameInfo.name)
+    renderStart = 0
+    pygame.key.set_repeat(properties[&#34;KEYREPEAT&#34;][0],properties[&#34;KEYREPEAT&#34;][1])
+
+    for event in queuedEvents:
+        event
+
+    while gameRunning:
+        renderStart = time.time()
+        events = InputSystem()
+        DoComponentSpecialFunctions()
+        DoPhysics()
+        RenderEngine(screen)
+        deltaTime = time.time() - renderStart
+        #print(prefabs)
+    </code></pre>
+</details>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-functions">Functions</h2>
+<dl>
+<dt id="PythonGEUtils.engine.CloneGameObject"><code class="name flex">
+<span>def <span class="ident">CloneGameObject</span></span>(<span>gO)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>CloneGameObject(gameObject) will clone and return the given
+game object.</p></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def CloneGameObject(gO):
+    &#34;&#34;&#34;
+    CloneGameObject(gameObject) will clone and return the given
+    game object.
+    &#34;&#34;&#34;
+    instance = GameObject()
+    #img = errorImage
+    #img2 = errorImage
+    #if(gO.GetComponent(&#34;RENDERER&#34;) != None):
+    #    img = gO.components[gO.GetComponent(&#34;RENDERER&#34;)].sprite
+    #    gO.components[gO.GetComponent(&#34;RENDERER&#34;)].sprite = &#34;&#34;
+
+    #if(gO.GetComponent(&#34;UIBUTTON&#34;) != None):
+    #    img2 = gO.components[gO.GetComponent(&#34;UIBUTTON&#34;)].sprite
+    #    gO.components[gO.GetComponent(&#34;UIBUTTON&#34;)].sprite = &#34;&#34;
+
+    instance = copy.deepcopy(gO)
+    #if(instance.GetComponent(&#34;RENDERER&#34;) != None):
+    #    instance.components[instance.GetComponent(&#34;RENDERER&#34;)].sprite = img
+    #    gO.components[gO.GetComponent(&#34;RENDERER&#34;)].sprite = img
+    #if(instance.GetComponent(&#34;UIBUTTON&#34;) != None):
+    #    instance.components[instance.GetComponent(&#34;UIBUTTON&#34;)].sprite = img2
+    #    gO.components[gO.GetComponent(&#34;UIBUTTON&#34;)].sprite = img2
+    return instance</code></pre>
+</details>
+</dd>
+<dt id="PythonGEUtils.engine.CreateComponentSeperate"><code class="name flex">
+<span>def <span class="ident">CreateComponentSeperate</span></span>(<span>componentName)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>CreateComponentSeperate(componentName) creates a component by it's name without it
+being attached to a GameObject then returns it.</p></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def CreateComponentSeperate(componentName):
+    &#34;&#34;&#34;
+    CreateComponentSeperate(componentName) creates a component by it&#39;s name without it
+    being attached to a GameObject then returns it.
+    &#34;&#34;&#34;
+    for c in componentMaster:
+        if(c.name == componentName):
+            return(c.CreateNew(None))</code></pre>
+</details>
+</dd>
+<dt id="PythonGEUtils.engine.DoComponentSpecialFunctions"><code class="name flex">
+<span>def <span class="ident">DoComponentSpecialFunctions</span></span>(<span>)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>A Mandatory High Level game engine function. Do not edit/run/delete this unless you know what
+you are doing.</p>
+<hr>
+<p>DoComponentSpecialFunctions() manages Update() and Start()</p></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def DoComponentSpecialFunctions():
+    &#34;&#34;&#34;
+    A Mandatory High Level game engine function. Do not edit/run/delete this unless you know what
+    you are doing.
+
+    ---
+
+    DoComponentSpecialFunctions() manages Update() and Start()
+    
+    &#34;&#34;&#34;
+    global objects
+    for obj in objects:
+        if(obj.active == False):
+            continue
+        for component in obj.components:
+            component.parent = obj
+            component.events = events
+            component.Update()
+            if(component.requiresStart == True):
+                component.Start()
+                component.requiresStart = False</code></pre>
+</details>
+</dd>
+<dt id="PythonGEUtils.engine.DoPhysics"><code class="name flex">
+<span>def <span class="ident">DoPhysics</span></span>(<span>)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>A Mandatory High Level game engine function. Do not edit/run/delete this unless you know what
+you are doing.</p>
+<hr>
+<p>It manages the base RigidBody actions.</p></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def DoPhysics():
+    &#34;&#34;&#34;
+    A Mandatory High Level game engine function. Do not edit/run/delete this unless you know what
+    you are doing.
+
+    ---
+
+    It manages the base RigidBody actions.
+    
+    &#34;&#34;&#34;
+    global objects
+    for obj in objects:
+        if(obj.active == False):
+            continue
+        if(obj.GetComponent(&#34;RIGIDBODY&#34;) != None):
+            obj.position[1] -= obj.components[obj.GetComponent(&#34;RIGIDBODY&#34;)].velocity[1]
+            obj.position[0] -= obj.components[obj.GetComponent(&#34;RIGIDBODY&#34;)].velocity[0]</code></pre>
+</details>
+</dd>
+<dt id="PythonGEUtils.engine.FindAllComponents"><code class="name flex">
+<span>def <span class="ident">FindAllComponents</span></span>(<span>typeof)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>FindAllComponents(typeof) finds all components of a certain type from
+all objects, then returns them in a list.</p></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def FindAllComponents(typeof):
+    &#34;&#34;&#34;
+        FindAllComponents(typeof) finds all components of a certain type from
+        all objects, then returns them in a list.
+    &#34;&#34;&#34;
+    comp = []
+    for obj in objects:
+        if(typeof in obj.components):
+            comp.append(obj.components[typeof])
+    return comp</code></pre>
+</details>
+</dd>
+<dt id="PythonGEUtils.engine.GetObject"><code class="name flex">
+<span>def <span class="ident">GetObject</span></span>(<span>indexOf)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>GetObject(indexOf) allows you to get the object at a certain index.</p></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def GetObject(indexOf):
+    &#34;&#34;&#34;
+    GetObject(indexOf) allows you to get the object at a certain index.
+    &#34;&#34;&#34;
+    global objects
+    for obj in objects:
+        if(obj.index == indexOf):
+            return obj
+    return None</code></pre>
+</details>
+</dd>
+<dt id="PythonGEUtils.engine.GetObjectByName"><code class="name flex">
+<span>def <span class="ident">GetObjectByName</span></span>(<span>name)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Returns the first object found with the name given. If no object of the name is found
+it returns None.</p></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def GetObjectByName(name):
+    &#34;&#34;&#34;
+    Returns the first object found with the name given. If no object of the name is found
+    it returns None.
+    &#34;&#34;&#34;
+    global objects
+    for obj in objects:
+        if(obj.name == name):
+            return obj
+    return None</code></pre>
+</details>
+</dd>
+<dt id="PythonGEUtils.engine.GetObjectByTag"><code class="name flex">
+<span>def <span class="ident">GetObjectByTag</span></span>(<span>tag)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Returns the first object found with the tag given. If no object of the tag is found
+it returns None.</p></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def GetObjectByTag(tag):
+    &#34;&#34;&#34;
+    Returns the first object found with the tag given. If no object of the tag is found
+    it returns None.
+    &#34;&#34;&#34;
+    global objects
+    for obj in objects:
+        if(obj.tag == tag):
+            return obj
+    return None</code></pre>
+</details>
+</dd>
+<dt id="PythonGEUtils.engine.GetObjects"><code class="name flex">
+<span>def <span class="ident">GetObjects</span></span>(<span>)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>GetObjects() reeturns the list of all objects.</p></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def GetObjects():
+    &#34;&#34;&#34;
+    GetObjects() reeturns the list of all objects.
+    &#34;&#34;&#34;
+    global objects
+    return objects</code></pre>
+</details>
+</dd>
+<dt id="PythonGEUtils.engine.GetObjectsByName"><code class="name flex">
+<span>def <span class="ident">GetObjectsByName</span></span>(<span>name)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>GetObjectsByName(name) finds all objects of a name and returns them in a list.</p></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def GetObjectsByName(name):
+    &#34;&#34;&#34;
+    GetObjectsByName(name) finds all objects of a name and returns them in a list.
+    &#34;&#34;&#34;
+    found = []
+    global objects
+    for obj in objects:
+        if(obj.name == name):
+            found.append(obj)
+    return found</code></pre>
+</details>
+</dd>
+<dt id="PythonGEUtils.engine.GetObjectsByTag"><code class="name flex">
+<span>def <span class="ident">GetObjectsByTag</span></span>(<span>tag)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>GetObjectsByTag(name) finds all objects of a tag and returns them in a list.</p></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def GetObjectsByTag(tag):
+    &#34;&#34;&#34;
+    GetObjectsByTag(name) finds all objects of a tag and returns them in a list.
+    &#34;&#34;&#34;
+    found = []
+    global objects
+    for obj in objects:
+        if(obj.tag == tag):
+            found.append(obj)
+    return found</code></pre>
+</details>
+</dd>
+<dt id="PythonGEUtils.engine.InputSystem"><code class="name flex">
+<span>def <span class="ident">InputSystem</span></span>(<span>)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>A Mandatory High Level game engine function. Do not edit/run/delete this unless you know what
+you are doing.</p>
+<hr>
+<p>It manages input from the keyboard, and defaultly sets the window's X button to closing the game.</p></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def InputSystem():
+    &#34;&#34;&#34;
+    A Mandatory High Level game engine function. Do not edit/run/delete this unless you know what
+    you are doing.
+
+    ---
+
+    It manages input from the keyboard, and defaultly sets the window&#39;s X button to closing the game.
+    
+    &#34;&#34;&#34;
+    global events
+    e = pygame.event.get()
+    for event in e:
+        if(event.type == pygame.QUIT):
+            exit(0)
+    return e</code></pre>
+</details>
+</dd>
+<dt id="PythonGEUtils.engine.Instantiate"><code class="name flex">
+<span>def <span class="ident">Instantiate</span></span>(<span>obj)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Instantiate(object) will add the object to the scene. To add a prefab you must use Prefab().CreateInstance(position,scale,rotation).</p></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def Instantiate(obj):
+    &#34;&#34;&#34;
+    Instantiate(object) will add the object to the scene. To add a prefab you must use Prefab().CreateInstance(position,scale,rotation).
+    &#34;&#34;&#34;
+    global objects
+    o = CloneGameObject(obj)
+    objects.append(o)
+    return o</code></pre>
+</details>
+</dd>
+<dt id="PythonGEUtils.engine.LaunchGame"><code class="name flex">
+<span>def <span class="ident">LaunchGame</span></span>(<span>GameInfo)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>LaunchGame(GameInfo) launches the game by using the GameInfo object that has been passed as a parameter.</p></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def LaunchGame(GameInfo):
+    &#34;&#34;&#34;
+    LaunchGame(GameInfo) launches the game by using the GameInfo object that has been passed as a parameter.
+    &#34;&#34;&#34;
+    global scenes
+    global properties
+    global gameRunning
+    global events
+    global curScene
+    global sprites
+    if(gameRunning):
+        return &#34;Game Already Running&#34;
+    gameRunning = True
+    sprites = GameInfo.sprites
+    #objects = GameInfo.objects
+    scenes = GameInfo.scenes
+    properties = GameInfo.properties
+    LoadScene(GameInfo.defaultSceneIndex)
+    #curScene = GameInfo.defaultSceneIndex
+
+    pygame.font.init()
+    screen = pygame.display.set_mode((GameInfo.properties[&#34;RESOLUTION&#34;]))
+    pygame.display.set_caption(GameInfo.name)
+    renderStart = 0
+    pygame.key.set_repeat(properties[&#34;KEYREPEAT&#34;][0],properties[&#34;KEYREPEAT&#34;][1])
+
+    for event in queuedEvents:
+        event
+
+    while gameRunning:
+        renderStart = time.time()
+        events = InputSystem()
+        DoComponentSpecialFunctions()
+        DoPhysics()
+        RenderEngine(screen)
+        deltaTime = time.time() - renderStart</code></pre>
+</details>
+</dd>
+<dt id="PythonGEUtils.engine.LoadScene"><code class="name flex">
+<span>def <span class="ident">LoadScene</span></span>(<span>sceneIndex)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>LoadScene(sceneIndex) will load the scene at the given index. It will remove all objects from the scene and reload it with the new scene.</p></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def LoadScene(sceneIndex):
+    &#34;&#34;&#34;
+    LoadScene(sceneIndex) will load the scene at the given index. It will remove all objects from the scene and reload it with the new scene.
+    &#34;&#34;&#34;
+    global currentCamera
+    global objects, scenes, curScene
+    objects = []
+    #objects = scenes[sceneIndex].objects
+    for obj in scenes[sceneIndex].objects:
+        objects.append(CloneGameObject(obj))
+        #if(obj.tag == &#34;Main Camera&#34;):
+        #    currentCamera = obj
+    curScene = sceneIndex
+    print(&#34;Scene Loaded: &#34; + scenes[sceneIndex].name)</code></pre>
+</details>
+</dd>
+<dt id="PythonGEUtils.engine.RenderEngine"><code class="name flex">
+<span>def <span class="ident">RenderEngine</span></span>(<span>screen)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>A Mandatory High Level game engine function. Do not edit/run/delete this unless you know what
+you are doing.</p>
+<hr>
+<p>RenderEngine() manages the rendering system.</p></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def RenderEngine(screen):
+    &#34;&#34;&#34;
+    A Mandatory High Level game engine function. Do not edit/run/delete this unless you know what
+    you are doing.
+
+    ---
+
+    RenderEngine() manages the rendering system.
+    
+    &#34;&#34;&#34;
+    global objects,sprites
+    screen.fill((255,255,255))
+    objsWithRenderers = []
+    uiObjs = []
+    for obj in objects:
+        if(obj.GetComponent(&#34;RENDERER&#34;) != None):
+            objsWithRenderers.append(obj)
+        if(obj.GetComponent(&#34;UITEXT&#34;) != None):
+            uiObjs.append(obj)
+        elif(obj.GetComponent(&#34;UIBUTTON&#34;) != None):
+            uiObjs.append(obj)
+    #Main Objects
+    for obj in sorted(objsWithRenderers, key=lambda x: x.components[x.GetComponent(&#34;RENDERER&#34;)].sortingLayer, reverse=False):
+        if(obj.active == False):
+            continue
+        #print(obj.GetComponent(&#34;RENDERER&#34;))
+        if(obj.GetComponent(&#34;RENDERER&#34;) != &#34;&#34; and obj.GetComponent(&#34;RENDERER&#34;) != None):
+            #print(obj.components)
+            scaled = sprites[obj.components[obj.GetComponent(&#34;RENDERER&#34;)].sprite]
+            scaled = pygame.transform.rotate(scaled,obj.rotation)
+            #scaled = scaled.fill(obj.components[obj.GetComponent(&#34;RENDERER&#34;)].color,special_flags=pygame.BLEND_ADD)
+            camPos = [-GetObjectByTag(&#34;Main Camera&#34;).position[0],-GetObjectByTag(&#34;Main Camera&#34;).position[1]]
+
+            scaled = pygame.transform.scale(scaled,(scaled.get_width() * obj.scale[0],scaled.get_height() * obj.scale[1]))
+            #screen.blit(scaled,(obj.position[0]-(scaled.get_width()/2),obj.position[1]-(scaled.get_height()/2))) #Center it
+            screen.blit(scaled,[obj.position[0]+camPos[0],obj.position[1]+camPos[1]])
+    #UI Objects
+    for obj in uiObjs:
+        if(obj.active == False):
+            continue
+        #UI BUTTON
+        if(obj.GetComponent(&#34;UIBUTTON&#34;) != None):
+            scaled = sprites[obj.components[obj.GetComponent(&#34;UIBUTTON&#34;)].sprite]
+            scaled = pygame.transform.rotate(scaled,obj.rotation)
+
+            scaled = pygame.transform.scale(scaled,(scaled.get_width() * obj.scale[0],scaled.get_height() * obj.scale[1]))
+
+            if(obj.components[obj.GetComponent(&#34;UIBUTTON&#34;)].centered):
+                screen.blit(scaled,[obj.position[0]-scaled.get_width()/2,obj.position[1]-scaled.get_height()/2])
+            else:
+                screen.blit(scaled,obj.position)
+        #UI TEXT
+        if(obj.GetComponent(&#34;UITEXT&#34;) != None):
+            if(obj.components[obj.GetComponent(&#34;UITEXT&#34;)].generatedRender == &#34;&#34;):
+                continue
+            scaled = obj.components[obj.GetComponent(&#34;UITEXT&#34;)].generatedRender
+            scaled = pygame.transform.rotate(scaled,obj.rotation)
+            #scaled = pygame.transform.scale(scaled,(scaled.get_width() * obj.scale[0],scaled.get_height() * obj.scale[1]))
+            if(obj.components[obj.GetComponent(&#34;UITEXT&#34;)].centered):
+                screen.blit(scaled,[obj.position[0]-scaled.get_width()/2+obj.DirectComponent(&#34;UITEXT&#34;).offset[0],obj.position[1]-scaled.get_height()/2+obj.DirectComponent(&#34;UITEXT&#34;).offset[1]])
+            else:
+                screen.blit(scaled,obj.position)
+
+    pygame.display.update()</code></pre>
+</details>
+</dd>
+<dt id="PythonGEUtils.engine.ScreenToWorldPoint"><code class="name flex">
+<span>def <span class="ident">ScreenToWorldPoint</span></span>(<span>screenPoint)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>ScreenToWorldPoint(screenPoint) takes a point on the screen and returns the world
+point.</p></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def ScreenToWorldPoint(screenPoint):
+    &#34;&#34;&#34;
+    ScreenToWorldPoint(screenPoint) takes a point on the screen and returns the world
+    point.
+    &#34;&#34;&#34;
+    cam = GetObjectByTag(&#34;Main Camera&#34;)
+    camPos = [cam.position[0],cam.position[1]]
+    return ([screenPoint[0]+camPos[0],screenPoint[1]+camPos[1]])</code></pre>
+</details>
+</dd>
+</dl>
+</section>
+<section>
+<h2 class="section-title" id="header-classes">Classes</h2>
+<dl>
+<dt id="PythonGEUtils.engine.BaseComponent"><code class="flex name class">
+<span>class <span class="ident">BaseComponent</span></span>
+<span>(</span><span>s=None)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>This is the base component of all components that come with PythonGEUtils.
+It is also suggested you use BaseComponent as the base for all of your custom
+components to prevent any issues.</p>
+<p>When creating a custom component you must have a custom CreateNew(self,s) function on it or the
+engine wont be able to create instances and errors will occur. Below is an example
+of what the camera uses, all you have to do is change "Camera" to the components name:</p>
+<p>"""</p>
+<pre><code>def CreateNew(self,s):
+    return Camera(s)
+</code></pre>
+<p>"""</p>
+<p>When creating a custom component you must add it to the list componentMaster or issues will occur.
+Here are a few examples of how you must add it:</p>
+<pre><code>componentMaster.append(BaseComponent(None))
+componentMaster.append(Renderer(None))
+componentMaster.append(Collider(None))
+</code></pre>
+<p>Component names don't have to be in caps but were just started like that so it is suggested you continue
+as it will make reading your code easier for people.</p></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">class BaseComponent():
+    def __init__(self,s=None):
+        &#34;&#34;&#34;
+        This is the base component of all components that come with PythonGEUtils.
+        It is also suggested you use BaseComponent as the base for all of your custom
+        components to prevent any issues.
+
+        When creating a custom component you must have a custom CreateNew(self,s) function on it or the
+        engine wont be able to create instances and errors will occur. Below is an example
+        of what the camera uses, all you have to do is change &#34;Camera&#34; to the components name:
+
+
+        \&#34;\&#34;\&#34;
+
+        
+            def CreateNew(self,s):
+                return Camera(s)
+
+            
+        \&#34;\&#34;\&#34;
+
+        
+        When creating a custom component you must add it to the list componentMaster or issues will occur.
+        Here are a few examples of how you must add it:
+
+            componentMaster.append(BaseComponent(None))
+            componentMaster.append(Renderer(None))
+            componentMaster.append(Collider(None))
+    
+
+        Component names don&#39;t have to be in caps but were just started like that so it is suggested you continue
+        as it will make reading your code easier for people.
+        &#34;&#34;&#34;
+        global componentMaster
+        self.parent = s
+        self.name = &#34;BASECOMPONENT&#34;
+        self.requiresStart = True
+        self.events = []
+    def CreateNew(self,s):
+        &#34;&#34;&#34;
+        When creating a custom component you must add it&#39;s own CreateNew(self,s) function that returns itself with s being passed.
+        &#34;&#34;&#34;
+        raise BaseException(&#34;Component Error: Component doesn&#39;t have it&#39;s own CreateNew() and is relying on BaseComponent&#34;)
+        #return BaseComponent()
+    def Update(self):
+        &#34;&#34;&#34;
+        Update() runs every frame on every object that has this component.
+        &#34;&#34;&#34;
+        return False
+    def Start(self):
+        &#34;&#34;&#34;
+        Start() runs the first frame the component is loaded.
+        &#34;&#34;&#34;
+        return False
+    def __str__(self):
+        return self.name</code></pre>
+</details>
+<h3>Subclasses</h3>
+<ul class="hlist">
+<li><a title="PythonGEUtils.engine.Camera" href="#PythonGEUtils.engine.Camera">Camera</a></li>
+<li><a title="PythonGEUtils.engine.Renderer" href="#PythonGEUtils.engine.Renderer">Renderer</a></li>
+<li><a title="PythonGEUtils.engine.Collider" href="#PythonGEUtils.engine.Collider">Collider</a></li>
+<li><a title="PythonGEUtils.engine.Rigidbody" href="#PythonGEUtils.engine.Rigidbody">Rigidbody</a></li>
+<li><a title="PythonGEUtils.engine.ConstantMovement" href="#PythonGEUtils.engine.ConstantMovement">ConstantMovement</a></li>
+<li><a title="PythonGEUtils.engine.UIText" href="#PythonGEUtils.engine.UIText">UIText</a></li>
+<li><a title="PythonGEUtils.engine.UIButton" href="#PythonGEUtils.engine.UIButton">UIButton</a></li>
+<li><a title="PythonGEUtils.helpful.blankcomponenttemplate.ExampleComponent" href="helpful/blankcomponenttemplate.html#PythonGEUtils.helpful.blankcomponenttemplate.ExampleComponent">ExampleComponent</a></li>
+</ul>
+<h3>Methods</h3>
+<dl>
+<dt id="PythonGEUtils.engine.BaseComponent.CreateNew"><code class="name flex">
+<span>def <span class="ident">CreateNew</span></span>(<span>self, s)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>When creating a custom component you must add it's own CreateNew(self,s) function that returns itself with s being passed.</p></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def CreateNew(self,s):
+    &#34;&#34;&#34;
+    When creating a custom component you must add it&#39;s own CreateNew(self,s) function that returns itself with s being passed.
+    &#34;&#34;&#34;
+    raise BaseException(&#34;Component Error: Component doesn&#39;t have it&#39;s own CreateNew() and is relying on BaseComponent&#34;)</code></pre>
+</details>
+</dd>
+<dt id="PythonGEUtils.engine.BaseComponent.Start"><code class="name flex">
+<span>def <span class="ident">Start</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Start() runs the first frame the component is loaded.</p></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def Start(self):
+    &#34;&#34;&#34;
+    Start() runs the first frame the component is loaded.
+    &#34;&#34;&#34;
+    return False</code></pre>
+</details>
+</dd>
+<dt id="PythonGEUtils.engine.BaseComponent.Update"><code class="name flex">
+<span>def <span class="ident">Update</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Update() runs every frame on every object that has this component.</p></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def Update(self):
+    &#34;&#34;&#34;
+    Update() runs every frame on every object that has this component.
+    &#34;&#34;&#34;
+    return False</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+<dt id="PythonGEUtils.engine.Camera"><code class="flex name class">
+<span>class <span class="ident">Camera</span></span>
+<span>(</span><span>s)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>This is the default Camera component for the engine. Generally you do not want to edit this.</p></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">class Camera(BaseComponent):
+    def __init__(self,s):
+        &#34;&#34;&#34;
+        This is the default Camera component for the engine. Generally you do not want to edit this.
+        &#34;&#34;&#34;
+        self.parent = s
+        self.name = &#34;CAMERA&#34;
+        self.requiresStart = False
+    def CreateNew(self,s):
+        &#34;&#34;&#34;
+        CreateNew(self,s) creates a new Camera Object
+        &#34;&#34;&#34;
+        return Camera(s)
+    def SetMain(self):
+        &#34;&#34;&#34;
+        SetMain() will make the Camera calling the function the main camera and all rendering will be based from
+        the Camera&#39;s position.
+        &#34;&#34;&#34;
+        GetObjectByTag(&#34;Main Camera&#34;).tag = &#34;untagged&#34;
+        self.parent.tag = &#34;Main Camera&#34;</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="PythonGEUtils.engine.BaseComponent" href="#PythonGEUtils.engine.BaseComponent">BaseComponent</a></li>
+</ul>
+<h3>Methods</h3>
+<dl>
+<dt id="PythonGEUtils.engine.Camera.CreateNew"><code class="name flex">
+<span>def <span class="ident">CreateNew</span></span>(<span>self, s)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>CreateNew(self,s) creates a new Camera Object</p></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def CreateNew(self,s):
+    &#34;&#34;&#34;
+    CreateNew(self,s) creates a new Camera Object
+    &#34;&#34;&#34;
+    return Camera(s)</code></pre>
+</details>
+</dd>
+<dt id="PythonGEUtils.engine.Camera.SetMain"><code class="name flex">
+<span>def <span class="ident">SetMain</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>SetMain() will make the Camera calling the function the main camera and all rendering will be based from
+the Camera's position.</p></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def SetMain(self):
+    &#34;&#34;&#34;
+    SetMain() will make the Camera calling the function the main camera and all rendering will be based from
+    the Camera&#39;s position.
+    &#34;&#34;&#34;
+    GetObjectByTag(&#34;Main Camera&#34;).tag = &#34;untagged&#34;
+    self.parent.tag = &#34;Main Camera&#34;</code></pre>
+</details>
+</dd>
+</dl>
+<h3>Inherited members</h3>
+<ul class="hlist">
+<li><code><b><a title="PythonGEUtils.engine.BaseComponent" href="#PythonGEUtils.engine.BaseComponent">BaseComponent</a></b></code>:
+<ul class="hlist">
+<li><code><a title="PythonGEUtils.engine.BaseComponent.Start" href="#PythonGEUtils.engine.BaseComponent.Start">Start</a></code></li>
+<li><code><a title="PythonGEUtils.engine.BaseComponent.Update" href="#PythonGEUtils.engine.BaseComponent.Update">Update</a></code></li>
+</ul>
+</li>
+</ul>
+</dd>
+<dt id="PythonGEUtils.engine.Collider"><code class="flex name class">
+<span>class <span class="ident">Collider</span></span>
+<span>(</span><span>s)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>A Collider allows collision between 2 or more objects to be detected as well as these can be used as triggers where the objects can pass through each other
+but they still tell you what is colliding.</p></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">class Collider(BaseComponent):
+    def __init__(self,s):
+        &#34;&#34;&#34;
+        A Collider allows collision between 2 or more objects to be detected as well as these can be used as triggers where the objects can pass through each other
+        but they still tell you what is colliding.
+        &#34;&#34;&#34;
+        self.parent = s
+        self.name = &#34;COLLIDER&#34;
+        self.requiresStart = False
+        self.collidingWith = []
+        self.size = [1,1]
+        self.offset = [0,0]
+        self.whereCollision = [False,False,False,False] #TopLeft/TopRight/BottomLeft/BottomRight
+        self.friction = 0.065
+        self.trigger = False
+    def __str__(self):
+        return self.name
+    def IsCollidedWith(self,other):
+        &#34;&#34;&#34;
+        IsCollidedWith(other) will return true if you are colliding with &#39;other&#39; and return false if you are not.
+        &#34;&#34;&#34;
+        self.whereCollision = [False,False,False,False]
+        otherData = pygame.Rect(other.GetColliderData())
+        selfData = pygame.Rect(self.parent.GetColliderData())
+
+        if(selfData.colliderect(otherData)):
+            return True
+
+        #If colliding with nothing
+        return False
+    def CollisionBox(self,size,offset=&#34;DEFAULT&#34;):
+        &#34;&#34;&#34;
+        This creates a temporary collision detection zone around the GameObject in the shape of a rectangle/box. It returns all objects colliding with it.
+        &#34;&#34;&#34;
+        if(offset == &#34;DEFAULT&#34;):
+            offset = [-size[0]/2,-size[1]/2]
+        colliders = []
+        for obj in GetObjects():
+            if(obj.DirectComponent(&#34;COLLIDER&#34;) == None or obj == self.parent):
+                continue
+            otherData = pygame.Rect(obj.GetColliderData())
+            selfData = pygame.Rect(self.parent.position[0]+offset[0],self.parent.position[1]+offset[1],size[0],size[1])
+            if(selfData.colliderect(otherData)):
+                colliders.append(obj)
+        return colliders
+    def CollidingWithCollider(self):
+        for col in self.collidingWith:
+            if(col.components[col.GetComponent(&#34;COLLIDER&#34;)].trigger):
+                return True
+        return False
+    def ApplyFriction(self):
+        &#34;&#34;&#34;
+        ApplyFriction() applies friction to the object. ApplyFriction() gets automatically run.
+        &#34;&#34;&#34;
+        if(self.trigger):
+            return
+        curVelocity = self.parent.components[self.parent.GetComponent(&#34;RIGIDBODY&#34;)].velocity
+        if(self.whereCollision[0] == True or self.whereCollision[1] == True):
+            if(curVelocity[0] &lt; 0):
+                curVelocity[0] += curVelocity[0] * self.friction
+            elif(curVelocity[0] &gt; 0):
+                curVelocity[0] -= curVelocity[0] * self.friction
+        self.parent.components[self.parent.GetComponent(&#34;RIGIDBODY&#34;)].velocity = curVelocity
+    def CreateNew(self,s):
+        &#34;&#34;&#34;
+        CreateNew(self,s) creates a new instance of Collider()
+        &#34;&#34;&#34;
+        return Collider(s)
+    def Update(self):
+        global objects
+        self.collidingWith = []
+        for other in objects:
+            if(other.GetComponent(&#34;COLLIDER&#34;) != None and other.index != self.parent.index):
+                if(self.IsCollidedWith(other)):
+                    if(other.GetComponent(&#34;RIGIDBODY&#34;) != None):
+                        blockCollision = True
+                        if(other.GetComponent(&#34;COLLIDER&#34;) != None and other.components[other.GetComponent(&#34;COLLIDER&#34;)].trigger == True):
+                            blockCollision = False
+                        if(self.parent.GetComponent(&#34;COLLIDER&#34;) != None and self.parent.components[self.parent.GetComponent(&#34;COLLIDER&#34;)].trigger == True):
+                            blockCollision = False
+
+                        if(blockCollision):
+                            other.components[other.GetComponent(&#34;RIGIDBODY&#34;)].velocity[1] = mathf.Clamp(other.components[other.GetComponent(&#34;RIGIDBODY&#34;)].velocity[1]-0.05,0,10000)
+                            self.ApplyFriction()
+                    self.collidingWith.append(other)
+                    continue
+        if(len(self.collidingWith) &gt; 0 and self.trigger == False):
+            #print(self.parent.GetComponent(&#34;RIGIDBODY&#34;))
+            if(self.parent.GetComponent(&#34;RIGIDBODY&#34;) != None and self.CollidingWithCollider() and other.GetComponent(&#34;COLLIDER&#34;) != None):
+                self.parent.components[self.parent.GetComponent(&#34;RIGIDBODY&#34;)].velocity[1] = mathf.Clamp(other.components[other.GetComponent(&#34;RIGIDBODY&#34;)].velocity[1]-0.05,0,10000)
+                self.ApplyFriction()
+        #print(self.collidingWith,self.parent.name)
+    def SetAsImage(self,i=None):
+        &#34;&#34;&#34;
+        SetAsImage() will set the collider dimensions as the image&#39;s dimensions. If an image is given as a parameter it will become the size of that image.
+        &#34;&#34;&#34;
+        global objects, sprites, gameRunning, queuedEvents
+
+        #if(gameRunning == False):
+        #    queuedEvents.append(self.SetAsImage)
+        #    return
+
+        #print(self.parent)
+        img = None
+        if(i == None):
+            if(sprites == []):
+                raise(&#34;Uninitialized Games Require an input of the sprite&#34;)
+            img = sprites[self.parent.components[self.parent.GetComponent(&#34;RENDERER&#34;)].sprite]
+        else:
+            img = i
+        self.size[0] = img.get_width() * self.parent.scale[0]
+        self.size[1] = img.get_height() * self.parent.scale[1]</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="PythonGEUtils.engine.BaseComponent" href="#PythonGEUtils.engine.BaseComponent">BaseComponent</a></li>
+</ul>
+<h3>Methods</h3>
+<dl>
+<dt id="PythonGEUtils.engine.Collider.ApplyFriction"><code class="name flex">
+<span>def <span class="ident">ApplyFriction</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>ApplyFriction() applies friction to the object. ApplyFriction() gets automatically run.</p></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def ApplyFriction(self):
+    &#34;&#34;&#34;
+    ApplyFriction() applies friction to the object. ApplyFriction() gets automatically run.
+    &#34;&#34;&#34;
+    if(self.trigger):
+        return
+    curVelocity = self.parent.components[self.parent.GetComponent(&#34;RIGIDBODY&#34;)].velocity
+    if(self.whereCollision[0] == True or self.whereCollision[1] == True):
+        if(curVelocity[0] &lt; 0):
+            curVelocity[0] += curVelocity[0] * self.friction
+        elif(curVelocity[0] &gt; 0):
+            curVelocity[0] -= curVelocity[0] * self.friction
+    self.parent.components[self.parent.GetComponent(&#34;RIGIDBODY&#34;)].velocity = curVelocity</code></pre>
+</details>
+</dd>
+<dt id="PythonGEUtils.engine.Collider.CollidingWithCollider"><code class="name flex">
+<span>def <span class="ident">CollidingWithCollider</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def CollidingWithCollider(self):
+    for col in self.collidingWith:
+        if(col.components[col.GetComponent(&#34;COLLIDER&#34;)].trigger):
+            return True
+    return False</code></pre>
+</details>
+</dd>
+<dt id="PythonGEUtils.engine.Collider.CollisionBox"><code class="name flex">
+<span>def <span class="ident">CollisionBox</span></span>(<span>self, size, offset='DEFAULT')</span>
+</code></dt>
+<dd>
+<section class="desc"><p>This creates a temporary collision detection zone around the GameObject in the shape of a rectangle/box. It returns all objects colliding with it.</p></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def CollisionBox(self,size,offset=&#34;DEFAULT&#34;):
+    &#34;&#34;&#34;
+    This creates a temporary collision detection zone around the GameObject in the shape of a rectangle/box. It returns all objects colliding with it.
+    &#34;&#34;&#34;
+    if(offset == &#34;DEFAULT&#34;):
+        offset = [-size[0]/2,-size[1]/2]
+    colliders = []
+    for obj in GetObjects():
+        if(obj.DirectComponent(&#34;COLLIDER&#34;) == None or obj == self.parent):
+            continue
+        otherData = pygame.Rect(obj.GetColliderData())
+        selfData = pygame.Rect(self.parent.position[0]+offset[0],self.parent.position[1]+offset[1],size[0],size[1])
+        if(selfData.colliderect(otherData)):
+            colliders.append(obj)
+    return colliders</code></pre>
+</details>
+</dd>
+<dt id="PythonGEUtils.engine.Collider.CreateNew"><code class="name flex">
+<span>def <span class="ident">CreateNew</span></span>(<span>self, s)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>CreateNew(self,s) creates a new instance of Collider()</p></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def CreateNew(self,s):
+    &#34;&#34;&#34;
+    CreateNew(self,s) creates a new instance of Collider()
+    &#34;&#34;&#34;
+    return Collider(s)</code></pre>
+</details>
+</dd>
+<dt id="PythonGEUtils.engine.Collider.IsCollidedWith"><code class="name flex">
+<span>def <span class="ident">IsCollidedWith</span></span>(<span>self, other)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>IsCollidedWith(other) will return true if you are colliding with 'other' and return false if you are not.</p></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def IsCollidedWith(self,other):
+    &#34;&#34;&#34;
+    IsCollidedWith(other) will return true if you are colliding with &#39;other&#39; and return false if you are not.
+    &#34;&#34;&#34;
+    self.whereCollision = [False,False,False,False]
+    otherData = pygame.Rect(other.GetColliderData())
+    selfData = pygame.Rect(self.parent.GetColliderData())
+
+    if(selfData.colliderect(otherData)):
+        return True
+
+    #If colliding with nothing
+    return False</code></pre>
+</details>
+</dd>
+<dt id="PythonGEUtils.engine.Collider.SetAsImage"><code class="name flex">
+<span>def <span class="ident">SetAsImage</span></span>(<span>self, i=None)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>SetAsImage() will set the collider dimensions as the image's dimensions. If an image is given as a parameter it will become the size of that image.</p></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def SetAsImage(self,i=None):
+    &#34;&#34;&#34;
+    SetAsImage() will set the collider dimensions as the image&#39;s dimensions. If an image is given as a parameter it will become the size of that image.
+    &#34;&#34;&#34;
+    global objects, sprites, gameRunning, queuedEvents
+
+    #if(gameRunning == False):
+    #    queuedEvents.append(self.SetAsImage)
+    #    return
+
+    #print(self.parent)
+    img = None
+    if(i == None):
+        if(sprites == []):
+            raise(&#34;Uninitialized Games Require an input of the sprite&#34;)
+        img = sprites[self.parent.components[self.parent.GetComponent(&#34;RENDERER&#34;)].sprite]
+    else:
+        img = i
+    self.size[0] = img.get_width() * self.parent.scale[0]
+    self.size[1] = img.get_height() * self.parent.scale[1]</code></pre>
+</details>
+</dd>
+</dl>
+<h3>Inherited members</h3>
+<ul class="hlist">
+<li><code><b><a title="PythonGEUtils.engine.BaseComponent" href="#PythonGEUtils.engine.BaseComponent">BaseComponent</a></b></code>:
+<ul class="hlist">
+<li><code><a title="PythonGEUtils.engine.BaseComponent.Start" href="#PythonGEUtils.engine.BaseComponent.Start">Start</a></code></li>
+<li><code><a title="PythonGEUtils.engine.BaseComponent.Update" href="#PythonGEUtils.engine.BaseComponent.Update">Update</a></code></li>
+</ul>
+</li>
+</ul>
+</dd>
+<dt id="PythonGEUtils.engine.ConstantMovement"><code class="flex name class">
+<span>class <span class="ident">ConstantMovement</span></span>
+<span>(</span><span>s)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>ConstantMovement will apply a constant velocity to an object.</p></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">class ConstantMovement(BaseComponent):
+    def __init__(self,s):
+        &#34;&#34;&#34;
+        ConstantMovement will apply a constant velocity to an object.
+        &#34;&#34;&#34;
+        self.parent = s
+        self.name = &#34;CONSTANTMOVEMENT&#34;
+        self.requiresStart = False
+        self.constantVelocity = [1,0]
+    def CreateNew(self,s):
+        &#34;&#34;&#34;
+        CreateNew(self,s) creates a new instance of ConstantMovement()
+        &#34;&#34;&#34;
+        return ConstantMovement(s)
+    def Update(self):
+        self.parent.components[self.parent.GetComponent(&#34;RIGIDBODY&#34;)].velocity = self.constantVelocity</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="PythonGEUtils.engine.BaseComponent" href="#PythonGEUtils.engine.BaseComponent">BaseComponent</a></li>
+</ul>
+<h3>Methods</h3>
+<dl>
+<dt id="PythonGEUtils.engine.ConstantMovement.CreateNew"><code class="name flex">
+<span>def <span class="ident">CreateNew</span></span>(<span>self, s)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>CreateNew(self,s) creates a new instance of ConstantMovement()</p></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def CreateNew(self,s):
+    &#34;&#34;&#34;
+    CreateNew(self,s) creates a new instance of ConstantMovement()
+    &#34;&#34;&#34;
+    return ConstantMovement(s)</code></pre>
+</details>
+</dd>
+</dl>
+<h3>Inherited members</h3>
+<ul class="hlist">
+<li><code><b><a title="PythonGEUtils.engine.BaseComponent" href="#PythonGEUtils.engine.BaseComponent">BaseComponent</a></b></code>:
+<ul class="hlist">
+<li><code><a title="PythonGEUtils.engine.BaseComponent.Start" href="#PythonGEUtils.engine.BaseComponent.Start">Start</a></code></li>
+<li><code><a title="PythonGEUtils.engine.BaseComponent.Update" href="#PythonGEUtils.engine.BaseComponent.Update">Update</a></code></li>
+</ul>
+</li>
+</ul>
+</dd>
+<dt id="PythonGEUtils.engine.GameInfo"><code class="flex name class">
+<span>class <span class="ident">GameInfo</span></span>
+<span>(</span><span>name, properties, components, scenes, defaultSceneIndex, sprites)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>GameInfo() is a class that contains your entire game that you submit using
+LaunchGame(GameInfo) to start your game.</p></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">class GameInfo():
+    &#34;&#34;&#34;
+    GameInfo() is a class that contains your entire game that you submit using
+    LaunchGame(GameInfo) to start your game.
+    &#34;&#34;&#34;
+    def __init__(self,name,properties,components,scenes,defaultSceneIndex,sprites):
+        self.name = name
+        self.properties = properties
+        self.scenes = scenes
+        self.components = components
+        self.defaultSceneIndex = defaultSceneIndex
+        self.sprites = sprites
+        #Do default settings
+        if(&#34;RESOLUTION&#34; not in self.properties):
+            self.properties[&#34;RESOLUTION&#34;] = (800,600)
+        if(&#34;GRAVITY&#34; not in self.properties):
+            self.properties[&#34;GRAVITY&#34;] = -0.035
+        if(&#34;KEYREPEAT&#34; not in self.properties):
+            self.properties[&#34;KEYREPEAT&#34;] = (50,50)</code></pre>
+</details>
+</dd>
+<dt id="PythonGEUtils.engine.GameObject"><code class="flex name class">
+<span>class <span class="ident">GameObject</span></span>
+<span>(</span><span>name='New GameObject')</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Base class for all entities in a Scene. A blank GameObject cannot do much, to allow it to function as you wish you must add custom or premade components.</p></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">class GameObject():
+    def __init__(self,name=&#34;New GameObject&#34;):
+        &#34;&#34;&#34;
+                   Base class for all entities in a Scene. A blank GameObject cannot do much, to allow it to function as you wish you must add custom or premade components.     
+        &#34;&#34;&#34;
+        global lastObjectID
+        self.active = True
+        self.index = lastObjectID
+        self.name = name
+        self.tag = &#34;untagged&#34;
+        self.position = [0.0,0.0]
+        self.rotation = 360
+        self.scale = [1,1]
+        self.components = []
+        lastObjectID += 1
+        self.oldPosition = [0.0,0.0]
+    def RemoveComponent(self,componentName):
+        &#34;&#34;&#34;
+        RemoveComponent(componentName) allows you to remove a component from
+        the GameObject by its name.
+        &#34;&#34;&#34;
+        for c in self.components:
+            if(c.name == componentName):
+                self.components.remove(c)
+                return True
+        return False
+    def AddComponent(self,componentName):
+        &#34;&#34;&#34;
+        AddComponent(componentName) allows you to add a component to the
+        GameObject by its name&#34;
+        &#34;&#34;&#34;
+        for c in componentMaster:
+            if(c.name == componentName):
+                self.components.append(c.CreateNew(self))
+    def GetComponent(self,componentName):
+        &#34;&#34;&#34;
+        GetComponent(componentName) will return the index of a component by
+        its name
+        &#34;&#34;&#34;
+        for comp in range(len(self.components)):
+            if(self.components[comp].name == componentName):
+                return comp
+        return None
+    def DirectComponent(self,componentName):
+        &#34;&#34;&#34;
+        GetComponent(componentName) will return a pointer to the object so
+        you can edit it directly.
+        &#34;&#34;&#34;
+        for comp in range(len(self.components)):
+            if(self.components[comp].name == componentName):
+                return self.components[comp]
+        return None
+    def __str__(self):
+        return self.name
+    def Destroy(self):
+        &#34;&#34;&#34;
+        Destroy() allows you to destroy the GameObject.
+        &#34;&#34;&#34;
+        global objects
+        if(self in objects):
+            objects.remove(self)
+    def GetColliderData(self):
+        &#34;&#34;&#34;
+        GetColliderData() will only work if you have a collider attached to
+        the GameObject. It is suggested you do not use this function as it
+        is mainly for the engine.
+        &#34;&#34;&#34;
+        if(self.GetComponent(&#34;COLLIDER&#34;) == None):
+            return None
+        else:
+            scale = self.scale
+            offset = self.components[self.GetComponent(&#34;COLLIDER&#34;)].offset
+            return [self.position[0]+offset[0],self.position[1]+offset[1],self.components[self.GetComponent(&#34;COLLIDER&#34;)].size[0],self.components[self.GetComponent(&#34;COLLIDER&#34;)].size[1]]</code></pre>
+</details>
+<h3>Methods</h3>
+<dl>
+<dt id="PythonGEUtils.engine.GameObject.AddComponent"><code class="name flex">
+<span>def <span class="ident">AddComponent</span></span>(<span>self, componentName)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>AddComponent(componentName) allows you to add a component to the
+GameObject by its name"</p></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def AddComponent(self,componentName):
+    &#34;&#34;&#34;
+    AddComponent(componentName) allows you to add a component to the
+    GameObject by its name&#34;
+    &#34;&#34;&#34;
+    for c in componentMaster:
+        if(c.name == componentName):
+            self.components.append(c.CreateNew(self))</code></pre>
+</details>
+</dd>
+<dt id="PythonGEUtils.engine.GameObject.Destroy"><code class="name flex">
+<span>def <span class="ident">Destroy</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Destroy() allows you to destroy the GameObject.</p></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def Destroy(self):
+    &#34;&#34;&#34;
+    Destroy() allows you to destroy the GameObject.
+    &#34;&#34;&#34;
+    global objects
+    if(self in objects):
+        objects.remove(self)</code></pre>
+</details>
+</dd>
+<dt id="PythonGEUtils.engine.GameObject.DirectComponent"><code class="name flex">
+<span>def <span class="ident">DirectComponent</span></span>(<span>self, componentName)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>GetComponent(componentName) will return a pointer to the object so
+you can edit it directly.</p></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def DirectComponent(self,componentName):
+    &#34;&#34;&#34;
+    GetComponent(componentName) will return a pointer to the object so
+    you can edit it directly.
+    &#34;&#34;&#34;
+    for comp in range(len(self.components)):
+        if(self.components[comp].name == componentName):
+            return self.components[comp]
+    return None</code></pre>
+</details>
+</dd>
+<dt id="PythonGEUtils.engine.GameObject.GetColliderData"><code class="name flex">
+<span>def <span class="ident">GetColliderData</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>GetColliderData() will only work if you have a collider attached to
+the GameObject. It is suggested you do not use this function as it
+is mainly for the engine.</p></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def GetColliderData(self):
+    &#34;&#34;&#34;
+    GetColliderData() will only work if you have a collider attached to
+    the GameObject. It is suggested you do not use this function as it
+    is mainly for the engine.
+    &#34;&#34;&#34;
+    if(self.GetComponent(&#34;COLLIDER&#34;) == None):
+        return None
+    else:
+        scale = self.scale
+        offset = self.components[self.GetComponent(&#34;COLLIDER&#34;)].offset
+        return [self.position[0]+offset[0],self.position[1]+offset[1],self.components[self.GetComponent(&#34;COLLIDER&#34;)].size[0],self.components[self.GetComponent(&#34;COLLIDER&#34;)].size[1]]</code></pre>
+</details>
+</dd>
+<dt id="PythonGEUtils.engine.GameObject.GetComponent"><code class="name flex">
+<span>def <span class="ident">GetComponent</span></span>(<span>self, componentName)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>GetComponent(componentName) will return the index of a component by
+its name</p></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def GetComponent(self,componentName):
+    &#34;&#34;&#34;
+    GetComponent(componentName) will return the index of a component by
+    its name
+    &#34;&#34;&#34;
+    for comp in range(len(self.components)):
+        if(self.components[comp].name == componentName):
+            return comp
+    return None</code></pre>
+</details>
+</dd>
+<dt id="PythonGEUtils.engine.GameObject.RemoveComponent"><code class="name flex">
+<span>def <span class="ident">RemoveComponent</span></span>(<span>self, componentName)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>RemoveComponent(componentName) allows you to remove a component from
+the GameObject by its name.</p></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def RemoveComponent(self,componentName):
+    &#34;&#34;&#34;
+    RemoveComponent(componentName) allows you to remove a component from
+    the GameObject by its name.
+    &#34;&#34;&#34;
+    for c in self.components:
+        if(c.name == componentName):
+            self.components.remove(c)
+            return True
+    return False</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+<dt id="PythonGEUtils.engine.Prefab"><code class="flex name class">
+<span>class <span class="ident">Prefab</span></span>
+<span>(</span><span>name, gO)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>When you want to reuse a GameObject multiple times (example: a tree) you should
+use a prefab as it allows you to create copies of a GameObject that you can
+edit certain variables afterwards.</p></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">class Prefab():
+    def __init__(self,name, gO):
+        &#34;&#34;&#34;
+        When you want to reuse a GameObject multiple times (example: a tree) you should
+        use a prefab as it allows you to create copies of a GameObject that you can
+        edit certain variables afterwards.
+        &#34;&#34;&#34;
+        global prefabs
+        self.name = name
+        self.gameObject = gO
+        prefabs.append(self)
+    def CreateInstance(self,position,rotation,scale):
+        &#34;&#34;&#34;
+        CreateInstance(position,rotation,scale) will create a copy of the parent prefab with the parameters
+        given as well as return the GameObject. This wont add it to the scene/game. You must instantiate the instance with Instantiate()!!!!
+        &#34;&#34;&#34;
+        global objects, lastObjectID
+        instance = GameObject()
+        img = errorImage
+        if(self.gameObject.GetComponent(&#34;RENDERER&#34;) != None):
+            img = self.gameObject.components[self.gameObject.GetComponent(&#34;RENDERER&#34;)].sprite
+            self.gameObject.components[self.gameObject.GetComponent(&#34;RENDERER&#34;)].sprite = &#34;&#34;
+        instance = copy.deepcopy(self.gameObject)
+        if(instance.GetComponent(&#34;RENDERER&#34;) != None):
+            instance.components[instance.GetComponent(&#34;RENDERER&#34;)].sprite = img
+            self.gameObject.components[self.gameObject.GetComponent(&#34;RENDERER&#34;)].sprite = img
+        instance.position = position
+        instance.rotation = rotation
+        instance.scale = scale
+        instance.index = lastObjectID
+        lastObjectID += 1
+        #objects.append(instance)
+        return instance</code></pre>
+</details>
+<h3>Methods</h3>
+<dl>
+<dt id="PythonGEUtils.engine.Prefab.CreateInstance"><code class="name flex">
+<span>def <span class="ident">CreateInstance</span></span>(<span>self, position, rotation, scale)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>CreateInstance(position,rotation,scale) will create a copy of the parent prefab with the parameters
+given as well as return the GameObject. This wont add it to the scene/game. You must instantiate the instance with Instantiate()!!!!</p></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def CreateInstance(self,position,rotation,scale):
+    &#34;&#34;&#34;
+    CreateInstance(position,rotation,scale) will create a copy of the parent prefab with the parameters
+    given as well as return the GameObject. This wont add it to the scene/game. You must instantiate the instance with Instantiate()!!!!
+    &#34;&#34;&#34;
+    global objects, lastObjectID
+    instance = GameObject()
+    img = errorImage
+    if(self.gameObject.GetComponent(&#34;RENDERER&#34;) != None):
+        img = self.gameObject.components[self.gameObject.GetComponent(&#34;RENDERER&#34;)].sprite
+        self.gameObject.components[self.gameObject.GetComponent(&#34;RENDERER&#34;)].sprite = &#34;&#34;
+    instance = copy.deepcopy(self.gameObject)
+    if(instance.GetComponent(&#34;RENDERER&#34;) != None):
+        instance.components[instance.GetComponent(&#34;RENDERER&#34;)].sprite = img
+        self.gameObject.components[self.gameObject.GetComponent(&#34;RENDERER&#34;)].sprite = img
+    instance.position = position
+    instance.rotation = rotation
+    instance.scale = scale
+    instance.index = lastObjectID
+    lastObjectID += 1
+    #objects.append(instance)
+    return instance</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+<dt id="PythonGEUtils.engine.Renderer"><code class="flex name class">
+<span>class <span class="ident">Renderer</span></span>
+<span>(</span><span>s)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>The renderer allows objects to be shown on the game screen. If you attach a sprite onto it through Renderer.sprite it will be displayed.</p></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">class Renderer(BaseComponent):
+    def __init__(self,s):
+        &#34;&#34;&#34;
+        The renderer allows objects to be shown on the game screen. If you attach a sprite onto it through Renderer.sprite it will be displayed.
+        &#34;&#34;&#34;
+        self.parent = s
+        self.name = &#34;RENDERER&#34;
+        self.requiresStart = False
+        self.sprite = errorImage
+        self.sortingLayer = 0
+        self.color = [255,255,255,255]
+    def CreateNew(self,s):
+        &#34;&#34;&#34;
+        CreateNew(self,s) creates a new Renderer Object
+        &#34;&#34;&#34;
+        return Renderer(s)</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="PythonGEUtils.engine.BaseComponent" href="#PythonGEUtils.engine.BaseComponent">BaseComponent</a></li>
+</ul>
+<h3>Methods</h3>
+<dl>
+<dt id="PythonGEUtils.engine.Renderer.CreateNew"><code class="name flex">
+<span>def <span class="ident">CreateNew</span></span>(<span>self, s)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>CreateNew(self,s) creates a new Renderer Object</p></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def CreateNew(self,s):
+    &#34;&#34;&#34;
+    CreateNew(self,s) creates a new Renderer Object
+    &#34;&#34;&#34;
+    return Renderer(s)</code></pre>
+</details>
+</dd>
+</dl>
+<h3>Inherited members</h3>
+<ul class="hlist">
+<li><code><b><a title="PythonGEUtils.engine.BaseComponent" href="#PythonGEUtils.engine.BaseComponent">BaseComponent</a></b></code>:
+<ul class="hlist">
+<li><code><a title="PythonGEUtils.engine.BaseComponent.Start" href="#PythonGEUtils.engine.BaseComponent.Start">Start</a></code></li>
+<li><code><a title="PythonGEUtils.engine.BaseComponent.Update" href="#PythonGEUtils.engine.BaseComponent.Update">Update</a></code></li>
+</ul>
+</li>
+</ul>
+</dd>
+<dt id="PythonGEUtils.engine.Rigidbody"><code class="flex name class">
+<span>class <span class="ident">Rigidbody</span></span>
+<span>(</span><span>s)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Rigidbody's are used to have an object undergo physics.</p></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">class Rigidbody(BaseComponent):
+    def __init__(self,s):
+        &#34;&#34;&#34;
+        Rigidbody&#39;s are used to have an object undergo physics.
+        &#34;&#34;&#34;
+        self.parent = s
+        self.name = &#34;RIGIDBODY&#34;
+        self.requiresStart = True
+        self.velocity = [0.0,0.0]
+        self.lockedY = False
+        self.lockedX= False
+    def CreateNew(self,s):
+        &#34;&#34;&#34;
+        CreateNew(self,s) creates a new instance of Rigidbody()
+        &#34;&#34;&#34;
+        return Rigidbody(s)
+    def Update(self):
+        global properties, deltaTime, objects
+        if(self.lockedY == False):
+            self.velocity[1] += properties[&#34;GRAVITY&#34;]
+            #print(&#34;TEST&#34;)
+            #if(self.parent.components[self.parent.GetComponent(&#34;COLLIDER&#34;)].whereCollision[2] or self.parent.components[self.parent.GetComponent(&#34;COLLIDER&#34;)].whereCollision[3]):
+            #    objects[self.parent.index].position[1] += 10
+        else:
+            self.velocity[1] = 0
+        if(self.lockedX == True):
+            self.velocity[0] = 0</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="PythonGEUtils.engine.BaseComponent" href="#PythonGEUtils.engine.BaseComponent">BaseComponent</a></li>
+</ul>
+<h3>Methods</h3>
+<dl>
+<dt id="PythonGEUtils.engine.Rigidbody.CreateNew"><code class="name flex">
+<span>def <span class="ident">CreateNew</span></span>(<span>self, s)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>CreateNew(self,s) creates a new instance of Rigidbody()</p></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def CreateNew(self,s):
+    &#34;&#34;&#34;
+    CreateNew(self,s) creates a new instance of Rigidbody()
+    &#34;&#34;&#34;
+    return Rigidbody(s)</code></pre>
+</details>
+</dd>
+</dl>
+<h3>Inherited members</h3>
+<ul class="hlist">
+<li><code><b><a title="PythonGEUtils.engine.BaseComponent" href="#PythonGEUtils.engine.BaseComponent">BaseComponent</a></b></code>:
+<ul class="hlist">
+<li><code><a title="PythonGEUtils.engine.BaseComponent.Start" href="#PythonGEUtils.engine.BaseComponent.Start">Start</a></code></li>
+<li><code><a title="PythonGEUtils.engine.BaseComponent.Update" href="#PythonGEUtils.engine.BaseComponent.Update">Update</a></code></li>
+</ul>
+</li>
+</ul>
+</dd>
+<dt id="PythonGEUtils.engine.Scene"><code class="flex name class">
+<span>class <span class="ident">Scene</span></span>
+<span>(</span><span>name='New Scene', objects=[], defaultCamera=True)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Scene's are a collection of GameObjects that can be loaded/unloaded easily fast and quick. (see LoadScene())</p>
+<p>Scene(name,objects) can be passed through or Scene(name,objects,defaultCamera=True) can be passed. If you pass
+defaultCamera as true (which is true by default) it will automatically add the camera to your scene.</p></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">class Scene():
+    def __init__(self,name=&#34;New Scene&#34;,objects=[], defaultCamera=True):
+        &#34;&#34;&#34;
+        Scene&#39;s are a collection of GameObjects that can be loaded/unloaded easily fast and quick. (see LoadScene())
+
+        Scene(name,objects) can be passed through or Scene(name,objects,defaultCamera=True) can be passed. If you pass
+        defaultCamera as true (which is true by default) it will automatically add the camera to your scene.
+        &#34;&#34;&#34;
+        self.name = name
+        self.objects = objects
+        if(defaultCamera):
+            cam = GameObject(&#34;Default Camera&#34;)
+            cam.AddComponent(&#34;CAMERA&#34;)
+            #cam.AddComponent(&#34;RIGIDBODY&#34;) #Was For Testing
+            cam.tag = &#34;Main Camera&#34;
+            self.objects.append(CloneGameObject(cam))
+    def AddObject(self,gO):
+        &#34;&#34;&#34;
+        AddObject(gameObject) will take the game object passed and add it to the scene, it will not be loaded into the game until the scene is loaded.
+        &#34;&#34;&#34;
+        global objects
+        instance = GameObject()
+        img = errorImage
+        if(gO.GetComponent(&#34;RENDERER&#34;) != None):
+            img = gO.components[gO.GetComponent(&#34;RENDERER&#34;)].sprite
+            gO.components[gO.GetComponent(&#34;RENDERER&#34;)].sprite = &#34;&#34;
+        instance = copy.deepcopy(gO)
+        if(instance.GetComponent(&#34;RENDERER&#34;) != None):
+            instance.components[instance.GetComponent(&#34;RENDERER&#34;)].sprite = img
+            gO.components[gO.GetComponent(&#34;RENDERER&#34;)].sprite = img
+        self.objects.append(instance)
+        #objects.append(instance)
+    def AddObjects(self,gOs):
+        &#34;&#34;&#34;
+        AddObjects(gameObjects) will add every passed GameObject in the list given to the scene, it will not be loaded into the game until the scene is loaded.
+        &#34;&#34;&#34;
+        for o in gOs:
+            self.AddObject(o)</code></pre>
+</details>
+<h3>Methods</h3>
+<dl>
+<dt id="PythonGEUtils.engine.Scene.AddObject"><code class="name flex">
+<span>def <span class="ident">AddObject</span></span>(<span>self, gO)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>AddObject(gameObject) will take the game object passed and add it to the scene, it will not be loaded into the game until the scene is loaded.</p></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def AddObject(self,gO):
+    &#34;&#34;&#34;
+    AddObject(gameObject) will take the game object passed and add it to the scene, it will not be loaded into the game until the scene is loaded.
+    &#34;&#34;&#34;
+    global objects
+    instance = GameObject()
+    img = errorImage
+    if(gO.GetComponent(&#34;RENDERER&#34;) != None):
+        img = gO.components[gO.GetComponent(&#34;RENDERER&#34;)].sprite
+        gO.components[gO.GetComponent(&#34;RENDERER&#34;)].sprite = &#34;&#34;
+    instance = copy.deepcopy(gO)
+    if(instance.GetComponent(&#34;RENDERER&#34;) != None):
+        instance.components[instance.GetComponent(&#34;RENDERER&#34;)].sprite = img
+        gO.components[gO.GetComponent(&#34;RENDERER&#34;)].sprite = img
+    self.objects.append(instance)</code></pre>
+</details>
+</dd>
+<dt id="PythonGEUtils.engine.Scene.AddObjects"><code class="name flex">
+<span>def <span class="ident">AddObjects</span></span>(<span>self, gOs)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>AddObjects(gameObjects) will add every passed GameObject in the list given to the scene, it will not be loaded into the game until the scene is loaded.</p></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def AddObjects(self,gOs):
+    &#34;&#34;&#34;
+    AddObjects(gameObjects) will add every passed GameObject in the list given to the scene, it will not be loaded into the game until the scene is loaded.
+    &#34;&#34;&#34;
+    for o in gOs:
+        self.AddObject(o)</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+<dt id="PythonGEUtils.engine.UIButton"><code class="flex name class">
+<span>class <span class="ident">UIButton</span></span>
+<span>(</span><span>s)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>UIButton() is used for when you want to create a button and allow for a user to click it and invoke
+an action(s).</p></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">class UIButton(BaseComponent):
+    def __init__(self,s):
+        &#34;&#34;&#34;
+        UIButton() is used for when you want to create a button and allow for a user to click it and invoke
+        an action(s).
+        &#34;&#34;&#34;
+        self.parent = s
+        self.name = &#34;UIBUTTON&#34;
+        self.sprite = errorImage
+        self.requiresStart = False
+        self.functions = []
+        self.centered = True
+        self.pressed = False
+    def CreateNew(self,s):
+        &#34;&#34;&#34;
+        CreateNew(self,s) creates a new instance of UIButton()
+        &#34;&#34;&#34;
+        return UIButton(s)
+    def Update(self):
+        global sprites
+        x = False
+        for event in self.events:
+            if(event.type == pygame.MOUSEBUTTONDOWN):
+                x = True
+        if(x == False):
+            return
+        mPos = pygame.mouse.get_pos()
+        loadedSprite = sprites[self.sprite]
+        if(self.centered == False):
+            if(mPos[0] &gt;= self.parent.position[0] and mPos[0] &lt;= self.parent.position[0]+(loadedSprite.get_width() * self.parent.scale[0])):
+                if((mPos[1] &gt;= self.parent.position[1] and mPos[1] &lt;= self.parent.position[1]+(loadedSprite.get_height() * self.parent.scale[1]))):
+                    for function in self.functions:
+                        exec(function)
+                    #print(&#34;Test&#34;)
+        else:
+            if(mPos[0] &gt;= self.parent.position[0]-(loadedSprite.get_width()/2 * self.parent.scale[0]) and mPos[0] &lt;= self.parent.position[0]+(loadedSprite.get_width()/2 * self.parent.scale[0])):
+                if((mPos[1] &gt;= self.parent.position[1]-(loadedSprite.get_width()/2 * self.parent.scale[0]) and mPos[1] &lt;= self.parent.position[1]+(loadedSprite.get_height()/2 * self.parent.scale[1]))):
+                    for function in self.functions:
+                        exec(function)
+                    #print(&#34;Test&#34;)
+        self.pressed = True</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="PythonGEUtils.engine.BaseComponent" href="#PythonGEUtils.engine.BaseComponent">BaseComponent</a></li>
+</ul>
+<h3>Methods</h3>
+<dl>
+<dt id="PythonGEUtils.engine.UIButton.CreateNew"><code class="name flex">
+<span>def <span class="ident">CreateNew</span></span>(<span>self, s)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>CreateNew(self,s) creates a new instance of UIButton()</p></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def CreateNew(self,s):
+    &#34;&#34;&#34;
+    CreateNew(self,s) creates a new instance of UIButton()
+    &#34;&#34;&#34;
+    return UIButton(s)</code></pre>
+</details>
+</dd>
+</dl>
+<h3>Inherited members</h3>
+<ul class="hlist">
+<li><code><b><a title="PythonGEUtils.engine.BaseComponent" href="#PythonGEUtils.engine.BaseComponent">BaseComponent</a></b></code>:
+<ul class="hlist">
+<li><code><a title="PythonGEUtils.engine.BaseComponent.Start" href="#PythonGEUtils.engine.BaseComponent.Start">Start</a></code></li>
+<li><code><a title="PythonGEUtils.engine.BaseComponent.Update" href="#PythonGEUtils.engine.BaseComponent.Update">Update</a></code></li>
+</ul>
+</li>
+</ul>
+</dd>
+<dt id="PythonGEUtils.engine.UIText"><code class="flex name class">
+<span>class <span class="ident">UIText</span></span>
+<span>(</span><span>s)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>UIText is used for when you want to create text and display it to the screen.</p></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">class UIText(BaseComponent):
+    def __init__(self,s):
+        &#34;&#34;&#34;
+        UIText is used for when you want to create text and display it to the screen.
+        &#34;&#34;&#34;
+        self.parent = s
+        self.name = &#34;UITEXT&#34;
+        self.text = &#34;New Text&#34;
+        self.font = &#34;Comic Sans MS&#34;
+        self.size = 30
+        self.offset = [0,0]
+        self.requiresStart = True
+        self.generatedFont = &#34;&#34;
+        self.generatedRender = &#34;&#34;
+        self.centered = False
+        self.lastTextGenerated = &#34;&#34;
+        self.lastTextSize = 30
+    def CreateNew(self,s):
+        &#34;&#34;&#34;
+        CreateNew(self,s) creates a new instance of UIText()
+        &#34;&#34;&#34;
+        return UIText(s)
+    def GenerateText(self):
+        &#34;&#34;&#34;
+        It is not recommended you use GenerateText() as it is mainly for the engine to use to generate
+        the image of the text.
+
+        GenerateText() will use the variables contained in UIText() and generates an image, then the image
+        gets stored in self.generatedRender
+        &#34;&#34;&#34;
+        self.generatedFont = pygame.font.SysFont(self.font,self.size)
+        self.generatedRender = self.generatedFont.render(self.text,True,(0,0,0))
+        self.lastTextGenerated = self.text
+        self.lastTextSize = self.size
+    def Start(self):
+        self.GenerateText()
+    def Update(self):
+        if(self.lastTextGenerated != self.text or self.lastTextSize != self.size):
+            self.GenerateText()</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="PythonGEUtils.engine.BaseComponent" href="#PythonGEUtils.engine.BaseComponent">BaseComponent</a></li>
+</ul>
+<h3>Methods</h3>
+<dl>
+<dt id="PythonGEUtils.engine.UIText.CreateNew"><code class="name flex">
+<span>def <span class="ident">CreateNew</span></span>(<span>self, s)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>CreateNew(self,s) creates a new instance of UIText()</p></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def CreateNew(self,s):
+    &#34;&#34;&#34;
+    CreateNew(self,s) creates a new instance of UIText()
+    &#34;&#34;&#34;
+    return UIText(s)</code></pre>
+</details>
+</dd>
+<dt id="PythonGEUtils.engine.UIText.GenerateText"><code class="name flex">
+<span>def <span class="ident">GenerateText</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>It is not recommended you use GenerateText() as it is mainly for the engine to use to generate
+the image of the text.</p>
+<p>GenerateText() will use the variables contained in UIText() and generates an image, then the image
+gets stored in self.generatedRender</p></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def GenerateText(self):
+    &#34;&#34;&#34;
+    It is not recommended you use GenerateText() as it is mainly for the engine to use to generate
+    the image of the text.
+
+    GenerateText() will use the variables contained in UIText() and generates an image, then the image
+    gets stored in self.generatedRender
+    &#34;&#34;&#34;
+    self.generatedFont = pygame.font.SysFont(self.font,self.size)
+    self.generatedRender = self.generatedFont.render(self.text,True,(0,0,0))
+    self.lastTextGenerated = self.text
+    self.lastTextSize = self.size</code></pre>
+</details>
+</dd>
+</dl>
+<h3>Inherited members</h3>
+<ul class="hlist">
+<li><code><b><a title="PythonGEUtils.engine.BaseComponent" href="#PythonGEUtils.engine.BaseComponent">BaseComponent</a></b></code>:
+<ul class="hlist">
+<li><code><a title="PythonGEUtils.engine.BaseComponent.Start" href="#PythonGEUtils.engine.BaseComponent.Start">Start</a></code></li>
+<li><code><a title="PythonGEUtils.engine.BaseComponent.Update" href="#PythonGEUtils.engine.BaseComponent.Update">Update</a></code></li>
+</ul>
+</li>
+</ul>
+</dd>
+</dl>
+</section>
+</article>
+<nav id="sidebar">
+<h1>Index</h1>
+<div class="toc">
+<ul></ul>
+</div>
+<ul id="index">
+<li><h3>Super-module</h3>
+<ul>
+<li><code><a title="PythonGEUtils" href="index.html">PythonGEUtils</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-functions">Functions</a></h3>
+<ul class="">
+<li><code><a title="PythonGEUtils.engine.CloneGameObject" href="#PythonGEUtils.engine.CloneGameObject">CloneGameObject</a></code></li>
+<li><code><a title="PythonGEUtils.engine.CreateComponentSeperate" href="#PythonGEUtils.engine.CreateComponentSeperate">CreateComponentSeperate</a></code></li>
+<li><code><a title="PythonGEUtils.engine.DoComponentSpecialFunctions" href="#PythonGEUtils.engine.DoComponentSpecialFunctions">DoComponentSpecialFunctions</a></code></li>
+<li><code><a title="PythonGEUtils.engine.DoPhysics" href="#PythonGEUtils.engine.DoPhysics">DoPhysics</a></code></li>
+<li><code><a title="PythonGEUtils.engine.FindAllComponents" href="#PythonGEUtils.engine.FindAllComponents">FindAllComponents</a></code></li>
+<li><code><a title="PythonGEUtils.engine.GetObject" href="#PythonGEUtils.engine.GetObject">GetObject</a></code></li>
+<li><code><a title="PythonGEUtils.engine.GetObjectByName" href="#PythonGEUtils.engine.GetObjectByName">GetObjectByName</a></code></li>
+<li><code><a title="PythonGEUtils.engine.GetObjectByTag" href="#PythonGEUtils.engine.GetObjectByTag">GetObjectByTag</a></code></li>
+<li><code><a title="PythonGEUtils.engine.GetObjects" href="#PythonGEUtils.engine.GetObjects">GetObjects</a></code></li>
+<li><code><a title="PythonGEUtils.engine.GetObjectsByName" href="#PythonGEUtils.engine.GetObjectsByName">GetObjectsByName</a></code></li>
+<li><code><a title="PythonGEUtils.engine.GetObjectsByTag" href="#PythonGEUtils.engine.GetObjectsByTag">GetObjectsByTag</a></code></li>
+<li><code><a title="PythonGEUtils.engine.InputSystem" href="#PythonGEUtils.engine.InputSystem">InputSystem</a></code></li>
+<li><code><a title="PythonGEUtils.engine.Instantiate" href="#PythonGEUtils.engine.Instantiate">Instantiate</a></code></li>
+<li><code><a title="PythonGEUtils.engine.LaunchGame" href="#PythonGEUtils.engine.LaunchGame">LaunchGame</a></code></li>
+<li><code><a title="PythonGEUtils.engine.LoadScene" href="#PythonGEUtils.engine.LoadScene">LoadScene</a></code></li>
+<li><code><a title="PythonGEUtils.engine.RenderEngine" href="#PythonGEUtils.engine.RenderEngine">RenderEngine</a></code></li>
+<li><code><a title="PythonGEUtils.engine.ScreenToWorldPoint" href="#PythonGEUtils.engine.ScreenToWorldPoint">ScreenToWorldPoint</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-classes">Classes</a></h3>
+<ul>
+<li>
+<h4><code><a title="PythonGEUtils.engine.BaseComponent" href="#PythonGEUtils.engine.BaseComponent">BaseComponent</a></code></h4>
+<ul class="">
+<li><code><a title="PythonGEUtils.engine.BaseComponent.CreateNew" href="#PythonGEUtils.engine.BaseComponent.CreateNew">CreateNew</a></code></li>
+<li><code><a title="PythonGEUtils.engine.BaseComponent.Start" href="#PythonGEUtils.engine.BaseComponent.Start">Start</a></code></li>
+<li><code><a title="PythonGEUtils.engine.BaseComponent.Update" href="#PythonGEUtils.engine.BaseComponent.Update">Update</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="PythonGEUtils.engine.Camera" href="#PythonGEUtils.engine.Camera">Camera</a></code></h4>
+<ul class="">
+<li><code><a title="PythonGEUtils.engine.Camera.CreateNew" href="#PythonGEUtils.engine.Camera.CreateNew">CreateNew</a></code></li>
+<li><code><a title="PythonGEUtils.engine.Camera.SetMain" href="#PythonGEUtils.engine.Camera.SetMain">SetMain</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="PythonGEUtils.engine.Collider" href="#PythonGEUtils.engine.Collider">Collider</a></code></h4>
+<ul class="">
+<li><code><a title="PythonGEUtils.engine.Collider.ApplyFriction" href="#PythonGEUtils.engine.Collider.ApplyFriction">ApplyFriction</a></code></li>
+<li><code><a title="PythonGEUtils.engine.Collider.CollidingWithCollider" href="#PythonGEUtils.engine.Collider.CollidingWithCollider">CollidingWithCollider</a></code></li>
+<li><code><a title="PythonGEUtils.engine.Collider.CollisionBox" href="#PythonGEUtils.engine.Collider.CollisionBox">CollisionBox</a></code></li>
+<li><code><a title="PythonGEUtils.engine.Collider.CreateNew" href="#PythonGEUtils.engine.Collider.CreateNew">CreateNew</a></code></li>
+<li><code><a title="PythonGEUtils.engine.Collider.IsCollidedWith" href="#PythonGEUtils.engine.Collider.IsCollidedWith">IsCollidedWith</a></code></li>
+<li><code><a title="PythonGEUtils.engine.Collider.SetAsImage" href="#PythonGEUtils.engine.Collider.SetAsImage">SetAsImage</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="PythonGEUtils.engine.ConstantMovement" href="#PythonGEUtils.engine.ConstantMovement">ConstantMovement</a></code></h4>
+<ul class="">
+<li><code><a title="PythonGEUtils.engine.ConstantMovement.CreateNew" href="#PythonGEUtils.engine.ConstantMovement.CreateNew">CreateNew</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="PythonGEUtils.engine.GameInfo" href="#PythonGEUtils.engine.GameInfo">GameInfo</a></code></h4>
+</li>
+<li>
+<h4><code><a title="PythonGEUtils.engine.GameObject" href="#PythonGEUtils.engine.GameObject">GameObject</a></code></h4>
+<ul class="two-column">
+<li><code><a title="PythonGEUtils.engine.GameObject.AddComponent" href="#PythonGEUtils.engine.GameObject.AddComponent">AddComponent</a></code></li>
+<li><code><a title="PythonGEUtils.engine.GameObject.Destroy" href="#PythonGEUtils.engine.GameObject.Destroy">Destroy</a></code></li>
+<li><code><a title="PythonGEUtils.engine.GameObject.DirectComponent" href="#PythonGEUtils.engine.GameObject.DirectComponent">DirectComponent</a></code></li>
+<li><code><a title="PythonGEUtils.engine.GameObject.GetColliderData" href="#PythonGEUtils.engine.GameObject.GetColliderData">GetColliderData</a></code></li>
+<li><code><a title="PythonGEUtils.engine.GameObject.GetComponent" href="#PythonGEUtils.engine.GameObject.GetComponent">GetComponent</a></code></li>
+<li><code><a title="PythonGEUtils.engine.GameObject.RemoveComponent" href="#PythonGEUtils.engine.GameObject.RemoveComponent">RemoveComponent</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="PythonGEUtils.engine.Prefab" href="#PythonGEUtils.engine.Prefab">Prefab</a></code></h4>
+<ul class="">
+<li><code><a title="PythonGEUtils.engine.Prefab.CreateInstance" href="#PythonGEUtils.engine.Prefab.CreateInstance">CreateInstance</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="PythonGEUtils.engine.Renderer" href="#PythonGEUtils.engine.Renderer">Renderer</a></code></h4>
+<ul class="">
+<li><code><a title="PythonGEUtils.engine.Renderer.CreateNew" href="#PythonGEUtils.engine.Renderer.CreateNew">CreateNew</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="PythonGEUtils.engine.Rigidbody" href="#PythonGEUtils.engine.Rigidbody">Rigidbody</a></code></h4>
+<ul class="">
+<li><code><a title="PythonGEUtils.engine.Rigidbody.CreateNew" href="#PythonGEUtils.engine.Rigidbody.CreateNew">CreateNew</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="PythonGEUtils.engine.Scene" href="#PythonGEUtils.engine.Scene">Scene</a></code></h4>
+<ul class="">
+<li><code><a title="PythonGEUtils.engine.Scene.AddObject" href="#PythonGEUtils.engine.Scene.AddObject">AddObject</a></code></li>
+<li><code><a title="PythonGEUtils.engine.Scene.AddObjects" href="#PythonGEUtils.engine.Scene.AddObjects">AddObjects</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="PythonGEUtils.engine.UIButton" href="#PythonGEUtils.engine.UIButton">UIButton</a></code></h4>
+<ul class="">
+<li><code><a title="PythonGEUtils.engine.UIButton.CreateNew" href="#PythonGEUtils.engine.UIButton.CreateNew">CreateNew</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="PythonGEUtils.engine.UIText" href="#PythonGEUtils.engine.UIText">UIText</a></code></h4>
+<ul class="">
+<li><code><a title="PythonGEUtils.engine.UIText.CreateNew" href="#PythonGEUtils.engine.UIText.CreateNew">CreateNew</a></code></li>
+<li><code><a title="PythonGEUtils.engine.UIText.GenerateText" href="#PythonGEUtils.engine.UIText.GenerateText">GenerateText</a></code></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</nav>
+</main>
+<footer id="footer">
+<p>Generated by <a href="https://pdoc3.github.io/pdoc"><cite>pdoc</cite> 0.6.2</a>.</p>
+</footer>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad()</script>
+</body>
+</html>
