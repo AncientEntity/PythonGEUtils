@@ -1,3 +1,3 @@
-python setup.py install --record known_files.txt
+python setup.py install
 
 PAUSE

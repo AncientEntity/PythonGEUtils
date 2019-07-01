@@ -10,7 +10,7 @@ setup(name='PythonGEUtils',
       author_email='',
       url='https://github.com/AncientEntity/PythonGEUtils',
       packages=['PythonGEUtils','PythonGEUtils.images','PythonGEUtils.helpful'],
-      install_requires=['pygame'],
+      install_requires=['pygame','pymunk'],
       package_data={'PythonGEUtils.images': ['*']},
       include_package_data=True,
      )
