@@ -11,7 +11,7 @@ import random
 import time
 import copy
 import os
-#import mathf
+import PythonGEUtils.mathf
     
 #print("PythonGEUtils Loaded")
 
@@ -371,14 +371,14 @@ class Collider(BaseComponent):
                             blockCollision = False
 
                         if(blockCollision):
-                            other.components[other.GetComponent("RIGIDBODY")].velocity[1] = mathf.Clamp(other.components[other.GetComponent("RIGIDBODY")].velocity[1]-0.05,0,10000)
+                            other.components[other.GetComponent("RIGIDBODY")].velocity[1] = PythonGEUtils.mathf.Clamp(other.components[other.GetComponent("RIGIDBODY")].velocity[1]-0.05,0,10000)
                             self.ApplyFriction()
                     self.collidingWith.append(other)
                     continue
         if(len(self.collidingWith) > 0 and self.trigger == False):
             #print(self.parent.GetComponent("RIGIDBODY"))
             if(self.parent.GetComponent("RIGIDBODY") != None and self.CollidingWithCollider() and other.GetComponent("COLLIDER") != None):
-                self.parent.components[self.parent.GetComponent("RIGIDBODY")].velocity[1] = mathf.Clamp(other.components[other.GetComponent("RIGIDBODY")].velocity[1]-0.05,0,10000)
+                self.parent.components[self.parent.GetComponent("RIGIDBODY")].velocity[1] = PythonGEUtils.mathf.Clamp(other.components[other.GetComponent("RIGIDBODY")].velocity[1]-0.05,0,10000)
                 self.ApplyFriction()
         #print(self.collidingWith,self.parent.name)
     def SetAsImage(self,i=None):
