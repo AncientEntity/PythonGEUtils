@@ -487,6 +487,7 @@ class UIText(BaseComponent):
         self.GenerateText()
     def Update(self):
         if(self.lastTextGenerated != self.text or self.lastTextSize != self.size):
+            #print("regen ---------------------------------------------------")
             self.GenerateText()
 
 class UIButton(BaseComponent):
@@ -849,6 +850,21 @@ def LaunchGame(GameInfo):
     renderStart = 0
     pygame.key.set_repeat(properties["KEYREPEAT"][0],properties["KEYREPEAT"][1])
 
+
+    #Do Engine Intro
+    generatedFont = pygame.font.SysFont("Comic Sans MS",30)
+    generatedRender = generatedFont.render("Python Game Engine Utils",True,(0,0,0))
+    appleCenter = pygame.transform.scale(pygame.image.load(GEPath+"\\images\\apple.png"),(250,250))        
+    
+    for doIntro in range(0,255):
+        screen.fill((255-doIntro,255-doIntro,255-doIntro))
+        screen.blit(appleCenter,(GameInfo.properties["RESOLUTION"][0]//2-125,GameInfo.properties["RESOLUTION"][1]//2-125))
+        screen.blit(generatedRender,(GameInfo.properties["RESOLUTION"][0]//2-125-50,GameInfo.properties["RESOLUTION"][1]//2-125+220))
+        pygame.display.update()
+        time.sleep(2.0/255.0) #make it last 3 seconds
+    #Engine Intro End
+
+    
     for event in queuedEvents:
         event
 

@@ -14,6 +14,22 @@ def ExportGameWindows(fileLocation):
 
     fullOriginDirectory = "".join(splittedDirectory[0:len(splittedDirectory)])
     #print(splittedDirectory)
+
+    filesToAdd = []
+    
+    for folder in os.walk(exportLocation):
+        #print("======",folder[0])
+        for file in folder[2]: #0=directory,1=folders,2=files
+            if(file.split(".")[::-1][0] == "py" or file.split(".")[::-1][0] == "pyc"):
+                print("Ignoring File: "+file)
+                continue
+            filesToAdd.append(folder[0]+"\\"+file)
+            print("Added Files: " + file)
+        #print("======")
+    
+    print("Files Added:",filesToAdd)
+
+
     os.system("pyinstaller \""+fileLocation+"\"")
 
     thisDir = os.path.dirname(os.path.realpath(__file__))
@@ -25,7 +41,7 @@ def ExportGameWindows(fileLocation):
     for f in os.walk(exportLocation):
         print(f)
     print("--------Complete Walk End")
-    
+
     for folder in os.walk(exportLocation):
         #print("======",folder[0])
         for file in folder[2]: #0=directory,1=folders,2=files
@@ -38,7 +54,9 @@ def ExportGameWindows(fileLocation):
             except:
                 print("Error Copying: ",file)
         #print("======")
-    
+
+    print("Files Added:",filesToAdd)
+    os.mkdir(exportLocation+"GameExport")
     os.rename(thisDir+"\\dist\\"+targetDir,exportLocation+"GameExport\\GameData")
     os.rmdir(thisDir+"\\dist")
     shutil.rmtree(thisDir+"\\build")
@@ -46,5 +64,5 @@ def ExportGameWindows(fileLocation):
     print("GAME EXPORT COMPLETE")
 
               
-#ExportGameWindows("C:\\Users\\user\\Desktop\\My Programs\\Python\\PythonGameEngine\\PythonGEUtils\\TheEngine\\PythonGEUtils\\examples\\WallBreaker.py")
+ExportGameWindows("C:\\Users\\user\\Desktop\\My Programs\\Python\\PythonGameEngine\\PythonGEUtils\\TheEngine\\PythonGEUtils\\examples\\WallBreaker.py")
 
