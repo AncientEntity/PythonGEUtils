@@ -503,6 +503,12 @@ class UIButton(BaseComponent):
         self.functions = []
         self.centered = True
         self.pressed = False
+        self.buttonTypes = {"Color" : 0, "SpriteChange" : 1, "Nothing" : 2}
+        self.selectedType = self.buttonTypes["Nothing"]
+        self.colorOnPress = (0,0,0,50)
+        self.coloredSprite = errorImage
+        self.lastSprite = ""
+        self.pressedDown = False
     def CreateNew(self,s):
         """
         CreateNew(self,s) creates a new instance of UIButton()
@@ -514,6 +520,11 @@ class UIButton(BaseComponent):
         for event in self.events:
             if(event.type == pygame.MOUSEBUTTONDOWN):
                 x = True
+                self.pressedDown = True
+            if(event.type == pygame.MOUSEBUTTONUP):
+                self.pressedDown = False
+        if(self.pressedDown == False and self.pressed):
+            self.UnPressActions()
         if(x == False):
             return
         mPos = pygame.mouse.get_pos()
@@ -523,14 +534,37 @@ class UIButton(BaseComponent):
                 if((mPos[1] >= self.parent.position[1] and mPos[1] <= self.parent.position[1]+(loadedSprite.get_height() * self.parent.scale[1]))):
                     for function in self.functions:
                         exec(function)
+                    self.DoButtonPress()
                     #print("Test")
         else:
             if(mPos[0] >= self.parent.position[0]-(loadedSprite.get_width()/2 * self.parent.scale[0]) and mPos[0] <= self.parent.position[0]+(loadedSprite.get_width()/2 * self.parent.scale[0])):
                 if((mPos[1] >= self.parent.position[1]-(loadedSprite.get_width()/2 * self.parent.scale[0]) and mPos[1] <= self.parent.position[1]+(loadedSprite.get_height()/2 * self.parent.scale[1]))):
                     for function in self.functions:
                         exec(function)
+                    self.DoButtonPress()
                     #print("Test")
+
+    def CacheButtonEffects(self):
+        global sprites
+        if(self.selectedType == 2):
+            return
+        elif(self.selectedType == 0):
+            self.coloredSprite = sprites[self.sprite]
+            dark = pygame.Surface((sprites[self.sprite].get_width(), sprites[self.sprite].get_height()), flags=pygame.SRCALPHA)
+            dark.fill((50, 50, 50, 0))
+            self.coloredSprite.blit(dark, (0, 0), special_flags=pygame.BLEND_RGBA_SUB)
+            self.lastSprite = self.sprite
+    def DoButtonPress(self):
         self.pressed = True
+        #self.sprite = self.coloredSprite
+        if(self.sprite != self.lastSprite):
+            self.CacheButtonEffects()
+    def UnPressActions(self):
+        #print("Unpressed")
+        global sprites
+        self.pressed = False
+        #self.sprite = self.lastSprite
+        #self.coloredSprite = sprites[self.sprite]
 
 
 def Instantiate(obj):
@@ -693,6 +727,10 @@ def RenderEngine(screen):
         #UI BUTTON
         if(obj.GetComponent("UIBUTTON") != None):
             scaled = sprites[obj.components[obj.GetComponent("UIBUTTON")].sprite]
+            if(obj.DirectComponent("UIBUTTON").pressed == True and obj.DirectComponent("UIBUTTON").selectedType == 0):
+                scaled = obj.DirectComponent("UIBUTTON").coloredSprite
+            else:
+                scaled = sprites[obj.components[obj.GetComponent("UIBUTTON")].sprite]
             scaled = pygame.transform.rotate(scaled,obj.rotation)
 
             scaled = pygame.transform.scale(scaled,(scaled.get_width() * obj.scale[0],scaled.get_height() * obj.scale[1]))
@@ -711,7 +749,7 @@ def RenderEngine(screen):
             if(obj.components[obj.GetComponent("UITEXT")].centered):
                 screen.blit(scaled,[obj.position[0]-scaled.get_width()/2+obj.DirectComponent("UITEXT").offset[0],obj.position[1]-scaled.get_height()/2+obj.DirectComponent("UITEXT").offset[1]])
             else:
-                screen.blit(scaled,obj.position)
+                screen.blit(scaled,[obj.position[0]+obj.DirectComponent("UITEXT").offset[0],obj.position[1]+obj.DirectComponent("UITEXT").offset[1]])
 
     pygame.display.update()
 
